@@ -35,16 +35,19 @@ class RodNMod:
     def dragWindow(self, dx, dy):
         window = webWindows[0]
         window.move(window.x + dx, window.y + dy)
+    
+    def visitSite(self, site: str):
+        openWeb(site)
 
     def launchWebfishing(self, vanilla: bool = False):
         if vanilla:
             try: os.rename(installationPath + "\\GDWeave\\mods", installationPath + "\\GDWeave\\disabled.mods")
             except FileNotFoundError: pass
-            openWeb("steam://rungameid/3146520")
+            self.visitSite("steam://rungameid/3146520")
         else: # modded
             try: os.rename(installationPath + "\\GDWeave\\disabled.mods", installationPath + "\\GDWeave\\mods")
             except FileNotFoundError: pass
-            openWeb("steam://rungameid/3146520")
+            self.visitSite("steam://rungameid/3146520")
 
     def webfishingInstallation(self):
         return installationPath

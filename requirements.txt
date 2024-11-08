@@ -2,3 +2,4 @@ httpx
 psutil
 pywebview
 pymsgbox
+rapidfuzz

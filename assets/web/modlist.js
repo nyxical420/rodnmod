@@ -73,6 +73,14 @@ function generateModItems(modData) {
         updatedDiv.textContent = mod.updatedAgo;
         contentDiv.appendChild(updatedDiv);
 
+        const website = document.createElement('div');
+        website.style = "position: absolute; top: 26px; right: 10px; font-size: 15px; color: #6a4420;";
+        website.textContent = mod.latestWebsite;
+        website.onmouseup = function () {
+            window.pywebview.api.visitSite(mod.latestWebsite);
+        }
+        contentDiv.appendChild(website);
+
         // Add the title, author, and description
         const titleDiv = document.createElement('div');
         titleDiv.style = "flex: 1;";

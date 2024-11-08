@@ -71,6 +71,7 @@ def getMods():
             mods[modPackage]["versions"].append(formedVersion)
 
         if latest_version:
+            mods[modPackage]["latestWebsite"] = latest_version["website_url"]
             mods[modPackage]["latestDownload"] = latest_version["download_url"]
             mods[modPackage]["latestDependencies"] = latest_version["dependencies"]
             mods[modPackage]["latestVersion"] = latest_version["version_number"]

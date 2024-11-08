@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="D:\Projects (Code Stuff)\Rod n' Mod new\.venv"
+VIRTUAL_ENV="D:\Projects (Code Stuff)\Rod n' Mod\.venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
