@@ -78,6 +78,15 @@ def getMods():
 
     return mods
 
+# what im trying to do here is get where the mod stuff is stored
+# usually looking for the mod folder and its content inside the folder ONLY
+# unzip the mod folder to the extract path and done
+# but it unfortunately does not wanna work properly sometimes due to
+# modders just dumping the fuck out of their mods in THE MODS FOLDER WITHOUT MAKING A SUBFOLDER FOR IT
+# OR EVEN MAKE IT PROPER IN GENERAAAALLLL
+
+# notnite please enforce a proper mod file structure
+
 def download(url, extractPath, data: dict = {}):
     response = httpx.get(url, follow_redirects=True)
     response.raise_for_status()
