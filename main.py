@@ -1,16 +1,17 @@
 # powered by hopes and dreams
 
 import os
-import re
 import shutil
-import difflib
-import webview
 import pymsgbox
 from json import load
 from rapidfuzz import fuzz
 from threading import Thread
 from psutil import process_iter
+from difflib import get_close_matches
 from webbrowser import open as openWeb
+from webview import create_window, start
+from re import IGNORECASE, compile as comp
+
 from rodnmod.fishfinder import findWebfishing
 from rodnmod.thunderstore import getMods, download
 
@@ -71,7 +72,7 @@ class RodNMod:
         return self.modsList
 
     def updatedAgo(self, updatedAgo: str):
-        time_pattern = re.compile(r'(\d+)\s*(minutes?|hours?|days?)\s*ago', re.IGNORECASE)
+        time_pattern = comp(r'(\d+)\s*(minutes?|hours?|days?)\s*ago', IGNORECASE)
         match = time_pattern.search(updatedAgo)
         
         if match:
@@ -188,7 +189,7 @@ class RodNMod:
         threshold = 0.8  # initial threshold
     
         while threshold >= 0.45:
-            closestFolder = difflib.get_close_matches(folderName, [os.path.basename(folder) for folder in subs], n=1, cutoff=threshold)
+            closestFolder = get_close_matches(folderName, [os.path.basename(folder) for folder in subs], n=1, cutoff=threshold)
             if closestFolder:
                 for folder in subs:
                     if os.path.basename(folder) == closestFolder[0]:
@@ -287,7 +288,7 @@ if __name__ == "__main__":
     with open("./data/config.json") as file:
         config = load(file)
 
-    window = webview.create_window(
+    window = create_window(
         "Rod n' Mod",
         "main.html",
         width=1080, height=720,
@@ -317,6 +318,6 @@ if __name__ == "__main__":
         print("downloading", downloadUrl)
         Thread(target=download, args=(downloadUrl, installationPath)).start()
 
-    webview.start(debug=config["debugMode"], icon="/assets/web/rodnmod.png")
+    start(debug=config["debugMode"], icon="/assets/web/rodnmod.png")
     
     
