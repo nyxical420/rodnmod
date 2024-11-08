@@ -4,7 +4,6 @@ import json
 import httpx
 import zipfile
 from datetime import datetime, timezone
-from pathlib import Path
 
 def timeAgo(updated_time):
     now = datetime.now(timezone.utc)
