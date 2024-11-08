@@ -309,17 +309,22 @@ if __name__ == "__main__":
     
     if os.path.exists(installationPath + "\\GDWeave") and os.path.isdir(installationPath + "\\GDWeave"):
         print("gdweave installed. check for updates")
-        with open(installationPath + "\\manifest.json") as file:
-            manifest = load(file)
-        
-        if manifest["version_number"] != version:
-            print("GDWeave update available")
-            Thread(target=download, args=(downloadUrl, installationPath)).start()
-        else:
-            print("no GDWeave update available")
+        try:
+            with open(installationPath + "\\rnmInfo.json") as file:
+                rnmInfo = load(file)
+
+            if rnmInfo["version"] != version:
+                print("GDWeave update available")
+                Thread(target=download, args=(downloadUrl, installationPath, {"version": version})).start()
+            else:
+                print("no GDWeave update available")
+        except FileNotFoundError:
+            print("rnm gdweave version file info not found")
+            Thread(target=download, args=(downloadUrl, installationPath, {"version": version})).start()
+            
     else:
         print("downloading", downloadUrl)
-        Thread(target=download, args=(downloadUrl, installationPath)).start()
+        Thread(target=download, args=(downloadUrl, installationPath, {"version": version})).start()
 
     start(debug=config["debugMode"], icon="/assets/web/rodnmod.png")
     

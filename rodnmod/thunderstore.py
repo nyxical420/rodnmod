@@ -83,22 +83,27 @@ def download(url, extractPath, data: dict = {}):
     response.raise_for_status()
 
     with zipfile.ZipFile(io.BytesIO(response.content)) as zip_ref:
-        folder_to_extract = None
+        extractFolder = None
         for file in zip_ref.namelist():
             if 'manifest.json' in file and file.count('/') > 1:
-                folder_to_extract = file.split('manifest.json')[0]
+                extractFolder = file.split('manifest.json')[0]
                 break
         
-        if folder_to_extract is None:
-            raise FileNotFoundError("No folder containing 'manifest.json' found")
+        if extractFolder is None:
+            print("No folder containing 'manifest.json' found")
+            extractFolder = ""
 
-        folder_name = os.path.basename(folder_to_extract.rstrip('/'))
-        extracted_folder_path = os.path.join(extractPath, folder_name)
-
+        try:
+            folderName = os.path.basename(extractFolder.rstrip('/'))
+            extractedFolder = os.path.join(extractPath, folderName)
+        except AttributeError:
+            print("folder to extract is none.")
+            return 
+        
         for file in zip_ref.namelist():
-            if file.startswith(folder_to_extract):
-                file_relative_path = os.path.relpath(file, folder_to_extract)
-                destination_path = os.path.join(extractPath, folder_name, file_relative_path)
+            if file.startswith(extractFolder):
+                file_relative_path = os.path.relpath(file, extractFolder)
+                destination_path = os.path.join(extractPath, folderName, file_relative_path)
                 
                 os.makedirs(os.path.dirname(destination_path), exist_ok=True)
 
@@ -106,17 +111,20 @@ def download(url, extractPath, data: dict = {}):
                     with open(destination_path, 'wb') as f:
                         f.write(zip_ref.read(file))
 
-        manifest_local_path = os.path.join(extracted_folder_path, 'manifest.json')
+        manifest_local_path = os.path.join(extractedFolder, 'manifest.json')
         with open(manifest_local_path, 'r', encoding='utf-8') as manifest_file:
             manifest_data = json.load(manifest_file)
-            mod_id = manifest_data.get('Id')
+            modId = manifest_data.get('Id')
 
-        if mod_id:
-            new_folder_path = os.path.join(extractPath, mod_id)
-            os.rename(extracted_folder_path, new_folder_path)
-            print(f"Folder '{folder_name}' renamed to '{mod_id}' and extracted successfully to {extractPath}")
+        if modId:
+            folderPath = os.path.join(extractPath, modId)
+            os.rename(extractedFolder, folderPath)
+            print(f"Folder '{folderName}' renamed to '{modId}' and extracted successfully to {extractPath}")
 
-            with open(f"{new_folder_path}\\rnmInfo.json", "w") as f:
+            with open(f"{folderPath}\\rnmInfo.json", "w") as f:
                 json.dump(data, f, indent=4)
         else:
-            print(f"No 'Id' found in manifest.json; folder extracted as '{folder_name}'.")
+            print(f"No 'Id' found in manifest.json; folder extracted as '{folderName}'.")
+
+            with open(f"{extractPath}\\rnmInfo.json", "w") as f:
+                json.dump(data, f, indent=4)
