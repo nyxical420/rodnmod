@@ -9,8 +9,8 @@ from threading import Thread
 from psutil import process_iter
 from difflib import get_close_matches
 from webbrowser import open as openWeb
-from webview import create_window, start
 from re import IGNORECASE, compile as comp
+from webview import create_window, start, windows as webWindows
 
 from rodnmod.fishfinder import findWebfishing
 from rodnmod.thunderstore import getMods, download
@@ -33,7 +33,7 @@ class RodNMod:
         return {"installationStatus": webfishingInstalled}
     
     def dragWindow(self, dx, dy):
-        window = webview.windows[0]
+        window = webWindows[0]
         window.move(window.x + dx, window.y + dy)
 
     def launchWebfishing(self, vanilla: bool = False):
