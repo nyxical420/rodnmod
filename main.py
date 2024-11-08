@@ -189,9 +189,9 @@ class RodNMod:
             if os.path.basename(folder) == folderName:
                 return folder
     
-        threshold = 0.8  # initial threshold
+        threshold = 0.1  # initial threshold
     
-        while threshold >= 0.45:
+        while threshold >= 0.5:
             closestFolder = get_close_matches(folderName, [os.path.basename(folder) for folder in subs], n=1, cutoff=threshold)
             if closestFolder:
                 for folder in subs:
@@ -228,6 +228,7 @@ class RodNMod:
                     dependencyInfo = self.modsList[newDependencyName]
                     print(f"Checking if Required Dependency is installed...")
                     
+                    dependencyName = dependencyInfo["modName"]
                     dependencyVersion = dependencyInfo["latestVersion"]
                     dependencyDownload = dependencyInfo["latestDownload"]
                     dependencyPath = self.searchModFolders(newDependencyName)
@@ -239,10 +240,10 @@ class RodNMod:
                                 mnrInfo = load(f)
                             
                             if mnrInfo["version"] != dependencyVersion:
-                                download(dependencyDownload, installationPath + "\\GDWeave\\mods", {"version": dependencyVersion})
+                                download(dependencyDownload, installationPath + "\\GDWeave\\mods", {"name": dependencyName, "version": dependencyVersion})
 
                         else:
-                            download(dependencyDownload, installationPath + "\\GDWeave\\mods", {"version": dependencyVersion})
+                            download(dependencyDownload, installationPath + "\\GDWeave\\mods", {"name": dependencyName, "version": dependencyVersion})
                             
             
             # since mod names are completely different we should scan for it and compare
@@ -255,7 +256,7 @@ class RodNMod:
                             mnrInfo = load(f)
 
                         if mnrInfo["version"] != modVersion:
-                            download(modDownload, installationPath + "\\GDWeave\\mods", {"version": modVersion})
+                            download(modDownload, installationPath + "\\GDWeave\\mods", {"name": modName, "version": modVersion})
                         else:
                             pymsgbox.alert(
                                 title="Mod n' Rod",
@@ -263,10 +264,10 @@ class RodNMod:
                             )
 
                 except FileNotFoundError: # mnrInfo.json missing, skip version check and download mod immediately instead
-                    download(modDownload, installationPath + "\\GDWeave\\mods", {"version": modVersion})
+                    download(modDownload, installationPath + "\\GDWeave\\mods", {"name": modName, "version": modVersion})
 
             else:
-                download(modDownload, installationPath + "\\GDWeave\\mods", {"version": modVersion})
+                download(modDownload, installationPath + "\\GDWeave\\mods", {"name": modName, "version": modVersion})
 
             self.modsBeingDownloaded.remove(mod)
 
@@ -305,7 +306,7 @@ if __name__ == "__main__":
             window.expose(func)
 
     gdweaveLib = rnm.searchModList("GDWeave", "none", "all", False)["gdweave"]
-    version, downloadUrl = gdweaveLib["latestVersion"], gdweaveLib["latestDownload"]
+    name, version, downloadUrl = gdweaveLib["modName"], gdweaveLib["latestVersion"], gdweaveLib["latestDownload"]
     
     if os.path.exists(installationPath + "\\GDWeave") and os.path.isdir(installationPath + "\\GDWeave"):
         print("gdweave installed. check for updates")
@@ -315,16 +316,16 @@ if __name__ == "__main__":
 
             if rnmInfo["version"] != version:
                 print("GDWeave update available")
-                Thread(target=download, args=(downloadUrl, installationPath, {"version": version})).start()
+                Thread(target=download, args=(downloadUrl, installationPath, {"name": name, "version": version})).start()
             else:
                 print("no GDWeave update available")
         except FileNotFoundError:
             print("rnm gdweave version file info not found")
-            Thread(target=download, args=(downloadUrl, installationPath, {"version": version})).start()
+            Thread(target=download, args=(downloadUrl, installationPath, {"name": name, "version": version})).start()
             
     else:
         print("downloading", downloadUrl)
-        Thread(target=download, args=(downloadUrl, installationPath, {"version": version})).start()
+        Thread(target=download, args=(downloadUrl, installationPath, {"name": name, "version": version})).start()
 
     start(debug=config["debugMode"], icon="/assets/web/rodnmod.png")
     
