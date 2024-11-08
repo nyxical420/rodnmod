@@ -1,0 +1,308 @@
+@font-face {
+    font-family: "Webweb/fishingFont";
+    src: url("/assets/web/font.ttf");
+}
+
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    background-color: #101c31;
+    overflow: auto;
+}
+
+html, body {
+    overflow: hidden;
+}
+  
+::-webkit-scrollbar {
+    display: none;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    cursor: url('/assets/web/fishing/cursor.png'), auto;
+    font-family: "Webweb/fishingFont", sans-serif;
+}
+
+.content {
+    background-color: #101c31;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    clip-path: circle(0% at 50% 50%);
+    transition: 700ms;
+    display: flex;
+    flex-direction: column;
+}
+
+.titleBar {
+    background-color: #101c31;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 34px;
+    width: 100%;
+    padding: 0 10px;
+    z-index: 2;
+}
+
+.tabs {
+    background-color: #dba864;
+    flex-grow: 1;
+    padding: 34px 10% 45px 10%;
+    clip-path: circle(75% at 50% 50%);
+    transition: 700ms;
+    overflow-y: auto;
+}
+
+.tab {
+    display: none;
+}
+
+.active {
+    display: block;
+}
+
+input {
+    outline: none;
+    border: none;
+    border-radius: 12px;
+    color: #8b643a;
+    background-color: #bc9460;
+    font-size: 24px;
+    padding: 4px;
+    width: 300px;
+}
+
+input::placeholder {
+    color: #8b643a;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border: none;
+}
+
+button[type="greenButton"] {
+    text-align: left;
+    width: 200px;
+    font-size: 22px;
+    color: #ffeed5;
+    background-color: #5a755a;
+    border-radius: 12px;  
+    border: none;
+    cursor: url('/assets/web/point.png'), pointer;
+}
+
+
+.custom-dropdown {
+    position: relative;
+    display: inline-block;  
+    width: 200px;  
+    font-size: 22px;
+    color: #ffeed5;
+    background-color: #5a755a;
+    border-radius: 12px;  
+    border: none;
+    cursor: url('/assets/web/fishing/cursor.png'), pointer;
+}
+
+
+.dropdown-header {
+    padding: 2px 4px;  
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #5a755a;
+    border-radius: 12px;  
+    cursor: pointer;
+    user-select: none; 
+    height: 40px;  
+}
+
+.selected-option {
+    flex-grow: 1;
+}
+
+.dropdown-arrow {
+    font-size: 18px;
+}
+
+.dropdown-options {
+    display: none;  
+    position: absolute;
+    top: 100%;  
+    left: 0;
+    width: 100%;  
+    background-color: #5a755a;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    cursor: url('/assets/web/fishing/cursor.png'), pointer;
+    padding: 0;  
+}
+
+.option {
+    padding: 0 4px;  
+    color: #ffeed5;
+    background-color: #5a755a;
+    cursor: pointer;
+    height: 40px;  
+    display: flex;
+    align-items: center;  
+    cursor: url('/assets/web/point.png'), pointer;
+}
+
+.option:hover {
+    background-color: #9c914a;  
+    border-radius: 10px;  
+}
+
+.option.selected {
+    background-color: transparent;  
+}
+
+.custom-dropdown.open .dropdown-options {
+    display: block;
+}
+
+.custom-dropdown select {
+    display: none;
+}
+
+.option:last-child {
+    border-radius: 0 0 12px 12px;  
+}
+
+.option:last-child:hover {
+    background-color: #9c914a;  
+    border-radius: 12px 12px 12px 12px;  
+}
+
+.custom-dropdown.open .dropdown-header {
+    border-radius: 12px 12px 0 0; 
+}
+
+.custom-dropdown.open .dropdown-options {
+    border-radius: 0 0 12px 12px;  
+}
+
+.option.selected:hover {
+    background-color: #9c914a;  
+    border-radius: 10px;  
+}
+
+div.menuContainer {
+    display: flex;
+    flex-direction: row;
+    position: fixed;
+    bottom: -10px;
+    left: 0;
+    background-color: #101c31;
+    height: 55px;
+    width: 100%;
+}
+
+div.menuContainer button {
+    border: none;
+    width: 95px;
+    height: 45px;
+    transition: width 500ms, font-size 500ms, color 500ms, opacity 500ms;
+    align-items: center;
+    padding: 0 13px;
+    margin-bottom: 5px;
+    border-radius: 15px;
+    padding: 5px 13px 0 13px;
+    transform: translateY(15px);
+    font-size: 0px;
+    color: transparent;
+    background-color: #ffeed5;
+    box-shadow: 0 4px 0 #6a4420;
+    cursor: url('/assets/web/point.png'), pointer;
+}
+
+div.menuContainer button.text {
+    visibility: hidden;
+    transition: .2s;
+}
+
+div.menuContainer button:hover {
+    width: var(--width);
+    font-size: 20px;
+    color: #ffeed5;
+    background-color: #d5aa73;
+    box-shadow: 0 4px 0 #6a4420;
+}
+
+div.menuContainer button.text {
+    visibility: visible;
+}
+
+div.menuContainer button:active {
+    width: var(--width);
+    font-size: 20px;
+    color: #ffeed5;
+    background-color: #6a4420;
+    box-shadow: 0 -4px 0 #622810;
+    transform: translateY(19px);
+    cursor: url('/assets/web/click.png'), pointer;
+}
+
+.closeButton {
+    border: none;
+    background-color: #ff4545;
+    color: #ffeed5;
+    border-radius: 15px;
+    position: fixed;
+    right: 10px;
+    top: 7px;
+    width: 42px;
+    height: 42px;
+    font-size: 25px;
+    box-shadow: 0 4px 0 #7d2121;
+    cursor: url('/assets/web/point.png'), pointer;
+}
+
+.closeButton:hover {
+    background-color: #da3b3b;
+}
+
+.closeButton:active {
+    box-shadow: 0 -4px 0 #7d2121;
+    top: 10px;
+    cursor: url('/assets/web/click.png'), pointer;
+}
+
+.minimizeButton {
+    border: none;
+    background-color: #45aaff;
+    color: #ffeed5;
+    border-radius: 7px;
+    position: fixed;
+    right: 57px;
+    top: 7px;
+    width: 27px;
+    height: 27px;
+    font-size: 15px;
+    box-shadow: 0 4px 0 #327dbb;
+    cursor: url('/assets/web/point.png'), pointer;
+}
+
+.minimizeButton:hover {
+    background-color: #409ce8;
+}
+
+.minimizeButton:active {
+    box-shadow: 0 -4px 0 #286495;
+    top: 10px;
+    cursor: url('/assets/web/click.png'), pointer;
+}
