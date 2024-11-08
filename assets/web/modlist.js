@@ -33,22 +33,21 @@ function toggleNSFW() {
     handleChange()
 }
 
+const ignoreList = [
+    "Hook_Line_and_Sinker",
+    "GDWeave",
+];
+
 function generateModItems(modData) {
     const modItemsContainer = document.querySelector('.modItems');
-    modItemsContainer.innerHTML = ''; // Clear any existing items
+    modItemsContainer.innerHTML = '';
     console.log(modData);
     
     Object.keys(modData).forEach(modKey => {
         const mod = modData[modKey];
 
-        if (mod.modName == "Hook_Line_and_Sinker") {
-            console.log("Ignored HLS! not a mod...")
-            return
-        }
-
-        if (mod.modName == "GDWeave") {
-            console.log("Ignored GDWeave! its automatically being updated...")
-            return
+        if (ignoreList.includes(mod.modName)) {
+            return;
         }
         
         // Create the main item container

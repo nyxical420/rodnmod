@@ -165,7 +165,6 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelector(".dropdown-header").addEventListener('mouseover', () => playAudio("/assets/web/fishing/sounds/ui_swish.ogg"));;
     document.body.style.zoom = '0.8';
 
-    // Function to check for pywebview.api and refresh if not available
     function checkPywebviewApi() {
         if (typeof window.pywebview === 'undefined' || typeof window.pywebview.api === 'undefined') {
             console.warn("pywebview.api is not available. Refreshing page...");
@@ -173,6 +172,5 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
     
-    // Delay the check for a short period to allow pywebview to load
-    setTimeout(checkPywebviewApi, 50); // Check after 500 milliseconds
+    checkPywebviewApi();
 });
