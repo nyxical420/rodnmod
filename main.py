@@ -1,7 +1,6 @@
 # powered by hopes and dreams
 
 import os
-import sys
 import shutil
 import pymsgbox
 from json import load
@@ -205,7 +204,7 @@ class RodNMod:
             if os.path.basename(folder) == folderName:
                 return folder
     
-        threshold = 0.1  # initial threshold
+        threshold = 1
     
         while threshold >= 0.5:
             closestFolder = get_close_matches(folderName, [os.path.basename(folder) for folder in subs], n=1, cutoff=threshold)
@@ -213,7 +212,7 @@ class RodNMod:
                 for folder in subs:
                     if os.path.basename(folder) == closestFolder[0]:
                         return folder
-            threshold -= 0.01  # lower the threshold gradually if no match is found
+            threshold -= 0.01
     
         return None
 
@@ -237,7 +236,7 @@ class RodNMod:
         if mod not in self.modsBeingDownloaded:
             if self.modsBeingDownloaded.count == 5:
                 pymsgbox.alert(
-                    title="Mod n' Rod",
+                    title="Rod n' Mod",
                     text=f"The max mods to be downloaded simultaneously (5) has been reached.\nPlease try again later once mods are installed!" + " "*30
                 )
                 return 
@@ -285,7 +284,7 @@ class RodNMod:
                             download(modDownload, installationPath + "\\GDWeave\\mods", {"name": modName, "author": modAuthor, "version": modVersion})
                         else:
                             pymsgbox.alert(
-                                title="Mod n' Rod",
+                                title="Rod n' Mod",
                                 text=f"{modName} is currently up to date!" + " "*30
                             )
 
@@ -298,7 +297,7 @@ class RodNMod:
             self.modsBeingDownloaded.remove(mod)
         else:
             pymsgbox.alert(
-                title="Mod n' Rod",
+                title="Rod n' Mod",
                 text=f"{modName} is already being downloaded!" + " "*30
             )
 
@@ -317,7 +316,7 @@ class RodNMod:
             except TypeError: pass
             except PermissionError:
                 pymsgbox.alert(
-                    title="Mod n' Rod", 
+                    title="Rod n' Mod", 
                     text="Permission denied! Please close the game first to uninstall the mod!"
                 )
 
@@ -326,7 +325,7 @@ rnm = RodNMod()
 if __name__ == "__main__":
     if installationPath == None:
         pymsgbox.alert(
-            title="Mod n' Rod",
+            title="Rod n' Mod",
             text=f"WEBFISHING Installation not found!" + " "*30
         )
     else:     
@@ -360,15 +359,17 @@ if __name__ == "__main__":
 
                 if rnmInfo["version"] != version:
                     print("GDWeave update available")
-                    Thread(target=downloadRaw, args=(downloadUrl, installationPath, {"name": name, "version": version})).start()
+                    Thread(target=pymsgbox.alert, args=("GDWeave is updating in the background. Please wait for Rod n' Mod to finish the update.")).start()
+                    downloadRaw(downloadUrl, installationPath, {"name": name, "version": version})
                 else:
                     print("no GDWeave update available")
             except FileNotFoundError:
                 print("rnm gdweave version file info not found")
-                Thread(target=downloadRaw, args=(downloadUrl, installationPath, {"name": name, "version": version})).start()
-
+                Thread(target=pymsgbox.alert, args=("GDWeave is installing in the background. Please wait for Rod n' Mod to finish the installation.", "Rod n' Mod")).start()
+                downloadRaw(downloadUrl, installationPath, {"name": name, "version": version})
         else:
             print("downloading", downloadUrl)
-            Thread(target=downloadRaw, args=(downloadUrl, installationPath, {"name": name, "version": version})).start()
+            Thread(target=pymsgbox.alert, args=("GDWeave is installing in the background. Please wait for Rod n' Mod to finish the installation.", "Rod n' Mod")).start()
+            downloadRaw(downloadUrl, installationPath, {"name": name, "version": version})
 
         start(debug=config["debugMode"], icon="/assets/rodnmod.ico")

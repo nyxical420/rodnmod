@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     checkPywebviewApi();
-
+    
     let isDragging = false;
     let startX, startY, offsetX, offsetY;
     const movementThreshold = 0;
@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }, 500);
 
     setTimeout(() => window.pywebview.api.getModList(), 50);
-    setTimeout(() => window.pywebview.api.isInstalled().then(checkInstall), 50);
+    setTimeout(() => window.pywebview.api.isInstalled().then(checkInstall), 1000);
     document.querySelectorAll('button').forEach(addSoundEffects);
     document.querySelector(".dropdown-header").addEventListener('mouseover', () => playAudio("/assets/web/fishing/sounds/ui_swish.ogg"));;
     document.body.style.zoom = '0.8';

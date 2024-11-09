@@ -6,6 +6,9 @@
 > [!WARNING]  
 > Rod n' Mod is still on it's alpha stage, so there may be bugs and issues. If you encounter any, please report them to me in the [issues page](https://github.com/nyxical420/rodnmod/issues) or at my discord! (@nyxical ID:583200866631155714)
 
+> [!NOTE]
+> Rod n' Mod automatically checks if GDWeave is updated automatically or if its installed in your WEBFISHING installation so you don't have to! so launching Rod n' Mod may have delayed audio sometimes.
+
 ## why?
 i was bored... and it looks cool tbh
 
@@ -14,7 +17,9 @@ You can download Rod n' Mod here!<br>
 https://github.com/nyxical420/rodnmod/releases
 
 # Features
-soon :P
+- **Launch Options**: Launch WEBFISHING with or without mods!
+- **Mod Manager**: Install, update, and uninstall mods easily!
+- **Installation Detection**: Automatically finds your WEBFISHING installation! no need to configure anything!
 
 # Requirements
 - A webview runtime. I recommend having [Microsoft Edge WebView2 Runtime](https://developer.microsoft.com/en-gb/microsoft-edge/webview2#download).
