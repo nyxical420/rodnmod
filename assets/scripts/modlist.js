@@ -46,7 +46,7 @@ function generateModItems(modData) {
     Object.keys(modData).forEach(modKey => {
         const mod = modData[modKey];
 
-        if (ignoreList.includes(mod.modName)) {
+        if (ignoreList.includes(mod.modName) || mod.isDeprecated) {
             return;
         }
         
@@ -85,7 +85,7 @@ function generateModItems(modData) {
         titleDiv.style = "flex: 1;";
         titleDiv.innerHTML = `
             <span style="font-size: 25px;">${mod.modName.replace(/_/g, " ")}</span>
-            <span style="font-size: 15px; margin-left: 5px;">by ${mod.modAuthor}</span><br>
+            <span style="font-size: 15px; margin-left: 3px;">by ${mod.modAuthor}</span><br>
             <span style="font-size: 17px;">${mod.versions[0].modDescription}</span>
         `;
         contentDiv.appendChild(titleDiv);

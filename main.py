@@ -118,7 +118,9 @@ class RodNMod:
             }
 
         if filter != "none":
-            if filter == "likesCount":
+            if filter == "installed":
+                ...
+            elif filter == "likesCount":
                 searchResults = dict(sorted(searchResults.items(), key=lambda x: x[1].get("modScore", 0), reverse=True))
             elif filter == "downloadCount":
                 searchResults = dict(sorted(searchResults.items(), key=lambda x: x[1].get("totalDownloads", 0), reverse=True))
@@ -208,17 +210,19 @@ class RodNMod:
             "NotNet-GDWeave"
         ]
 
+        modInfo = self.modsList[mod]
+            
+        print(modInfo)
+
+        modName = modInfo["modName"]
+        modAuthor = modInfo["modAuthor"]
+        modVersion = modInfo["latestVersion"]
+        modDownload = modInfo["latestDownload"]
+        modDependencies = modInfo["latestDependencies"]
+
         if mod not in self.modsBeingDownloaded:
             self.modsBeingDownloaded.append(mod)
             modInfo = self.modsList[mod]
-            
-            print(modInfo)
-
-            modName = modInfo["modName"]
-            modAuthor = modInfo["modAuthor"]
-            modVersion = modInfo["latestVersion"]
-            modDownload = modInfo["latestDownload"]
-            modDependencies = modInfo["latestDependencies"]
 
             if modDependencies != []:
                 for dependency in modDependencies:
@@ -271,6 +275,11 @@ class RodNMod:
                 download(modDownload, installationPath + "\\GDWeave\\mods", {"name": modName, "author": modAuthor, "version": modVersion})
 
             self.modsBeingDownloaded.remove(mod)
+        else:
+            pymsgbox.alert(
+                title="Mod n' Rod",
+                text=f"{modName} is already being downloaded!" + " "*30
+            )
 
     def uninstallMod(self, mod: str, checkExists: bool = False):
         mod = self.searchModFolders(mod)
@@ -289,7 +298,9 @@ class RodNMod:
 rnm = RodNMod()
 
 if __name__ == "__main__":
-
+    try: os.rename(installationPath + "\\GDWeave\\disabled.mods", installationPath + "\\GDWeave\\mods")
+    except FileNotFoundError: pass
+    
     with open("./data/config.json") as file:
         config = load(file)
 
