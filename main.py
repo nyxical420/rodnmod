@@ -215,6 +215,7 @@ class RodNMod:
             print(modInfo)
 
             modName = modInfo["modName"]
+            modAuthor = modInfo["modAuthor"]
             modVersion = modInfo["latestVersion"]
             modDownload = modInfo["latestDownload"]
             modDependencies = modInfo["latestDependencies"]
@@ -229,6 +230,7 @@ class RodNMod:
                     print(f"Checking if Required Dependency is installed...")
                     
                     dependencyName = dependencyInfo["modName"]
+                    dependencyAuthor = dependencyInfo["modAuthor"]
                     dependencyVersion = dependencyInfo["latestVersion"]
                     dependencyDownload = dependencyInfo["latestDownload"]
                     dependencyPath = self.searchModFolders(newDependencyName)
@@ -240,14 +242,13 @@ class RodNMod:
                                 mnrInfo = load(f)
                             
                             if mnrInfo["version"] != dependencyVersion:
-                                download(dependencyDownload, installationPath + "\\GDWeave\\mods", {"name": dependencyName, "version": dependencyVersion})
+                                download(dependencyDownload, installationPath + "\\GDWeave\\mods", {"name": dependencyName, "author": dependencyAuthor, "version": dependencyVersion})
 
                         else:
-                            download(dependencyDownload, installationPath + "\\GDWeave\\mods", {"name": dependencyName, "version": dependencyVersion})
+                            download(dependencyDownload, installationPath + "\\GDWeave\\mods", {"name": dependencyName, "author": dependencyAuthor, "version": dependencyVersion})
                             
-            
             # since mod names are completely different we should scan for it and compare
-            modPath = self.searchModFolders(modInfo["modAuthor"] + "." + modInfo["modName"])
+            modPath = self.searchModFolders(modAuthor + "." + modName)
 
             if modPath:
                 try:
@@ -256,7 +257,7 @@ class RodNMod:
                             mnrInfo = load(f)
 
                         if mnrInfo["version"] != modVersion:
-                            download(modDownload, installationPath + "\\GDWeave\\mods", {"name": modName, "version": modVersion})
+                            download(modDownload, installationPath + "\\GDWeave\\mods", {"name": modName, "author": modAuthor, "version": modVersion})
                         else:
                             pymsgbox.alert(
                                 title="Mod n' Rod",
@@ -264,10 +265,10 @@ class RodNMod:
                             )
 
                 except FileNotFoundError: # mnrInfo.json missing, skip version check and download mod immediately instead
-                    download(modDownload, installationPath + "\\GDWeave\\mods", {"name": modName, "version": modVersion})
+                    download(modDownload, installationPath + "\\GDWeave\\mods", {"name": modName, "author": modAuthor, "version": modVersion})
 
             else:
-                download(modDownload, installationPath + "\\GDWeave\\mods", {"name": modName, "version": modVersion})
+                download(modDownload, installationPath + "\\GDWeave\\mods", {"name": modName, "author": modAuthor, "version": modVersion})
 
             self.modsBeingDownloaded.remove(mod)
 

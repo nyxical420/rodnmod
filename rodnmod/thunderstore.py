@@ -4,6 +4,7 @@ import json
 import httpx
 import zipfile
 from datetime import datetime, timezone
+import shutil
 
 def timeAgo(updated_time):
     now = datetime.now(timezone.utc)
@@ -87,53 +88,65 @@ def getMods():
 
 # notnite please enforce a proper mod file structure
 
-def download(url, extractPath, data: dict = {}):
-    response = httpx.get(url, follow_redirects=True)
-    response.raise_for_status()
 
-    with zipfile.ZipFile(io.BytesIO(response.content)) as zip_ref:
-        extractFolder = None
+def download(url, extractPath, data: dict = {}):
+    print("Starting download...")
+    
+    with httpx.Client() as client:
+        response = client.get(url, follow_redirects=True)
+        response.raise_for_status()
+
+        fileSize = int(response.headers.get('Content-Length', 0))
+        downloadedSize = 0
+
+        temp_folder = os.path.join(extractPath, "temp_extract")
+        os.makedirs(temp_folder, exist_ok=True)
+
+        with open(os.path.join(temp_folder, "mod.zip"), 'wb') as f:
+            print("Downloading...")
+            for chunk in response.iter_bytes(chunk_size=8192):
+                if chunk:
+                    f.write(chunk)
+                    downloadedSize += len(chunk)
+                    progress = (downloadedSize / fileSize) * 100 if fileSize else 0
+                    print(f"Download progress: {progress:.2f}%")
+
+    print("Download complete, extracting files...")
+    
+    with zipfile.ZipFile(os.path.join(temp_folder, "mod.zip")) as zip_ref:
+        target_folder = None
         for file in zip_ref.namelist():
-            if 'manifest.json' in file and file.count('/') > 1:
-                extractFolder = file.split('manifest.json')[0]
+            if any(f in file for f in ["manifest.json", ".pck"]) and "/" in file:
+                target_folder = os.path.dirname(file)
                 break
         
-        if extractFolder is None:
-            print("No folder containing 'manifest.json' found")
-            extractFolder = ""
+        if not target_folder:
+            print("No folder containing 'manifest.json' or '.pck' found; extracting root files.")
+            target_folder = ""
 
-        try:
-            folderName = os.path.basename(extractFolder.rstrip('/'))
-            extractedFolder = os.path.join(extractPath, folderName)
-        except AttributeError:
-            print("folder to extract is none.")
-            return 
-        
         for file in zip_ref.namelist():
-            if file.startswith(extractFolder):
-                file_relative_path = os.path.relpath(file, extractFolder)
-                destination_path = os.path.join(extractPath, folderName, file_relative_path)
-                
+            if file.startswith(target_folder):
+                destination_path = os.path.join(temp_folder, os.path.relpath(file, target_folder))
                 os.makedirs(os.path.dirname(destination_path), exist_ok=True)
-
+                
                 if not file.endswith('/'):
                     with open(destination_path, 'wb') as f:
                         f.write(zip_ref.read(file))
 
-        manifest_local_path = os.path.join(extractedFolder, 'manifest.json')
-        with open(manifest_local_path, 'r', encoding='utf-8') as manifest_file:
-            manifest_data = json.load(manifest_file)
-            modId = manifest_data.get('Id')
+    modId = data.get("author", "") + "." + data.get("name", "")
+    finalFolderPath = os.path.join(extractPath, modId if modId else "default")
 
-        if modId:
-            folderPath = os.path.join(extractPath, modId)
-            os.rename(extractedFolder, folderPath)
-            print(f"Folder '{folderName}' renamed to '{modId}' and extracted successfully to {extractPath}")
+    if os.path.exists(finalFolderPath):
+        shutil.rmtree(finalFolderPath)
 
-            with open(f"{folderPath}\\rnmInfo.json", "w") as f:
-                json.dump(data, f, indent=4)
-        else:
-            print(f"No 'Id' found in manifest.json; folder extracted as '{folderName}'.")
+    os.rename(temp_folder, finalFolderPath)
 
-            with open(f"{extractPath}\\rnmInfo.json", "w") as f:
-                json.dump(data, f, indent=4)
+    print(f"Mod extracted to '{finalFolderPath}' with {'modId: ' + modId if modId else 'no modId specified'}.")
+
+    with open(os.path.join(finalFolderPath, "rnmInfo.json"), "w", encoding='utf-8') as f:
+        json.dump(data, f, indent=4)
+
+    if os.path.exists(temp_folder):
+        shutil.rmtree(temp_folder)
+
+    print("Extraction complete.")
