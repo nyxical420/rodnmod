@@ -9,9 +9,10 @@
 ## why?
 i was bored... and it looks cool tbh
 
-# Troubleshooting
+# Troubleshooting / Known Stuff
 - If Rod n' Mod doesn't close the splash screen, try relaunching. (ALT + F4)
 - If it takes a while for you to install mods, try relaunching Rod n' Mod.
+- Mods may not be detected by Rod n' Mod if installed from [HLS](https://hooklinesinker.lol/) because of how different Mod n' Rod handles installing/detecting mods.
 
 # Credits
 - @zoiudolo for Rod n' Mod Logo, Banner, and Images/Icons
