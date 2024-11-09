@@ -301,6 +301,11 @@ class RodNMod:
             try:
                 shutil.rmtree(mod)
             except TypeError: pass
+            except PermissionError:
+                pymsgbox.alert(
+                    title="Mod n' Rod", 
+                    text="Permission denied! Please close the game first to uninstall the mod!"
+                )
 
 rnm = RodNMod()
 
