@@ -10,7 +10,6 @@ function showResponse(response) {
 
 function checkInstall(response) {
     if (response.installationStatus == false) {
-        alert("WEBweb/fishing Installation not found.\nPlease make sure you have WEBweb/fishing installed on Steam!");
         window.pywebview.api.closeApplication();
     } else {
         setTimeout(() => openWindow(), 1000);
@@ -46,13 +45,16 @@ function preloadAudio(files) {
 }
 
 function playAudio(url) {
-    const audio = preloadedAudio[url];
+    const audio = preloadedAudio[url];  // Get the preloaded audio object
     if (audio) {
-        audio.play().catch(error => {
+        const audioClone = audio.cloneNode();  // Clone the preloaded audio element
+        audioClone.play().catch(error => {
             console.error("Error playing audio:", error);
         });
-        audio.addEventListener("ended", () => {
-            audio.remove();
+
+        // Optional: Clean up the audio element after it finishes playing
+        audioClone.addEventListener("ended", () => {
+            audioClone.remove();  // Clean up the cloned audio element
         });
     } else {
         console.warn(`Audio file ${url} is not preloaded.`);
