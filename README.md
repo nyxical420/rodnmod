@@ -8,5 +8,5 @@
 i was bored...
 
 # Credits
-- @zoiudolo for Rod n' Mod Logo, Banner, and Images
+- @zoiudolo for Rod n' Mod Logo, Banner, and Images/Icons
 - west for Game Sounds and Cursor used in Rod n' Mod
