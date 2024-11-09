@@ -1,15 +1,16 @@
 # powered by hopes and dreams
 
 import os
+import sys
 import shutil
 import pymsgbox
 from json import load
 from rapidfuzz import fuzz
 from threading import Thread
-from psutil import process_iter
 from difflib import get_close_matches
 from webbrowser import open as openWeb
 from re import IGNORECASE, compile as comp
+from psutil import process_iter, NoSuchProcess
 from webview import create_window, start, windows as webWindows
 
 from rodnmod.fishfinder import findWebfishing
@@ -18,6 +19,16 @@ from rodnmod.thunderstore import getMods, download, downloadRaw
 webfishingInstalled = False
 installationPath = findWebfishing()
 
+# thank god stackoverflow my beloved
+# https://stackoverflow.com/questions/7674790/bundling-data-files-with-pyinstaller-onefile/7675014#7675014
+def resource(relative):
+    return os.path.join(
+        os.environ.get(
+            "_MEIPASS2",
+            os.path.abspath(".")
+        ),
+        relative
+    )
 
 if installationPath:
     print(f"Installation Path: {installationPath}")
@@ -59,9 +70,12 @@ class RodNMod:
         window.destroy()
 
     def webfishingRunning(self):
-        if any(process.name() == "webfishing.exe" for process in process_iter()):
-            return {"running": True}
-        else: 
+        try:
+            if any(process.name() == "webfishing.exe" for process in process_iter()):
+                return {"running": True}
+            else: 
+                return {"running": False}
+        except NoSuchProcess:
             return {"running": False}
     
     def say(self, text):
@@ -319,12 +333,12 @@ if __name__ == "__main__":
         try: os.rename(installationPath + "\\GDWeave\\disabled.mods", installationPath + "\\GDWeave\\mods")
         except FileNotFoundError: pass
 
-        with open("./data/config.json") as file:
+        with open(resource("./data/config.json")) as file:
             config = load(file)
 
         window = create_window(
             "Rod n' Mod",
-            "main.html",
+            resource("main.html"),
             width=1080, height=720,
             frameless=True,
             js_api=RodNMod,
@@ -357,4 +371,4 @@ if __name__ == "__main__":
             print("downloading", downloadUrl)
             Thread(target=downloadRaw, args=(downloadUrl, installationPath, {"name": name, "version": version})).start()
 
-        start(debug=config["debugMode"], icon="/assets/web/rodnmod.png")
+        start(debug=config["debugMode"], icon="/assets/rodnmod.ico")

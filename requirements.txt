@@ -3,3 +3,4 @@ psutil
 pywebview
 pymsgbox
 rapidfuzz
+pyinstaller
