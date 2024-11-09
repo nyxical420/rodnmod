@@ -79,21 +79,12 @@ def getMods():
 
     return mods
 
-# what im trying to do here is get where the mod stuff is stored
-# usually looking for the mod folder and its content inside the folder ONLY
-# unzip the mod folder to the extract path and done
-# but it unfortunately does not wanna work properly sometimes due to
-# modders just dumping the fuck out of their mods in THE MODS FOLDER WITHOUT MAKING A SUBFOLDER FOR IT
-# OR EVEN MAKE IT PROPER IN GENERAAAALLLL
-
-# notnite please enforce a proper mod file structure
-
-
+# ONLY FOR DOWNLOADING MODS
 def download(url, extractPath, data: dict = {}):
     print("Starting download...")
-    
+
     with httpx.Client() as client:
-        response = client.get(url, follow_redirects=True)
+        response = client.get(url, follow_redirects=True, timeout=60)
         response.raise_for_status()
 
         fileSize = int(response.headers.get('Content-Length', 0))
@@ -150,3 +141,23 @@ def download(url, extractPath, data: dict = {}):
         shutil.rmtree(temp_folder)
 
     print("Extraction complete.")
+
+def downloadRaw(url: str, extractPath: str, data: dict = {}):
+    with httpx.Client() as client:
+        response = client.get(url, follow_redirects=True, timeout=60)
+        response.raise_for_status()
+
+        if response.status_code == 200:
+            file_content = io.BytesIO(response.content)
+            os.makedirs(extractPath, exist_ok=True)
+
+            with zipfile.ZipFile(file_content) as zip_ref:
+                zip_ref.extractall(extractPath)
+
+            with open(os.path.join(extractPath, "rnmInfo.json"), "w", encoding='utf-8') as f:
+                json.dump(data, f, indent=4)
+                
+            print(f"File successfully extracted to {extractPath}")
+            
+        else:
+            print(f"Failed to download the file, status code {response.status_code}")

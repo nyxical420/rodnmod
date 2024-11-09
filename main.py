@@ -13,7 +13,7 @@ from re import IGNORECASE, compile as comp
 from webview import create_window, start, windows as webWindows
 
 from rodnmod.fishfinder import findWebfishing
-from rodnmod.thunderstore import getMods, download
+from rodnmod.thunderstore import getMods, download, downloadRaw
 
 webfishingInstalled = False
 installationPath = findWebfishing()
@@ -221,6 +221,13 @@ class RodNMod:
         modDependencies = modInfo["latestDependencies"]
 
         if mod not in self.modsBeingDownloaded:
+            if self.modsBeingDownloaded.count == 5:
+                pymsgbox.alert(
+                    title="Mod n' Rod",
+                    text=f"The max mods to be downloaded simultaneously (5) has been reached.\nPlease try again later once mods are installed!" + " "*30
+                )
+                return 
+
             self.modsBeingDownloaded.append(mod)
             modInfo = self.modsList[mod]
 
@@ -298,47 +305,51 @@ class RodNMod:
 rnm = RodNMod()
 
 if __name__ == "__main__":
-    try: os.rename(installationPath + "\\GDWeave\\disabled.mods", installationPath + "\\GDWeave\\mods")
-    except FileNotFoundError: pass
-    
-    with open("./data/config.json") as file:
-        config = load(file)
+    if installationPath == None:
+        pymsgbox.alert(
+            title="Mod n' Rod",
+            text=f"WEBFISHING Installation not found!" + " "*30
+        )
+    else:     
+        try: os.rename(installationPath + "\\GDWeave\\disabled.mods", installationPath + "\\GDWeave\\mods")
+        except FileNotFoundError: pass
 
-    window = create_window(
-        "Rod n' Mod",
-        "main.html",
-        width=1080, height=720,
-        frameless=True,
-        js_api=RodNMod,
-    )
+        with open("./data/config.json") as file:
+            config = load(file)
 
-    for name in dir(rnm):
-        func = getattr(rnm, name)
-        if callable(func) and not name.startswith("_"):
-            window.expose(func)
+        window = create_window(
+            "Rod n' Mod",
+            "main.html",
+            width=1080, height=720,
+            frameless=True,
+            js_api=RodNMod,
+        )
 
-    gdweaveLib = rnm.searchModList("GDWeave", "none", "all", False)["gdweave"]
-    name, version, downloadUrl = gdweaveLib["modName"], gdweaveLib["latestVersion"], gdweaveLib["latestDownload"]
-    
-    if os.path.exists(installationPath + "\\GDWeave") and os.path.isdir(installationPath + "\\GDWeave"):
-        print("gdweave installed. check for updates")
-        try:
-            with open(installationPath + "\\rnmInfo.json") as file:
-                rnmInfo = load(file)
+        for name in dir(rnm):
+            func = getattr(rnm, name)
+            if callable(func) and not name.startswith("_"):
+                window.expose(func)
 
-            if rnmInfo["version"] != version:
-                print("GDWeave update available")
-                Thread(target=download, args=(downloadUrl, installationPath, {"name": name, "version": version})).start()
-            else:
-                print("no GDWeave update available")
-        except FileNotFoundError:
-            print("rnm gdweave version file info not found")
-            Thread(target=download, args=(downloadUrl, installationPath, {"name": name, "version": version})).start()
-            
-    else:
-        print("downloading", downloadUrl)
-        Thread(target=download, args=(downloadUrl, installationPath, {"name": name, "version": version})).start()
+        gdweaveLib = rnm.searchModList("GDWeave", "none", "all", False)["gdweave"]
+        name, version, downloadUrl = gdweaveLib["modName"], gdweaveLib["latestVersion"], gdweaveLib["latestDownload"]
 
-    start(debug=config["debugMode"], icon="/assets/web/rodnmod.png")
-    
-    
+        if os.path.exists(installationPath + "\\GDWeave") and os.path.isdir(installationPath + "\\GDWeave"):
+            print("gdweave installed. check for updates")
+            try:
+                with open(installationPath + "\\rnmInfo.json") as file:
+                    rnmInfo = load(file)
+
+                if rnmInfo["version"] != version:
+                    print("GDWeave update available")
+                    Thread(target=downloadRaw, args=(downloadUrl, installationPath, {"name": name, "version": version})).start()
+                else:
+                    print("no GDWeave update available")
+            except FileNotFoundError:
+                print("rnm gdweave version file info not found")
+                Thread(target=downloadRaw, args=(downloadUrl, installationPath, {"name": name, "version": version})).start()
+
+        else:
+            print("downloading", downloadUrl)
+            Thread(target=downloadRaw, args=(downloadUrl, installationPath, {"name": name, "version": version})).start()
+
+        start(debug=config["debugMode"], icon="/assets/web/rodnmod.png")

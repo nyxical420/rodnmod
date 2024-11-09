@@ -79,25 +79,14 @@ function mouseOverEventSound(element) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    const soundFiles = [
-        "/assets/web/fishing/sounds/ui_swish.ogg",
-        "/assets/web/fishing/sounds/button_down.ogg",
-        "/assets/web/fishing/sounds/button_up.ogg",
-        "/assets/web/fishing/sounds/guitar_in.ogg",
-        "/assets/web/fishing/sounds/guitar_out.ogg",
-    ];
-    const audioPlayer = document.getElementById("audioPlayer");
-    
-    function preloadSounds() {
-      soundFiles.forEach(sound => {
-        const source = document.createElement("source");
-        source.src = sound;
-        source.type = "audio/mp3";
-        audioPlayer.appendChild(source);
-      });
+    function checkPywebviewApi() {
+        if (typeof window.pywebview === 'undefined' || typeof window.pywebview.api === 'undefined') {
+            console.warn("pywebview.api is not available. Refreshing page...");
+            location.reload();
+        }
     }
 
-    preloadSounds();
+    checkPywebviewApi();
 
     let isDragging = false;
     let startX, startY, offsetX, offsetY;
@@ -165,12 +154,5 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelector(".dropdown-header").addEventListener('mouseover', () => playAudio("/assets/web/fishing/sounds/ui_swish.ogg"));;
     document.body.style.zoom = '0.8';
 
-    function checkPywebviewApi() {
-        if (typeof window.pywebview === 'undefined' || typeof window.pywebview.api === 'undefined') {
-            console.warn("pywebview.api is not available. Refreshing page...");
-            location.reload();
-        }
-    }
     
-    checkPywebviewApi();
 });
