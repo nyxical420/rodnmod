@@ -137,6 +137,10 @@ def download(url, extractPath, data: dict = {}):
     with open(os.path.join(finalFolderPath, "rnmInfo.json"), "w", encoding='utf-8') as f:
         json.dump(data, f, indent=4)
 
+    if os.path.exists(finalFolderPath + "\\\\mod.zip"):
+        os.remove(finalFolderPath + "\\\\mod.zip")
+        print("Deleted mod.zip after installation.")
+
     if os.path.exists(temp_folder):
         shutil.rmtree(temp_folder)
 

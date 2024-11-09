@@ -4,9 +4,8 @@ import os
 import shutil
 import pymsgbox
 from json import load
-from rapidfuzz import fuzz
 from threading import Thread
-from difflib import get_close_matches
+from rapidfuzz import fuzz, process
 from webbrowser import open as openWeb
 from re import IGNORECASE, compile as comp
 from psutil import process_iter, NoSuchProcess
@@ -199,21 +198,31 @@ class RodNMod:
         for dirpath, dirnames, _ in os.walk(installationPath + "\\GDWeave\\mods"):
             for dirname in dirnames:
                 subs.append(os.path.join(dirpath, dirname))
-    
+        
         for folder in subs:
             if os.path.basename(folder) == folderName:
+                print(f"found {folderName} as {folder}")
                 return folder
-    
-        threshold = 1
-    
-        while threshold >= 0.5:
-            closestFolder = get_close_matches(folderName, [os.path.basename(folder) for folder in subs], n=1, cutoff=threshold)
-            if closestFolder:
-                for folder in subs:
-                    if os.path.basename(folder) == closestFolder[0]:
-                        return folder
-            threshold -= 0.01
-    
+            elif os.path.basename(folder) == folderName.split(".")[1]:
+                print(f"found {folderName} as {folder} with name match")
+                return folder
+        
+        # attempt finding mods downloaded from HLS.
+        split_name = folderName.split(".")
+        if len(split_name) > 1:
+            folderNamePart = split_name[1]
+        else:
+            folderNamePart = folderName
+        
+        closestFolder = process.extractOne(folderNamePart, [os.path.basename(folder) for folder in subs])
+
+        if closestFolder and closestFolder[1] >= 83.5:
+            for folder in subs:
+                if os.path.basename(folder) == closestFolder[0]:
+                    print(f"found {folderName} as {folder} with close match")
+                    return folder
+        # ----------------------------------------
+        
         return None
 
     def downloadMod(self, mod: str):

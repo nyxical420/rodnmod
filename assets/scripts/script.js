@@ -1,16 +1,17 @@
 let sceneChanging = false;
 let previousIsRunning = null;
+const preloadedAudio = {};  // Store preloaded audio objects
 
 function showResponse(response) {
-    var container = document.getElementById('res')
-    container.textContent = response
-    container.style.display = 'block'
+    var container = document.getElementById('res');
+    container.textContent = response;
+    container.style.display = 'block';
 }
 
 function checkInstall(response) {
     if (response.installationStatus == false) {
-        alert("WEBweb/fishing Installation not found.\nPlease make sure you have WEBweb/fishing installed on Steam!")
-        window.pywebview.api.closeApplication()
+        alert("WEBweb/fishing Installation not found.\nPlease make sure you have WEBweb/fishing installed on Steam!");
+        window.pywebview.api.closeApplication();
     } else {
         setTimeout(() => openWindow(), 1000);
         setTimeout(() => document.querySelector('.splashIcon').style.display = 'none', 1500);
@@ -18,52 +19,65 @@ function checkInstall(response) {
 }
 
 function openWindow(name) {
-    if (name == null) { name = ".content" }
+    if (name == null) { name = ".content"; }
     document.querySelector(name).style.clipPath = 'circle(73% at 50% 50%)';
     playAudio("/assets/web/fishing/sounds/guitar_out.ogg");
 }
 
 function closeWindow(name, literally) {
-    if (name == null) { name = ".content" }
+    if (name == null) { name = ".content"; }
     document.querySelector(name).style.clipPath = 'circle(0% at 50% 50%)';
     playAudio("/assets/web/fishing/sounds/guitar_in.ogg");
     if (literally) {
-        document.querySelector('.splashIcon').style.display = 'block'
+        document.querySelector('.splashIcon').style.display = 'block';
         setTimeout(() => window.pywebview.api.closeApplication(), 3000);
         //setTimeout(() => playAudio('/assets/web/get.mp3'), 2700);
     }
 }
 
-function playAudio(url) {
-    const audio = new Audio(url);
-    audio.play().catch(error => {
-        console.error("Error playing audio:", error);
-    });
-    audio.addEventListener("ended", () => {
-        audio.remove();
+function preloadAudio(files) {
+    files.forEach(file => {
+        const audio = new Audio(file);
+        audio.preload = 'auto';
+        audio.load();
+        preloadedAudio[file] = audio;
+        console.log(`Preloading: ${file}`);
     });
 }
 
+function playAudio(url) {
+    const audio = preloadedAudio[url];
+    if (audio) {
+        audio.play().catch(error => {
+            console.error("Error playing audio:", error);
+        });
+        audio.addEventListener("ended", () => {
+            audio.remove();
+        });
+    } else {
+        console.warn(`Audio file ${url} is not preloaded.`);
+    }
+}
 
 function changeScene(tabId) {
     const currentTab = document.querySelector('.tab.active');
     if (currentTab && currentTab.id === tabId) {
         return;
     }
-    
+
     if (sceneChanging == false) {
-        sceneChanging = true
-        closeWindow(".tabs", false)
-        
+        sceneChanging = true;
+        closeWindow(".tabs", false);
+
         setTimeout(() => {
             const tabs = document.querySelectorAll('.tab');
             tabs.forEach(tab => {
                 tab.classList.remove('active');
             });
-            
+
             document.getElementById(tabId).classList.add('active');
-            openWindow(".tabs")
-            sceneChanging = false
+            openWindow(".tabs");
+            sceneChanging = false;
         }, 1000);
     }
 }
@@ -87,13 +101,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     checkPywebviewApi();
-    
+
     let isDragging = false;
     let startX, startY, offsetX, offsetY;
     const movementThreshold = 0;
-    
+
     const titleBar = document.querySelector('.titleBar');
-    
+
     titleBar.addEventListener('mousedown', (e) => {
         isDragging = true;
         startX = e.clientX;
@@ -101,12 +115,12 @@ document.addEventListener('DOMContentLoaded', function () {
         offsetX = e.clientX - titleBar.getBoundingClientRect().left;
         offsetY = e.clientY - titleBar.getBoundingClientRect().top;
     });
-    
+
     document.addEventListener('mousemove', (e) => {
         if (isDragging) {
             const dx = Math.abs(e.clientX - startX);
             const dy = Math.abs(e.clientY - startY);
-            
+
             if (dx > movementThreshold || dy > movementThreshold) {
                 const x = e.clientX - offsetX;
                 const y = e.clientY - offsetY;
@@ -116,13 +130,13 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     });
-    
+
     document.addEventListener('mouseup', () => {
         if (isDragging) {
             isDragging = false;
         }
     });
-    
+
     document.addEventListener('mouseleave', () => {
         if (isDragging) {
             isDragging = false;
@@ -134,7 +148,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const isRunning = response.running;
             if (isRunning !== previousIsRunning) {
                 previousIsRunning = isRunning;
-                
+
                 if (isRunning === false) {
                     document.querySelector(".run").style.opacity = '1';
                     document.querySelector(".run").style.pointerEvents = 'all';
@@ -144,15 +158,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         }
-        
+
         window.pywebview.api.webfishingRunning().then(changeState);
     }, 500);
 
-    setTimeout(() => window.pywebview.api.getModList(), 50);
-    setTimeout(() => window.pywebview.api.isInstalled().then(checkInstall), 1000);
-    document.querySelectorAll('button').forEach(addSoundEffects);
-    document.querySelector(".dropdown-header").addEventListener('mouseover', () => playAudio("/assets/web/fishing/sounds/ui_swish.ogg"));;
-    document.body.style.zoom = '0.8';
+    const audioFiles = ['/assets/web/fishing/sounds/guitar_out.ogg', '/assets/web/fishing/sounds/guitar_in.ogg', '/assets/web/fishing/sounds/ui_swish.ogg', '/assets/web/fishing/sounds/button_down.ogg', '/assets/web/fishing/sounds/button_up.ogg'];
+    preloadAudio(audioFiles);
 
-    
+    setTimeout(() => window.pywebview.api.isInstalled().then(checkInstall), 50);
+    document.querySelectorAll('button').forEach(addSoundEffects);
+    document.querySelector(".dropdown-header").addEventListener('mouseover', () => playAudio("/assets/web/fishing/sounds/ui_swish.ogg"));
+    document.body.style.zoom = '0.8';
 });
