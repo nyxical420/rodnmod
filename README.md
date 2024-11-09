@@ -9,6 +9,10 @@
 ## why?
 i was bored... and it looks cool tbh
 
+# Download
+You can download Rod n' Mod here!<br>
+https://github.com/nyxical420/rodnmod/releases
+
 # Features
 soon :P
 
