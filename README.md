@@ -17,7 +17,25 @@ https://github.com/nyxical420/rodnmod/releases
 soon :P
 
 # Requirements
-- A webview runtime. I recommend having [Microsoft Edge Webview2 Runtime](https://developer.microsoft.com/en-gb/microsoft-edge/webview2#download) or similar. (Supported by pywebview)
+- A webview runtime. I recommend having [Microsoft Edge WebView2 Runtime](https://developer.microsoft.com/en-gb/microsoft-edge/webview2#download).
+
+# Building Rod n' Mod
+> [!IMPORTANT]
+> Building Rod n' Mod requires Python 3.11.0.
+
+To build Mod n' Rod, you will need to initialize a Virtual Environment and installed the required libraries with:
+(Powershell)
+```PS
+python -m venv .venv; .\.venv\Scripts\Activate; pip install -r requirements.txt
+```
+
+Once the command is done, you should see a (.venv) in your terminal. This means that the virtual environment is activated. and you can proceed to run the build script:
+```PS
+python build.py
+```
+
+This should automatically build Mod n' Rod for you and put the final build at the root folder.
+
 
 # Troubleshooting / Known Stuff
 - If Rod n' Mod doesn't close the splash screen, try exiting with ALT + F4 and relaunch Rod n' Mod.
