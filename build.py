@@ -7,6 +7,7 @@ pyinstaller_command = [
     '--onefile',
     '--noconsole',
     '--icon=./assets/rodnmod.ico',
+    '--paths=./rodnmod',
     'main.py'
 ]
 
