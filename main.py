@@ -203,11 +203,15 @@ class RodNMod:
             if os.path.basename(folder) == folderName:
                 print(f"found {folderName} as {folder}")
                 return folder
-            elif os.path.basename(folder) == folderName.split(".")[1]:
+
+            try: splitted = folderName.split(".")[1]
+            except: splitted = folderName.split("-")[1]
+            if os.path.basename(folder) == splitted:
                 print(f"found {folderName} as {folder} with name match")
                 return folder
         
         # attempt finding mods downloaded from HLS.
+        # attempt 1 - modname
         split_name = folderName.split(".")
         if len(split_name) > 1:
             folderNamePart = split_name[1]
@@ -216,10 +220,28 @@ class RodNMod:
         
         closestFolder = process.extractOne(folderNamePart, [os.path.basename(folder) for folder in subs])
 
-        if closestFolder and closestFolder[1] >= 83.5:
+        if closestFolder and closestFolder[1] >= 90:
             for folder in subs:
                 if os.path.basename(folder) == closestFolder[0]:
-                    print(f"found {folderName} as {folder} with close match")
+                    print(f"found {folderName} as {folder} with close match of {closestFolder[1]}% in attempt 1")
+                    return folder
+        
+        # attempt 2 - modauthor.modname
+        closestFolder = process.extractOne(folderName.replace("-", "."), [os.path.basename(folder) for folder in subs])
+
+        if closestFolder and closestFolder[1] >= 85:
+            for folder in subs:
+                if os.path.basename(folder) == closestFolder[0]:
+                    print(f"found {folderName} as {folder} with close match of {closestFolder[1]}% in attempt 2")
+                    return folder
+        
+        # attempt 3 - modname (replace _ with . in name)
+        closestFolder = process.extractOne(folderNamePart.replace("_", "."), [os.path.basename(folder) for folder in subs])
+
+        if closestFolder and closestFolder[1] >= 86:
+            for folder in subs:
+                if os.path.basename(folder) == closestFolder[0]:
+                    print(f"found {folderName} as {folder} with close match of {closestFolder[1]}% in attempt 3")
                     return folder
         # ----------------------------------------
         
@@ -271,9 +293,13 @@ class RodNMod:
                     if newDependencyName not in ignoredDependencies:
                         # handle if dependency is installed or not, and if its on the latest.
                         if dependencyPath:
-                            with open(dependencyPath + "\\rnmInfo.json", "r") as f:
-                                mnrInfo = load(f)
-                            
+                            try:
+                                with open(dependencyPath + "\\rnmInfo.json", "r") as f:
+                                    mnrInfo = load(f)
+                            except:
+                                # cant do anything about this, probbably a mod installed via HLS.
+                                mnrInfo = {"version": "1.0.0"}
+
                             if mnrInfo["version"] != dependencyVersion:
                                 download(dependencyDownload, installationPath + "\\GDWeave\\mods", {"name": dependencyName, "author": dependencyAuthor, "version": dependencyVersion})
 
