@@ -1,6 +1,7 @@
 # powered by hopes and dreams
 
 import os
+import sys
 import shutil
 import pymsgbox
 from json import load
@@ -17,16 +18,11 @@ from rodnmod.thunderstore import getMods, download, downloadRaw
 webfishingInstalled = False
 installationPath = findWebfishing()
 
-# thank god stackoverflow my beloved
-# https://stackoverflow.com/questions/7674790/bundling-data-files-with-pyinstaller-onefile/7675014#7675014
-def resource(relative):
-    return os.path.join(
-        os.environ.get(
-            "_MEIPASS2",
-            os.path.abspath(".")
-        ),
-        relative
-    )
+def resource(relative_path):
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+    else:
+        return os.path.join(os.path.dirname(__file__), relative_path)
 
 if installationPath:
     print(f"Installation Path: {installationPath}")
@@ -367,7 +363,7 @@ if __name__ == "__main__":
         try: os.rename(installationPath + "\\GDWeave\\disabled.mods", installationPath + "\\GDWeave\\mods")
         except FileNotFoundError: pass
 
-        with open(resource("./data/config.json")) as file:
+        with open("./data/config.json") as file:
             config = load(file)
 
         window = create_window(

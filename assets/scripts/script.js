@@ -45,16 +45,15 @@ function preloadAudio(files) {
 }
 
 function playAudio(url) {
-    const audio = preloadedAudio[url];  // Get the preloaded audio object
+    const audio = preloadedAudio[url];
     if (audio) {
-        const audioClone = audio.cloneNode();  // Clone the preloaded audio element
+        const audioClone = audio.cloneNode();
         audioClone.play().catch(error => {
             console.error("Error playing audio:", error);
         });
 
-        // Optional: Clean up the audio element after it finishes playing
         audioClone.addEventListener("ended", () => {
-            audioClone.remove();  // Clean up the cloned audio element
+            audioClone.remove();
         });
     } else {
         console.warn(`Audio file ${url} is not preloaded.`);
