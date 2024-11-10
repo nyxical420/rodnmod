@@ -18,7 +18,7 @@
     
     <div class="content">
         <div class="titleBar" style="background-color: #101c31; position: fixed; top: 0; left: 0; height: 34px; width: 100%; padding: 0 10px; z-index: 2;">
-            <img src="/assets/web/rodnmod.png" style="width: 30px; height: 30px; margin-top: 2px;">
+            <img src="/assets/web/rodnmod.png" style="width: 30px; height: 30px; margin-top: 2px; pointer-events: none;">
             <text id="titleText" style="position: relative; font-size: 20px; color: #ffeed5; top: -7px; left: 5px;">Rod n' Mod</text>
         </div>
 
@@ -30,6 +30,113 @@
             X
         </button>
 
+        <script>
+            let settingsDisplayed = false;
+
+            function toggleSettings() {
+                const settings = document.getElementById('settings');
+                if (!sceneChanging && !settingsDisplayed) {
+                    settings.style.display = "block";
+                    playAudio("/assets/web/fishing/sounds/menu_blip.ogg");
+                    settingsDisplayed = true;
+                    closeWindow(".tabs", false);
+                    return
+                } if (!sceneChanging && settingsDisplayed) {
+                    settings.style.display = "none";
+                    playAudio("/assets/web/fishing/sounds/menu_blipb.ogg");
+                    settingsDisplayed = false;
+                    openWindow(".tabs");
+                    return
+                }
+            }
+
+            function switchSettingView(id) {
+                const tabs = document.querySelectorAll('.settingTab');
+                tabs.forEach(tab => {
+                    tab.classList.remove('active');
+                });
+            
+                document.getElementById(id).classList.add('active');
+
+                const tabButtons = document.querySelectorAll('.tabButton');
+                tabButtons.forEach(button => {
+                    button.classList.remove('active');
+                });
+            
+                const activeTabButton = document.querySelector(`.tabButton[data-tab="${id}"]`);
+                if (activeTabButton) {
+                    activeTabButton.classList.add('active');
+                }
+            }
+        </script>
+
+        <style>
+            .tabButton {
+                background-color: #997755;
+                color: #363a24;
+                height: 100px;
+                width: 100px;
+                border-radius: 25px;
+                text-align: center;
+                cursor: url('/assets/web/point.png'), pointer;
+            }
+
+            .tabButton:active {
+                cursor: url('/assets/web/click.png'), pointer;
+            }
+
+            .tabButton.active {
+                background-color: #ffeed5;
+                color: #5a755a;
+            }
+
+            .settingTab {
+                display: none;
+            }
+
+            .settingTab.active {
+                display: block;
+            }
+
+            #settingContainer {
+                background-color: #ffeed5;
+                width: 100%;
+                height: 100%;
+                border-radius: 25px;
+                padding: 12px;
+            }
+
+            #content {
+                background-color: #d5aa73;
+                width: 100%;
+                height: 100%;
+                border-radius: 25px;
+                padding: 12px;
+            }
+        </style>
+
+        <div id="settings" class="settingsMenu" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 550px; height: 600px; z-index: 10;">
+            <div id="tabs" style="position: absolute; top: -30px; display: flex; flex-direction: row; z-index: -1;">
+                <div class="tabButton active" onmouseup="switchSettingView('settingsMenu')" data-tab="settingsMenu">
+                    <text style="font-size: 22px; pointer-events: none;">Settings</text>
+                </div>
+                <div class="tabButton" onmouseup="switchSettingView('creditsMenu')" data-tab="creditsMenu">
+                    <text style="font-size: 22px; pointer-events: none;">Credits</text>
+                </div>
+            </div>
+            <div id="settingContainer">
+                <div id="content">
+                    <div id="settingsMenu" class="settingTab active">
+                        <text>content 1</text>
+                    </div>
+                
+                    <div id="creditsMenu" class="settingTab">
+                        <text>credits here lol</text>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="tabs" style="transition: 750ms;">
             <div class="tab active" id="Mods">
                 <div class="modList" style="margin-top: 10px; display: flex; flex-direction: column;">
@@ -39,8 +146,11 @@
                             
                             <div class="custom-dropdown" data-name="filter" style="width: 165px;">
                                 <div class="dropdown-header">
-                                    <span class="selected-option">None</span>
-                                    <span class="dropdown-arrow">&#9662;</span>
+                                    <span class="selected-option" style="pointer-events: none;">None</span>
+                                    <div style="display: grid; grid-template-rows: 1fr 1fr; pointer-events: none;">
+                                        <span class="dropdown-arrow" style="font-size: 7px;">▲</span>
+                                        <span class="dropdown-arrow" style="font-size: 7px;">▼</span>
+                                    </div>
                                 </div>
                                 <div class="dropdown-options">
                                     <div class="option selected" data-value="none">None</div>
@@ -58,8 +168,11 @@
                             
                             <div class="custom-dropdown" data-name="category" style="width: 115px;">
                                 <div class="dropdown-header">
-                                    <span class="selected-option">All Mods</span>
-                                    <span class="dropdown-arrow">&#9662;</span>
+                                    <span class="selected-option" style="pointer-events: none;">All Mods</span>
+                                    <div style="display: grid; grid-template-rows: 1fr 1fr; pointer-events: none;">
+                                        <span class="dropdown-arrow" style="font-size: 7px;">▲</span>
+                                        <span class="dropdown-arrow" style="font-size: 7px;">▼</span>
+                                    </div>
                                 </div>
                                 <div class="dropdown-options">
                                     <div class="option selected" data-value="all">All Mods</div>
@@ -152,13 +265,6 @@
             <div class="tab" id="SaveManager">
                 <text style="font-size: 25px;">Save Manager</text>
             </div>
-
-            <div class="tab" id="Settings">
-                <text style="font-size: 25px;">Settings</text><br><br>
-                <text style="font-size: 25px;">Rod n' Mod by nyxical</text><br>
-                <text style="font-size: 25px;">Rod n' Mod Icons by Zoiudolo</text><br>
-                <text style="font-size: 25px;">Sound Effects and Cursor by west</text><br>
-            </div>
         </div>
 
         <div class="menuContainer">
@@ -181,7 +287,7 @@
                     </div>
                     <text style="pointer-events: none;">Save Manager</text>
                 </button>
-                <button type="menuButton" style="--width: 120px;" onmouseup="changeScene('Settings')">
+                <button type="menuButton" style="--width: 120px;" onmouseup="toggleSettings()">
                     <div style="pointer-events: none;" class="floatingIcon">
                         <img src="/assets/web/settings.png" class="spinning-image">
                     </div>

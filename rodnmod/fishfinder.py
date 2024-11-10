@@ -5,10 +5,15 @@ def findWebfishing():
     Finds the webfishing installation folder.
     """
     libraryLocations = [
+        # Windows
         path.expandvars(r'%ProgramFiles(x86)%\Steam\steamapps\libraryfolders.vdf'),
         path.expandvars(r'%ProgramFiles%\Steam\steamapps\libraryfolders.vdf'),
         path.expandvars(r'%UserProfile%\Documents\My Games\Steam\libraryfolders.vdf'),
         path.expandvars(r'%ProgramData%\Steam\libraryfolders.vdf'),
+
+        # Linux
+        path.expanduser(r'~/.steam/steam/steamapps/libraryfolders.vdf'),
+        path.expanduser(r'~/.local/share/Steam/steamapps/libraryfolders.vdf'),
     ]
 
     steamLibraries = []
@@ -27,3 +32,5 @@ def findWebfishing():
                         return installationPath
 
     return None
+
+print(findWebfishing())

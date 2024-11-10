@@ -7,7 +7,7 @@
 > Rod n' Mod is still on it's alpha stage, so there may be bugs and issues. If you encounter any, please report them to me in the [issues page](https://github.com/nyxical420/rodnmod/issues) or at my discord! (@nyxical ID:583200866631155714)
 
 > [!NOTE]
-> Rod n' Mod automatically checks if GDWeave is updated automatically or if its installed in your WEBFISHING installation so you don't have to! so launching Rod n' Mod may have delayed audio sometimes.
+> Rod n' Mod handles mods differently than [Hook Line and Sinker](https://hooklinesinker.lol). 
 
 ## why?
 i was bored... and it looks cool tbh

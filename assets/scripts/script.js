@@ -66,7 +66,7 @@ function changeScene(tabId) {
         return;
     }
 
-    if (sceneChanging == false) {
+    if (!sceneChanging && !settingsDisplayed) {
         sceneChanging = true;
         closeWindow(".tabs", false);
 
@@ -163,11 +163,20 @@ document.addEventListener('DOMContentLoaded', function () {
         window.pywebview.api.webfishingRunning().then(changeState);
     }, 500);
 
-    const audioFiles = ['/assets/web/fishing/sounds/guitar_out.ogg', '/assets/web/fishing/sounds/guitar_in.ogg', '/assets/web/fishing/sounds/ui_swish.ogg', '/assets/web/fishing/sounds/button_down.ogg', '/assets/web/fishing/sounds/button_up.ogg'];
+    const audioFiles = [
+        '/assets/web/fishing/sounds/guitar_out.ogg',
+        '/assets/web/fishing/sounds/guitar_in.ogg',
+        '/assets/web/fishing/sounds/ui_swish.ogg',
+        '/assets/web/fishing/sounds/button_down.ogg',
+        '/assets/web/fishing/sounds/button_up.ogg',
+        '/assets/web/fishing/sounds/menu_blip.ogg',
+        '/assets/web/fishing/sounds/menu_blipb.ogg',
+    ];
     preloadAudio(audioFiles);
 
-    setTimeout(() => window.pywebview.api.isInstalled().then(checkInstall), 50);
+    window.pywebview.api.isInstalled().then(checkInstall);
     document.querySelectorAll('button').forEach(addSoundEffects);
-    document.querySelector(".dropdown-header").addEventListener('mouseover', () => playAudio("/assets/web/fishing/sounds/ui_swish.ogg"));
+    document.querySelectorAll('.tabButton').forEach(addSoundEffects);
+    document.querySelectorAll(".dropdown-header").forEach(mouseOverEventSound);
     document.body.style.zoom = '0.8';
 });

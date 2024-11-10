@@ -69,6 +69,10 @@ html, body {
     display: none;
 }
 
+.settingTab {
+    display: none;
+}
+
 .active {
     display: block;
 }
@@ -98,7 +102,7 @@ button[type="greenButton"] {
     width: 200px;
     font-size: 22px;
     color: #ffeed5;
-    background-color: #5a755a;
+    background-color: #fff;
     border-radius: 12px;  
     border: none;
     cursor: url('/assets/web/point.png'), pointer;
@@ -110,11 +114,8 @@ button[type="greenButton"] {
     display: inline-block;  
     width: 200px;  
     font-size: 22px;
-    color: #ffeed5;
-    background-color: #5a755a;
     border-radius: 12px;  
     border: none;
-    cursor: url('/assets/web/fishing/cursor.png'), pointer;
 }
 
 
@@ -123,11 +124,21 @@ button[type="greenButton"] {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    color: #ffeed5;
     background-color: #5a755a;
     border-radius: 12px;  
     cursor: pointer;
     user-select: none; 
     height: 40px;  
+    cursor: url('/assets/web/point.png'), pointer;
+}
+
+.dropdown-header:hover {
+    background-color: #9c914a;
+}
+
+.dropdown-header:active {
+    cursor: url('/assets/web/click.png'), pointer;
 }
 
 .selected-option {
@@ -189,7 +200,8 @@ button[type="greenButton"] {
 }
 
 .custom-dropdown.open .dropdown-header {
-    border-radius: 12px 12px 0 0; 
+    color: #d5aa73;
+    border-radius: 12px 12px 0 0;
 }
 
 .custom-dropdown.open .dropdown-options {
