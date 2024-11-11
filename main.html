@@ -127,7 +127,41 @@
             <div id="settingContainer" style="color: #5a755a; font-size: 24px;">
                 <div id="content">
                     <div id="settingsMenu" class="settingTab active">
-                        <text>content 1</text>
+                        <div style="display: flex;">
+                            <text style="margin: auto auto auto 0;">Find Mods from Hook, Line, & Sinker</text>
+    
+                            <div id="settingOption" class="custom-dropdown" data-name="hlsmods" style=" width: 165px; margin-left: auto;">
+                                <div class="dropdown-header">
+                                    <span class="selected-option" style="pointer-events: none;">No</span>
+                                    <div style="display: grid; grid-template-rows: 1fr 1fr; pointer-events: none;">
+                                        <span class="dropdown-arrow" style="font-size: 7px;">▲</span>
+                                        <span class="dropdown-arrow" style="font-size: 7px;">▼</span>
+                                    </div>
+                                </div>
+                                <div class="dropdown-options">
+                                    <div class="option selected" data-value="nofindhls">No</div>
+                                    <div class="option" data-value="findhls">Yes</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; margin-top: 5px;">
+                            <text style="margin: auto auto auto 0;">Enable Debugging <text style="color: #ff4545; font-size: 14px;">(Requires Restart)</text></text>
+    
+                            <div id="settingOption" class="custom-dropdown" data-name="debugging" style=" width: 165px; margin-left: auto;">
+                                <div class="dropdown-header">
+                                    <span class="selected-option" style="pointer-events: none;">No</span>
+                                    <div style="display: grid; grid-template-rows: 1fr 1fr; pointer-events: none;">
+                                        <span class="dropdown-arrow" style="font-size: 7px;">▲</span>
+                                        <span class="dropdown-arrow" style="font-size: 7px;">▼</span>
+                                    </div>
+                                </div>
+                                <div class="dropdown-options">
+                                    <div class="option selected" data-value="debdis">No</div>
+                                    <div class="option" data-value="debena">Yes</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 
                     <div id="creditsMenu" class="settingTab">
@@ -187,6 +221,20 @@
                                     <div class="option" data-value="mods">Mods</div>
                                     <div class="option" data-value="species">Species</div>
                                     <div class="option" data-value="tools">Tools</div>
+                                </div>
+                            </div>
+
+                            <div class="custom-dropdown" data-name="nsfw" style="width: 120px;">
+                                <div class="dropdown-header">
+                                    <span class="selected-option" style="pointer-events: none;">Hide NSFW</span>
+                                    <div style="display: grid; grid-template-rows: 1fr 1fr; pointer-events: none;">
+                                        <span class="dropdown-arrow" style="font-size: 7px;">▲</span>
+                                        <span class="dropdown-arrow" style="font-size: 7px;">▼</span>
+                                    </div>
+                                </div>
+                                <div class="dropdown-options">
+                                    <div class="option seleted" data-value="hidensfw">Hide NSFW</div>
+                                    <div class="option" data-value="shownsfw">Show NSFW</div>
                                 </div>
                             </div>
                         </div>

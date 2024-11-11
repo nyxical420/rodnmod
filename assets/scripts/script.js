@@ -1,3 +1,5 @@
+document.body.style.zoom = '0.8';
+
 let sceneChanging = false;
 let previousIsRunning = null;
 const preloadedAudio = {};  // Store preloaded audio objects
@@ -179,5 +181,25 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('button').forEach(addSoundEffects);
     document.querySelectorAll('.tabButton').forEach(addSoundEffects);
     document.querySelectorAll(".dropdown-header").forEach(mouseOverEventSound);
-    document.body.style.zoom = '0.8';
+
+    // configs
+    window.pywebview.api.configure("hlsmods").then((val) => {
+        setDropdownValue("hlsmods", val === "findhls" ? "findhls" : "nofindhls")
+    })
+
+    window.pywebview.api.configure("debugging").then((val) => {
+        setDropdownValue("nsfw", val === "debena" ? "debena" : "debdis")
+    })
+
+    window.pywebview.api.configure("filter").then((val) => {
+        setDropdownValue("filter", val)
+    })
+
+    window.pywebview.api.configure("category").then((val) => {
+        setDropdownValue("category", val)
+    })
+
+    window.pywebview.api.configure("nsfw").then((val) => {
+        setDropdownValue("nsfw", val)
+    })
 });

@@ -8,7 +8,7 @@ function handleChange() {
 
     let searchValue = document.getElementById('searchInput').value;
 
-    window.pywebview.api.searchModList(searchValue, getValue("filter"), getValue("category"), showNSFW)
+    window.pywebview.api.searchModList(searchValue, getValue("filter"), getValue("category"), getValue("nsfw"))
         .then(generateModItems)
         .finally(() => isUpdating = false);
 }

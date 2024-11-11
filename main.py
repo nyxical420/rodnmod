@@ -3,7 +3,7 @@
 import sys
 import shutil
 import pymsgbox
-from json import load
+from json import load, dump
 from threading import Thread
 from os import path, rename, walk
 from rapidfuzz import fuzz, process
@@ -58,6 +58,19 @@ class RodNMod:
             pass
         self.visitSite("steam://rungameid/3146520")
 
+    def configure(self, configItem: str, configValue = None):
+        with open("./data/config.json") as file:
+            config = load(file)
+
+        if configValue == None:
+            try: return config[configItem]
+            except KeyError: return "Not a configuration item"
+        else:
+            config[configItem] = configValue
+            with open('./data/config.json', 'w') as f:
+                dump(config, f, indent=4)
+            return "Configured!"
+
     def webfishingInstallation(self):
         return installationPath
     
@@ -93,8 +106,9 @@ class RodNMod:
         unit_multipliers = {"minute": 1, "hour": 60, "day": 1440}
         return value * unit_multipliers.get(match.group(2).lower().split()[0], 1)
         
-    def searchModList(self, searchQuery: str, filter: str, modTag: str, nsfw: bool):
+    def searchModList(self, searchQuery: str, filter: str, modTag: str, nsfw: str):
         searchQuery = searchQuery.strip().lower()
+        nsfw = False if nsfw == "hidensfw" else True
 
         filtered_mods = {
             mod_id: mod for mod_id, mod in self.modsList.items()
@@ -192,24 +206,25 @@ class RodNMod:
         
         # NOTE: make this a setting to either be turned on/off to reduce processing power
         # attempt finding mods downloaded from HLS.
-        transformations = [
-            (lambda name: name.split(".")[1] if "." in name else name, 90),  # Use split name
-            (lambda name: name.replace("-", "."), 85),                       # Replace '-' with '.'
-            (lambda name: name.replace("_", "."), 86)                        # Replace '_' with '.'
-        ]
-        
-        folder_base_names = [path.basename(folder) for folder in subs]
-        
-        for transform, threshold in transformations:
-            transformed_name = transform(folderName)
-            closest_folder = process.extractOne(transformed_name, folder_base_names)
+        if self.configure("hlsmods") == "findhls":
+            transformations = [
+                (lambda name: name.split(".")[1] if "." in name else name, 90),  # Use split name
+                (lambda name: name.replace("-", "."), 85),                       # Replace '-' with '.'
+                (lambda name: name.replace("_", "."), 86)                        # Replace '_' with '.'
+            ]
 
-            if closest_folder and closest_folder[1] >= threshold:
-                matchingFolder = subs[folder_base_names.index(closest_folder[0])]
-                #print(f"Found {folderName} as {matchingFolder} with close match of {closest_folder[1]}%")
-                return matchingFolder
+            folder_base_names = [path.basename(folder) for folder in subs]
 
-        return None
+            for transform, threshold in transformations:
+                transformed_name = transform(folderName)
+                closest_folder = process.extractOne(transformed_name, folder_base_names)
+
+                if closest_folder and closest_folder[1] >= threshold:
+                    matchingFolder = subs[folder_base_names.index(closest_folder[0])]
+                    #print(f"Found {folderName} as {matchingFolder} with close match of {closest_folder[1]}%")
+                    return matchingFolder
+
+            return None
 
     def downloadMod(self, mod: str):
         print(f"Downloading {mod}...")    
@@ -371,4 +386,5 @@ if __name__ == "__main__":
             Thread(target=pymsgbox.alert, args=("GDWeave is installing in the background. Please wait for Rod n' Mod to finish the installation.", "Rod n' Mod")).start()
             downloadRaw(downloadUrl, installationPath, {"name": name, "version": version})
 
-        start(debug=config["debugMode"])
+        debugOption = True if config["debugging"] is True else False
+        start(debug=debugOption)

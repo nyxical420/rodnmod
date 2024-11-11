@@ -21,6 +21,7 @@ dropdowns.forEach(dropdown => {
             dropdownValue = option.getAttribute('data-value');
             console.log(`${dropdownName} selected value:`, dropdownValue);
             handleChange(dropdownName, dropdownValue);
+            window.pywebview.api.configure(dropdownName, dropdownValue);
         });
     });
 });
@@ -32,4 +33,20 @@ function getValue(name) {
         return selectedOption ? selectedOption.getAttribute('data-value') : null;
     }
     return null;
+}
+
+function setDropdownValue(name, value) {
+    const dropdown = document.querySelector(`.custom-dropdown[data-name="${name}"]`);
+    if (dropdown) {
+        const options = dropdown.querySelectorAll('.option');
+        const selectedOption = dropdown.querySelector('.selected-option');
+        const optionToSelect = Array.from(options).find(option => option.getAttribute('data-value') === value);
+
+        if (optionToSelect) {
+            selectedOption.textContent = optionToSelect.textContent;
+            options.forEach(opt => opt.classList.remove('selected'));
+            optionToSelect.classList.add('selected');
+            console.log(`${name} updated to value: ${value}`);
+        }
+    }
 }

@@ -1,4 +1,7 @@
 {
-    "debugMode": true,
-    "findUnrenamed": false
+    "debugging": "debdis",
+    "filter": "installed",
+    "category": "all",
+    "nsfw": "hidensfw",
+    "hlsmods": "nofindhls"
 }
