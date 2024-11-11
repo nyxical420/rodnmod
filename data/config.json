@@ -1,3 +1,4 @@
 {
-    "debugMode": true
+    "debugMode": true,
+    "findUnrenamed": false
 }
