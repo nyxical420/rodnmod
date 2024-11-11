@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rod n' Mod</title>
+    <link rel="stylesheet" href="/assets/web/style.css">
+    <link rel="icon" href="/assets/web/rodnmod.png" type="image/png">
+</head>
+<body>
+    <style>
+        .spinning-image {
+            width: 128px;
+            height: 128px;
+            object-fit: cover;
+            animation: spin 7s infinite linear; 
+        }
+
+        @keyframes spin {
+            0%, 100% { transform: rotateY(0deg); }
+            50% { transform: rotateY(360deg); }
+        }
+    </style>
+
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; pointer-events: none;" class="floatingIcon">
+        <img src="/assets/web/rodnmod.png" class="spinning-image">
+    </div>
+
+    <div class="gdweave" style="position: absolute; top: 90%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; color: #ffeed5; font-size: 20px; text-align: center;">
+        Checking for Updates...
+    </div> 
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(() => {
+                window.pywebview.api.closeApplication()
+            }, 1000);
+        })
+    </script>
+</body>
+</html>

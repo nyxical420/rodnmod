@@ -171,6 +171,7 @@ document.addEventListener('DOMContentLoaded', function () {
         '/assets/web/fishing/sounds/button_up.ogg',
         '/assets/web/fishing/sounds/menu_blip.ogg',
         '/assets/web/fishing/sounds/menu_blipb.ogg',
+        '/assets/web/fishing/sounds/zip.ogg',
     ];
     preloadAudio(audioFiles);
 

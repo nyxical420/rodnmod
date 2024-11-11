@@ -189,7 +189,6 @@ function generateModItems(modData) {
         modItemsContainer.appendChild(itemDiv);
 
     });
-    handleChange()
 }
 
 document.addEventListener('DOMContentLoaded', function () {
