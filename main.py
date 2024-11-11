@@ -386,5 +386,5 @@ if __name__ == "__main__":
             Thread(target=pymsgbox.alert, args=("GDWeave is installing in the background. Please wait for Rod n' Mod to finish the installation.", "Rod n' Mod")).start()
             downloadRaw(downloadUrl, installationPath, {"name": name, "version": version})
 
-        debugOption = True if config["debugging"] is True else False
+        debugOption = True if rnm.configure("debugging") == "debena" else False
         start(debug=debugOption)

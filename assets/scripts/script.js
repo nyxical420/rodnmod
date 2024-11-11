@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', function () {
     })
 
     window.pywebview.api.configure("debugging").then((val) => {
-        setDropdownValue("nsfw", val === "debena" ? "debena" : "debdis")
+        setDropdownValue("debugging", val === "debena" ? "debena" : "debdis")
     })
 
     window.pywebview.api.configure("filter").then((val) => {
