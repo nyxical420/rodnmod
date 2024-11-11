@@ -7,7 +7,8 @@
 > Rod n' Mod is still on it's alpha stage, so there may be bugs and issues. If you encounter any, please report them to me in the [issues page](https://github.com/nyxical420/rodnmod/issues) or at my discord! (@nyxical ID:583200866631155714)
 
 > [!NOTE]
-> Rod n' Mod handles mods differently than [Hook Line and Sinker](https://hooklinesinker.lol). 
+> Rod n' Mod handles mods differently than [Hook Line and Sinker](https://hooklinesinker.lol)! so mods installed through HLS may not be detected from Rod n' Mod.
+> It still attempts to find mods installed through HLS, but the detection accuracy is not guaranteed to be 100%. This also means it also uses **LOTS** of CPU resources to find them apparently... (jank code 🔥)
 
 ## why?
 i was bored... and it looks cool tbh
@@ -22,7 +23,7 @@ https://github.com/nyxical420/rodnmod/releases
 - **Installation Detection**: Automatically finds your WEBFISHING installation! no need to configure anything!
 
 # Requirements
-- A webview runtime. I recommend having [Microsoft Edge WebView2 Runtime](https://developer.microsoft.com/en-gb/microsoft-edge/webview2#download).
+- A webview runtime. I recommend having [Microsoft Edge WebView2 Runtime](https://developer.microsoft.com/en-gb/microsoft-edge/webview2#download) for Windows, and `libwebkit2gtk-4.1-dev` for Linux.
 
 # Building Rod n' Mod
 > [!IMPORTANT]
