@@ -85,8 +85,8 @@ function generateModItems(modData) {
         titleDiv.style = "flex: 1;";
         titleDiv.innerHTML = `
             <span style="font-size: 28px;">${mod.modName.replace(/_/g, " ")}</span>
-            <span style="font-size: 22px; margin-left: 3px;">by ${mod.modAuthor}</span><br>
-            <span style="font-size: 20px;">${mod.versions[0].modDescription}</span>
+            <span style="font-size: 20px; margin-left: 3px;">by ${mod.modAuthor}</span><br>
+            <span style="font-size: 18px;">${mod.versions[0].modDescription}</span>
         `;
         contentDiv.appendChild(titleDiv);
 
@@ -120,7 +120,7 @@ function generateModItems(modData) {
             if (installedState) {
                 const deleteButton = document.createElement('button');
                 deleteButton.type = "menuButton";
-                deleteButton.style = "display: block; --width: 120px; --height: 100px;";
+                deleteButton.style = "display: block; --width: 135px; --height: 100px;";
                 deleteButton.innerHTML = `
                     <div style="pointer-events: none; animation: none;" class="floatingIcon">
                         <img src="/assets/web/trash.png" class="spinning-image">
