@@ -68,12 +68,12 @@ function generateModItems(modData) {
         
         // Add the updated time
         const updatedDiv = document.createElement('div');
-        updatedDiv.style = "position: absolute; top: 10px; right: 10px; font-size: 15px; color: #6a4420;";
+        updatedDiv.style = "position: absolute; top: 8px; right: 10px; font-size: 16px; color: #6a4420;";
         updatedDiv.textContent = mod.updatedAgo;
         contentDiv.appendChild(updatedDiv);
 
         const website = document.createElement('div');
-        website.style = "position: absolute; top: 26px; right: 10px; font-size: 15px; color: #6a4420;";
+        website.style = "position: absolute; top: 22px; right: 10px; font-size: 16px; color: #6a4420;";
         website.textContent = mod.latestWebsite;
         website.onmouseup = function () {
             window.pywebview.api.visitSite(mod.latestWebsite);
@@ -84,15 +84,15 @@ function generateModItems(modData) {
         const titleDiv = document.createElement('div');
         titleDiv.style = "flex: 1;";
         titleDiv.innerHTML = `
-            <span style="font-size: 25px;">${mod.modName.replace(/_/g, " ")}</span>
-            <span style="font-size: 15px; margin-left: 3px;">by ${mod.modAuthor}</span><br>
-            <span style="font-size: 17px;">${mod.versions[0].modDescription}</span>
+            <span style="font-size: 28px;">${mod.modName.replace(/_/g, " ")}</span>
+            <span style="font-size: 22px; margin-left: 3px;">by ${mod.modAuthor}</span><br>
+            <span style="font-size: 20px;">${mod.versions[0].modDescription}</span>
         `;
         contentDiv.appendChild(titleDiv);
 
         // Add tags
         const tagsDiv = document.createElement('div');
-        tagsDiv.style = "font-size: 15px;";
+        tagsDiv.style = "font-size: 18px;";
         tagsDiv.innerHTML = `
             <img src="/assets/web/tag.png" style="vertical-align: middle; width: 22px; height: 22px;"/> ${mod.modTags.join(', ')}
         `;
@@ -100,7 +100,7 @@ function generateModItems(modData) {
 
         // Add download count and score
         const downloadsDiv = document.createElement('div');
-        downloadsDiv.style = "font-size: 15px;";
+        downloadsDiv.style = "font-size: 18px;";
         downloadsDiv.innerHTML = `
             <img src="/assets/web/download.png" style="vertical-align: middle; width: 22px; height: 22px;"/> ${mod.totalDownloads.toLocaleString()} 
             <img src="/assets/web/like.png" style="vertical-align: middle; width: 22px; height: 22px;"/> ${mod.modScore.toLocaleString()}
@@ -139,7 +139,7 @@ function generateModItems(modData) {
 
                 const updateButton = document.createElement('button');
                 updateButton.type = "menuButton";
-                updateButton.style = "display: block; --width: 135px; --height: 100px; margin-left: auto;";
+                updateButton.style = "display: block; --width: 150px; --height: 100px; margin-left: auto;";
                 updateButton.innerHTML = `
                     <div style="pointer-events: none; animation: none;" class="floatingIcon">
                         <img src="/assets/web/download_tacklebox.png" class="spinning-image">

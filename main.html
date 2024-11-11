@@ -19,14 +19,14 @@
     <div class="content">
         <div class="titleBar" style="background-color: #101c31; position: fixed; top: 0; left: 0; height: 34px; width: 100%; padding: 0 10px; z-index: 2;">
             <img src="/assets/web/rodnmod.png" style="width: 30px; height: 30px; margin-top: 2px; pointer-events: none;">
-            <text id="titleText" style="position: relative; font-size: 20px; color: #ffeed5; top: -7px; left: 5px;">Rod n' Mod</text>
+            <text id="titleText" style="position: relative; font-size: 22px; color: #ffeed5; top: -7px; left: 5px;">Rod n' Mod</text>
         </div>
 
-        <button class="minimizeButton" style="z-index: 2;" onmouseup="window.pywebview.api.minimizeApplication()">
+        <button class="minimizeButton" style="font-size: 22px; z-index: 2;" onmouseup="window.pywebview.api.minimizeApplication()">
             _
         </button>
         
-        <button class="closeButton" style="z-index: 2;" onmouseup="closeWindow('.content', true)">
+        <button class="closeButton" style="font-size: 30px; z-index: 2;" onmouseup="closeWindow('.content', true)">
             X
         </button>
 
@@ -124,14 +124,15 @@
                     <text style="font-size: 22px; pointer-events: none;">Credits</text>
                 </div>
             </div>
-            <div id="settingContainer">
+            <div id="settingContainer" style="color: #5a755a; font-size: 24px;">
                 <div id="content">
                     <div id="settingsMenu" class="settingTab active">
                         <text>content 1</text>
                     </div>
                 
                     <div id="creditsMenu" class="settingTab">
-                        <text>credits here lol</text>
+                        <text>Credits to Zoiudolo for the Rod n' Mod Banner, Icons, Point & Click cursors</text><br>
+                        <text>westwerst for the Game Sounds & Cursor</text>
                     </div>
                 </div>
             </div>
@@ -146,15 +147,15 @@
                             
                             <div class="custom-dropdown" data-name="filter" style="width: 165px;">
                                 <div class="dropdown-header">
-                                    <span class="selected-option" style="pointer-events: none;">None</span>
+                                    <span class="selected-option" style="pointer-events: none;">Installed Mods</span>
                                     <div style="display: grid; grid-template-rows: 1fr 1fr; pointer-events: none;">
                                         <span class="dropdown-arrow" style="font-size: 7px;">▲</span>
                                         <span class="dropdown-arrow" style="font-size: 7px;">▼</span>
                                     </div>
                                 </div>
                                 <div class="dropdown-options">
-                                    <div class="option selected" data-value="none">None</div>
-                                    <div class="option" data-value="installed">Installed Mods</div>
+                                    <div class="option" data-value="none">None</div>
+                                    <div class="option selected" data-value="installed">Installed Mods</div>
                                     <div class="option" data-value="nameA-Z">Name (A-Z)</div>
                                     <div class="option" data-value="nameZ-A">Name (Z-A)</div>
                                     <div class="option" data-value="mostDownloaded">Most Downloaded</div>
@@ -195,14 +196,14 @@
                         <div style="display: flex; flex-direction: column; height: 100%; margin-top: -20px; position: relative;">
                             <div class="menuContainer" style="background-color: none; display: flex; flex-direction: row; position: absolute; bottom: 45px; height: 0; overflow: visible;">
                                 <div style="display: flex; flex-direction: row; gap: 10px; margin-left: auto; margin-right: 10px;">
-                                    <button type="menuButton" style="display: block; --width: 120px; --height: 100px;" onmouseup="toggleNSFW()">
+                                    <button type="menuButton" style="display: block; --width: 135px; --height: 100px;" onmouseup="toggleNSFW()">
                                         <div style="pointer-events: none; animation: none;" class="floatingIcon">
                                             <img id="nsfwImage" src="/assets/web/normal.png" class="spinning-image">
                                         </div>
                                         <text style="pointer-events: none;" id="nsfwText">Show NSFW</text>
                                     </button>
                                 
-                                    <button type="menuButton" style="display: block; --width: 150px; --height: 100px; margin-left: auto;" onmouseup="window.pywebview.api.refreshModList().then(generateModItems)">
+                                    <button type="menuButton" style="display: block; --width: 165px; --height: 100px; margin-left: auto;" onmouseup="window.pywebview.api.refreshModList().then(generateModItems)">
                                         <div style="pointer-events: none; animation: none;" class="floatingIcon">
                                             <img src="/assets/web/refresh.png" class="spinning-image">
                                         </div>
@@ -281,7 +282,7 @@
                     </div>
                     <text style="pointer-events: none;">Modpacks</text>
                 </button>
-                <button type="menuButton" style="--width: 130px; " onmouseup="changeScene('SaveManager')">
+                <button type="menuButton" style="--width: 150px; " onmouseup="changeScene('SaveManager')">
                     <div style="pointer-events: none;" class="floatingIcon">
                         <img src="/assets/web/saveman.png" class="spinning-image">
                     </div>
@@ -295,14 +296,14 @@
                 </button>
 
                 <div class="run" style="display: flex; flex-direction: row; gap: 10px; margin-left: auto; transition: 500ms;">
-                    <button type="menuButton" style="display: block; --width: 150px; --height: 100px; margin-left: auto;" onmouseup="window.pywebview.api.launchWebfishing(true)">
+                    <button type="menuButton" style="display: block; --width: 165px; --height: 100px; margin-left: auto;" onmouseup="window.pywebview.api.launchWebfishing(true)">
                         <div style="pointer-events: none;" class="floatingIcon">
                             <img src="/assets/web/launch.png" class="spinning-image">
                         </div>
                         <text style="pointer-events: none;">Launch Vanilla</text>
                     </button>
 
-                    <button type="menuButton" style="display: block; --width: 150px; --height: 100px; margin-left: auto;" onmouseup="window.pywebview.api.launchWebfishing()">
+                    <button type="menuButton" style="display: block; --width: 165px; --height: 100px; margin-left: auto;" onmouseup="window.pywebview.api.launchWebfishing()">
                         <div style="pointer-events: none;" class="floatingIcon">
                             <img src="/assets/web/launch_modded.png" class="spinning-image">
                         </div>

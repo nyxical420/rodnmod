@@ -1,5 +1,5 @@
 @font-face {
-    font-family: "Webweb/fishingFont";
+    font-family: "WebfishingFont";
     src: url("/assets/web/font.ttf");
 }
 
@@ -28,7 +28,9 @@ html, body {
     margin: 0;
     padding: 0;
     cursor: url('/assets/web/fishing/cursor.png'), auto;
-    font-family: "Webweb/fishingFont", sans-serif;
+    font-family: "WebfishingFont", sans-serif;
+    letter-spacing: 1px;
+    -webkit-font-smoothing: antialiased !important;
 }
 
 .content {
@@ -86,6 +88,7 @@ input {
     font-size: 24px;
     padding: 4px;
     width: 300px;
+    height: 40px;
 }
 
 input::placeholder {
@@ -120,7 +123,7 @@ button[type="greenButton"] {
 
 
 .dropdown-header {
-    padding: 2px 4px;  
+    padding: 4px;  
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -130,6 +133,7 @@ button[type="greenButton"] {
     cursor: pointer;
     user-select: none; 
     height: 40px;  
+    font-size: 23px;
     cursor: url('/assets/web/point.png'), pointer;
 }
 
@@ -249,7 +253,7 @@ div.menuContainer button.text {
 
 div.menuContainer button:hover {
     width: var(--width);
-    font-size: 20px;
+    font-size: 22px;
     color: #ffeed5;
     background-color: #d5aa73;
     box-shadow: 0 4px 0 #6a4420;

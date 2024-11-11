@@ -3,11 +3,11 @@
 import sys
 import shutil
 import pymsgbox
-from os import path, rename, walk
 from time import time
 from json import load
 from functools import wraps
 from threading import Thread
+from os import path, rename, walk
 from rapidfuzz import fuzz, process
 from webbrowser import open as openWeb
 from re import IGNORECASE, compile as comp
