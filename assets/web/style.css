@@ -79,6 +79,32 @@ html, body {
     display: block;
 }
 
+button[type="normalButton"] {
+    width: 100px;  
+    background-color: #5a755a;
+    padding: auto;
+    border: none;
+    outline: none;
+    justify-content: space-between;
+    align-items: center;
+    color: #ffeed5;
+    border-radius: 12px;  
+    cursor: pointer;
+    user-select: none; 
+    height: 40px;  
+    font-size: 23px;
+    cursor: url('/assets/web/point.png'), pointer;
+}
+
+button[type="normalButton"]:hover {
+    background-color: #9c914a;
+}
+
+button[type="normalButton"]:active {
+    color: #d5aa73;
+    cursor: url('/assets/web/click.png'), pointer;
+}
+
 input {
     outline: none;
     border: none;

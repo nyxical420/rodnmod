@@ -187,7 +187,7 @@ function generateModItems(modData) {
 
         itemDiv.appendChild(contentDiv);
         modItemsContainer.appendChild(itemDiv);
-
+        updateModsCount()
     });
 }
 

@@ -172,11 +172,20 @@
             </div>
         </div>
 
-        <div class="tabs" style="transition: 750ms;">
+        <div class="tabs" style="transition: 750ms;" onscroll="updateModsCount()">
             <div class="tab active" id="Mods">
                 <div class="modList" style="margin-top: 10px; display: flex; flex-direction: column;">
-                    <div class="modOptions" style=" margin-bottom: 20px;">
-                        <div style="background-color: #ffeed5; border-radius: 15px; box-shadow: 0 4px 0 #6a4420; padding: 10px;">
+                    <div class="modCounts" style="z-index: 5;">
+                        <div id="mctparent" style="transition: 200ms; position: absolute; top: 64px; left: 50%; transform: translate(-50%, -50%); width: 300px; padding: 3px; justify-content: center; text-align: center; font-size: 24px; color: #ffeed5; background-color: #5a755a; border-radius: 15px;">
+                            <text id="mct">0</text> mods left above
+                        </div>
+                        <div id="mcbparent" style="transition: 200ms; position: absolute; bottom: 44px; left: 50%; transform: translate(-50%, -50%); width: 300px; padding: 3px; justify-content: center; text-align: center; font-size: 24px; color: #ffeed5; background-color: #5a755a; border-radius: 15px;">
+                            <text id="mcb">0</text> mods left below
+                        </div>
+                    </div>
+                    
+                    <div class="modOptions" style="margin-bottom: 20px;">
+                        <div style="display: flex; gap: 5px; background-color: #ffeed5; border-radius: 15px; box-shadow: 0 4px 0 #6a4420; padding: 10px;">
                             <input type="text" id="searchInput" placeholder="Search mods..." spellcheck="false">
                             
                             <div class="custom-dropdown" data-name="filter" style="width: 165px;">
@@ -237,32 +246,57 @@
                                     <div class="option" data-value="shownsfw">Show NSFW</div>
                                 </div>
                             </div>
+                            
+                            <button type="normalButton" style="margin-left: auto;" onmouseup="window.pywebview.api.refreshModList().then(generateModItems)">
+                                <text style="pointer-events: none;">REFRESH</text>
+                            </button>
                         </div>
                     </div>
 
-                    <div class="modOptions" style="width: auto; height: auto; margin-bottom: 20px;">
-                        <div style="display: flex; flex-direction: column; height: 100%; margin-top: -20px; position: relative;">
-                            <div class="menuContainer" style="background-color: none; display: flex; flex-direction: row; position: absolute; bottom: 45px; height: 0; overflow: visible;">
-                                <div style="display: flex; flex-direction: row; gap: 10px; margin-left: auto; margin-right: 10px;">
-                                    <button type="menuButton" style="display: block; --width: 135px; --height: 100px;" onmouseup="toggleNSFW()">
-                                        <div style="pointer-events: none; animation: none;" class="floatingIcon">
-                                            <img id="nsfwImage" src="/assets/web/normal.png" class="spinning-image">
-                                        </div>
-                                        <text style="pointer-events: none;" id="nsfwText">Show NSFW</text>
-                                    </button>
-                                
-                                    <button type="menuButton" style="display: block; --width: 165px; --height: 100px; margin-left: auto;" onmouseup="window.pywebview.api.refreshModList().then(generateModItems)">
-                                        <div style="pointer-events: none; animation: none;" class="floatingIcon">
-                                            <img src="/assets/web/refresh.png" class="spinning-image">
-                                        </div>
-                                        <text style="pointer-events: none;">Refresh Mods</text>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <script>
+                        function updateModsCount() {
+                            const elements = document.querySelectorAll(".item");
+                            const topCountView = document.getElementById("mct");
+                            const bottomCountView = document.getElementById("mcb");
 
-                    <div class="modItems" style="width: 100%; height: auto; margin-bottom: 50px;">
+                            let topCount = 0;
+                            let bottomCount = 0;
+
+                            elements.forEach(element => {
+                                const rect = element.getBoundingClientRect();
+
+                                if (rect.bottom < 0) {
+                                    topCount++;
+                                }
+
+                                if (rect.top > window.innerHeight) {
+                                    bottomCount++;
+                                }
+                            });
+                            
+                            if (topCount == 0) {
+                                document.getElementById("mctparent").style.opacity = 0
+                                document.getElementById("mctparent").style.top = 0
+                            } else {
+                                document.getElementById("mctparent").style.opacity = 1
+                                document.getElementById("mctparent").style.top = "64px"
+                            }
+
+                            if (bottomCount == 0) {
+                                document.getElementById("mcbparent").style.opacity = 0
+                                document.getElementById("mcbparent").style.bottom = 0
+                            } else {
+                                document.getElementById("mcbparent").style.opacity = 1
+                                document.getElementById("mcbparent").style.bottom = "44px"
+                            }
+                            topCountView.textContent = topCount;
+                            bottomCountView.textContent = bottomCount;
+                         }
+
+                        
+                    </script>
+
+                    <div class="modItems" style="width: 100%; height: 100%; margin-bottom: 50px;">
                         <div class="item" style="display: grid; grid-template-columns: auto 1fr; gap: 5px; width: 100%; height: 150px; margin-bottom: 25px;">
                             <img src="https://placehold.co/150" style="border-radius: 15px; box-shadow: 0 4px 0 #6a4420;"></img>
 
