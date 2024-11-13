@@ -110,7 +110,7 @@ function generateModItems(modData) {
         // Create menu container for buttons
         const menuContainer = document.createElement('div');
         menuContainer.className = 'menuContainer';
-        menuContainer.style = "background-color: transparent; display: flex; flex-direction: row; position: absolute; bottom: 45px; height: 0; overflow: visible;";
+        menuContainer.style = "background-color: transparent; display: flex; flex-direction: row; position: absolute; bottom: 45px; height: 0; overflow: visible; z-index: 0;";
 
         // Add buttons
         const buttonContainer = document.createElement('div');

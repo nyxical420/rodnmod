@@ -95,6 +95,44 @@ function mouseOverEventSound(element) {
     element.addEventListener('mouseover', () => playAudio("/assets/web/fishing/sounds/ui_swish.ogg"));
 }
 
+let settingsDisplayed = false;
+
+function toggleSettings() {
+    const settings = document.getElementById('settings');
+    if (!sceneChanging && !settingsDisplayed) {
+        settings.style.display = "block";
+        playAudio("/assets/web/fishing/sounds/menu_blip.ogg");
+        settingsDisplayed = true;
+        closeWindow(".tabs", false);
+        return
+    } if (!sceneChanging && settingsDisplayed) {
+        settings.style.display = "none";
+        playAudio("/assets/web/fishing/sounds/menu_blipb.ogg");
+        settingsDisplayed = false;
+        openWindow(".tabs");
+        return
+    }
+}
+
+function switchSettingView(id) {
+    const tabs = document.querySelectorAll('.settingTab');
+    tabs.forEach(tab => {
+        tab.classList.remove('active');
+    });
+
+    document.getElementById(id).classList.add('active');
+
+    const tabButtons = document.querySelectorAll('.tabButton');
+    tabButtons.forEach(button => {
+        button.classList.remove('active');
+    });
+
+    const activeTabButton = document.querySelector(`.tabButton[data-tab="${id}"]`);
+    if (activeTabButton) {
+        activeTabButton.classList.add('active');
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     function checkPywebviewApi() {
         if (typeof window.pywebview === 'undefined' || typeof window.pywebview.api === 'undefined') {
@@ -181,6 +219,28 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('button').forEach(addSoundEffects);
     document.querySelectorAll('.tabButton').forEach(addSoundEffects);
     document.querySelectorAll(".dropdown-header").forEach(mouseOverEventSound);
+
+    const scrollElement = document.querySelector('#Mods');
+    const audio = document.getElementById('audio');
+
+    if (scrollElement && audio) {
+      let isScrolling = false;
+
+      scrollElement.addEventListener('scroll', function() {
+        if (!isScrolling) {
+          isScrolling = true;
+          audio.play();
+        }
+
+        clearTimeout(scrollElement.scrollTimeout);
+
+        scrollElement.scrollTimeout = setTimeout(function() {
+          isScrolling = false;
+          audio.pause();
+          audio.currentTime = 0;
+        }, 50);
+      });
+    }
 
     // configs
     window.pywebview.api.configure("hlsmods").then((val) => {

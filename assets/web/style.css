@@ -3,20 +3,17 @@
     src: url("/assets/web/font.ttf");
 }
 
-html {
-    width: 100%;
-    height: 100%;
-}
 
 body {
-    width: 100%;
-    height: 100%;
     background-color: #101c31;
-    overflow: auto;
 }
 
 html, body {
-    overflow: hidden;
+    width: 100vw;
+    height: 100vh; /* Ensure the page takes full height */
+    margin: 0;
+    padding: 0;
+    overflow: auto; /* Allow scroll if necessary */
 }
   
 ::-webkit-scrollbar {
@@ -31,6 +28,70 @@ html, body {
     font-family: "WebfishingFont", sans-serif;
     letter-spacing: 1px;
     -webkit-font-smoothing: antialiased !important;
+}
+
+.floatingIcon {
+    width: 100%; 
+    height: 100%; 
+    position: relative;
+    top: -50px;
+    animation: spin 18s infinite linear; 
+    margin-bottom: -32px; 
+    transition: margin-bottom 0.5s ease-in-out; 
+}
+
+.spinning-image {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+}
+
+@keyframes spin {
+    0%, 100% { transform: rotateY(0deg); }
+    50% { transform: rotateY(360deg); }
+}
+
+.tabButton {
+    background-color: #997755;
+    color: #363a24;
+    height: 100px;
+    width: 100px;
+    border-radius: 25px;
+    text-align: center;
+    cursor: url('/assets/web/point.png'), pointer;
+}
+
+.tabButton:active {
+    cursor: url('/assets/web/click.png'), pointer;
+}
+
+.tabButton.active {
+    background-color: #ffeed5;
+    color: #5a755a;
+}
+
+.settingTab {
+    display: none;
+}
+
+.settingTab.active {
+    display: block;
+}
+
+#settingContainer {
+    background-color: #ffeed5;
+    width: 100%;
+    height: 100%;
+    border-radius: 25px;
+    padding: 12px;
+}
+
+#content {
+    background-color: #d5aa73;
+    width: 100%;
+    height: 100%;
+    border-radius: 25px;
+    padding: 12px;
 }
 
 .content {
@@ -61,6 +122,7 @@ html, body {
 .tabs {
     background-color: #dba864;
     flex-grow: 1;
+    height: 100vh;
     padding: 34px 10% 45px 10%;
     clip-path: circle(75% at 50% 50%);
     transition: 700ms;
