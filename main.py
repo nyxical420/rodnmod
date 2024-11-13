@@ -3,6 +3,7 @@
 import sys
 import shutil
 import pymsgbox
+from httpx import get
 from json import load, dump
 from threading import Thread
 from os import path, rename, walk, chdir
@@ -15,6 +16,7 @@ from webview import create_window, start, windows as webWindows
 from rodnmod.fishfinder import findWebfishing
 from rodnmod.thunderstore import getMods, download, downloadRaw
 
+latestVersion = None
 webfishingInstalled = False
 installationPath = findWebfishing()
 
@@ -35,6 +37,10 @@ def resource(rpath):
 class RodNMod:
     modsList = getMods()
     modsBeingDownloaded = []
+
+    def checkStatuses(self):
+        if not webfishingInstalled: window.evaluate_js(f"notify('Installation path for WEBFISHING not found.', 15000)")
+        if latestVersion != None: window.evaluate_js(f"notify('Rod n\\' Mod has a new update! ({latestVersion})', 15000)")
 
     def isInstalled(self):
         return {"installationStatus": webfishingInstalled}
@@ -196,22 +202,19 @@ class RodNMod:
         
         for folder in subs:
             if path.basename(folder) == folderName:
-                #print(f"found {folderName} as {folder} with exact match")
                 return folder
 
             try: splitted = folderName.split(".")[1]
             except: splitted = folderName.split("-")[1]
             if path.basename(folder) == splitted:
-                #print(f"found {folderName} as {folder} with name match")
                 return folder
         
-        # NOTE: make this a setting to either be turned on/off to reduce processing power
         # attempt finding mods downloaded from HLS.
         if self.configure("hlsmods") == "findhls":
             transformations = [
-                (lambda name: name.split(".")[1] if "." in name else name, 90),  # Use split name
-                (lambda name: name.replace("-", "."), 85),                       # Replace '-' with '.'
-                (lambda name: name.replace("_", "."), 86)                        # Replace '_' with '.'
+                (lambda name: name.split(".")[1] if "." in name else name, 90),
+                (lambda name: name.replace("-", "."), 85),
+                (lambda name: name.replace("_", "."), 86)
             ]
 
             folder_base_names = [path.basename(folder) for folder in subs]
@@ -222,7 +225,6 @@ class RodNMod:
 
                 if closest_folder and closest_folder[1] >= threshold:
                     matchingFolder = subs[folder_base_names.index(closest_folder[0])]
-                    #print(f"Found {folderName} as {matchingFolder} with close match of {closest_folder[1]}%")
                     return matchingFolder
 
             return None
@@ -335,54 +337,55 @@ class RodNMod:
 rnm = RodNMod()
 
 if __name__ == "__main__":
-    if installationPath == None:
-        pymsgbox.alert(
-            title="Rod n' Mod",
-            text=f"WEBFISHING Installation not found!" + " "*30
-        )
-    else:     
-        try: rename(installationPath + "\\GDWeave\\disabled.mods", installationPath + "\\GDWeave\\mods")
-        except FileNotFoundError: pass
+    latestRMVersion = get("https://api.github.com/repos/nyxical420/rodnmod/tags").json()[0]["name"]
+    with open(resource("version.json")) as ver:
+        version = load(ver)
 
-        with open("data/config.json") as file:
-            config = load(file)
+    if version["version"] != latestRMVersion:
+        latestVersion = version["version"]
 
-        window = create_window(
-            "Rod n' Mod",
-            resource("main.html"),
-            width=1080, height=720,
-            frameless=True,
-            js_api=RodNMod,
-        )
+    try: rename(installationPath + "\\GDWeave\\disabled.mods", installationPath + "\\GDWeave\\mods")
+    except FileNotFoundError: pass
 
-        for name in dir(rnm):
-            func = getattr(rnm, name)
-            if callable(func) and not name.startswith("_"):
-                window.expose(func)
+    with open("data/config.json") as file:
+        config = load(file)
 
-        gdweaveLib = rnm.searchModList("GDWeave", "none", "all", False)["gdweave"]
-        name, version, downloadUrl = gdweaveLib["modName"], gdweaveLib["latestVersion"], gdweaveLib["latestDownload"]
+    window = create_window(
+        "Rod n' Mod",
+        resource("main.html"),
+        width=1080, height=720,
+        frameless=True,
+        js_api=RodNMod,
+    )
 
-        if path.exists(installationPath + "\\GDWeave") and path.isdir(installationPath + "\\GDWeave"):
-            print("gdweave installed. check for updates")
-            try:
-                with open(installationPath + "\\rnmInfo.json") as file:
-                    rnmInfo = load(file)
+    for name in dir(rnm):
+        func = getattr(rnm, name)
+        if callable(func) and not name.startswith("_"):
+            window.expose(func)
 
-                if rnmInfo["version"] != version:
-                    print("GDWeave update available")
-                    Thread(target=pymsgbox.alert, args=("GDWeave is updating in the background. Please wait for Rod n' Mod to finish the update.")).start()
-                    downloadRaw(downloadUrl, installationPath, {"name": name, "version": version})
-                else:
-                    print("no GDWeave update available")
-            except FileNotFoundError:
-                print("rnm gdweave version file info not found")
-                Thread(target=pymsgbox.alert, args=("GDWeave is installing in the background. Please wait for Rod n' Mod to finish the installation.", "Rod n' Mod")).start()
+    gdweaveLib = rnm.searchModList("GDWeave", "none", "all", False)["gdweave"]
+    name, version, downloadUrl = gdweaveLib["modName"], gdweaveLib["latestVersion"], gdweaveLib["latestDownload"]
+
+    if path.exists(installationPath + "\\GDWeave") and path.isdir(installationPath + "\\GDWeave"):
+        print("gdweave installed. check for updates")
+        try:
+            with open(installationPath + "\\rnmInfo.json") as file:
+                rnmInfo = load(file)
+
+            if rnmInfo["version"] != version:
+                print("GDWeave update available")
+                Thread(target=pymsgbox.alert, args=("GDWeave is updating in the background. Please wait for Rod n' Mod to finish the update.")).start()
                 downloadRaw(downloadUrl, installationPath, {"name": name, "version": version})
-        else:
-            print("downloading", downloadUrl)
+            else:
+                print("no GDWeave update available")
+        except FileNotFoundError:
+            print("rnm gdweave version file info not found")
             Thread(target=pymsgbox.alert, args=("GDWeave is installing in the background. Please wait for Rod n' Mod to finish the installation.", "Rod n' Mod")).start()
             downloadRaw(downloadUrl, installationPath, {"name": name, "version": version})
+    else:
+        print("downloading", downloadUrl)
+        Thread(target=pymsgbox.alert, args=("GDWeave is installing in the background. Please wait for Rod n' Mod to finish the installation.", "Rod n' Mod")).start()
+        downloadRaw(downloadUrl, installationPath, {"name": name, "version": version})
 
-        debugOption = True if rnm.configure("debugging") == "debena" else False
-        start(debug=debugOption)
+    debugOption = True if rnm.configure("debugging") == "debena" else False
+    start(debug=debugOption)

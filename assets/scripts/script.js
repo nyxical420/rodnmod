@@ -307,5 +307,6 @@ document.addEventListener('DOMContentLoaded', function () {
         setDropdownValue("nsfw", val)
     })
 
+    window.pywebview.api.checkStatuses()
     handleChange()
 });

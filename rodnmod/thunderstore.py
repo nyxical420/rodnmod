@@ -87,9 +87,6 @@ def download(url, extractPath, data: dict = {}):
         response = client.get(url, follow_redirects=True, timeout=60)
         response.raise_for_status()
 
-        fileSize = int(response.headers.get('Content-Length', 0))
-        downloadedSize = 0
-
         temp_folder = os.path.join(extractPath, "temp_extract")
         os.makedirs(temp_folder, exist_ok=True)
 
@@ -98,9 +95,6 @@ def download(url, extractPath, data: dict = {}):
             for chunk in response.iter_bytes(chunk_size=8192):
                 if chunk:
                     f.write(chunk)
-                    downloadedSize += len(chunk)
-                    progress = (downloadedSize / fileSize) * 100 if fileSize else 0
-                    print(f"Download progress: {progress:.2f}%")
 
     print("Download complete, extracting files...")
     
@@ -139,7 +133,6 @@ def download(url, extractPath, data: dict = {}):
 
     if os.path.exists(finalFolderPath + "\\\\mod.zip"):
         os.remove(finalFolderPath + "\\\\mod.zip")
-        print("Deleted mod.zip after installation.")
 
     if os.path.exists(temp_folder):
         shutil.rmtree(temp_folder)
