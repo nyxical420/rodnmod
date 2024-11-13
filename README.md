@@ -14,7 +14,7 @@ i was bored... and it looks cool tbh
 
 # Download
 You can download Rod n' Mod here!<br>
-## [Download Rod n' Mod](https://github.com/nyxical420/rodnmod/releases/latest)
+### [Download Rod n' Mod](https://github.com/nyxical420/rodnmod/releases/latest)
 
 # Features
 - **Launch Options**: Launch WEBFISHING with or without mods!
