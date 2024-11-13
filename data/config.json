@@ -1,6 +1,6 @@
 {
     "debugging": "debena",
-    "filter": "none",
+    "filter": "installed",
     "category": "all",
     "nsfw": "hidensfw",
     "hlsmods": "findhls"

@@ -309,6 +309,7 @@ class RodNMod:
                 download(modDownload, installationPath + "\\GDWeave\\mods", {"name": modName, "author": modAuthor, "version": modVersion})
 
             self.modsBeingDownloaded.remove(mod)
+            return "done"
         else:
             pymsgbox.alert(
                 title="Rod n' Mod",
@@ -333,6 +334,7 @@ class RodNMod:
                     title="Rod n' Mod", 
                     text="Permission denied! Please close the game first to uninstall the mod!"
                 )
+            return "done"
 
 rnm = RodNMod()
 

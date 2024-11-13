@@ -94,6 +94,36 @@ html, body {
     padding: 12px;
 }
 
+#toast-container {
+    position: fixed;
+    top: 40px;
+    left: 20px;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 10px;
+    z-index: 9999;
+}
+
+.toast {
+    font-size: 24px;
+    min-width: 200px;
+    padding: 7px;
+    background-color: #5a755a;
+    color: #fff;
+    border-radius: 100px;
+    transform: translateX(-200%);
+    transition: transform 200ms ease, opacity 200ms ease;
+}
+
+.toast.show {
+    transform: translateX(0);
+}
+
+.toast.hide {
+    transform: translateX(-200%);
+    transition: transform 200ms ease, opacity 200ms ease;
+}
+
 .content {
     background-color: #101c31;
     position: fixed;

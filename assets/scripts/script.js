@@ -133,6 +133,27 @@ function switchSettingView(id) {
     }
 }
 
+function notify(message, duration = 3000) {
+    const toast = document.createElement("div");
+    toast.classList.add("toast");
+    toast.textContent = message;
+
+    const container = document.getElementById("toast-container");
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.classList.add("show")
+        playAudio("/assets/web/fishing/sounds/notification.ogg")
+    }, 10);
+
+    setTimeout(() => {
+        toast.classList.remove("show");
+        toast.classList.add("hide");
+        
+        setTimeout(() => container.removeChild(toast), 500);
+    }, duration);
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     function checkPywebviewApi() {
         if (typeof window.pywebview === 'undefined' || typeof window.pywebview.api === 'undefined') {
@@ -212,6 +233,7 @@ document.addEventListener('DOMContentLoaded', function () {
         '/assets/web/fishing/sounds/menu_blip.ogg',
         '/assets/web/fishing/sounds/menu_blipb.ogg',
         '/assets/web/fishing/sounds/zip.ogg',
+        '/assets/web/fishing/sounds/notification.ogg',
     ];
     preloadAudio(audioFiles);
 

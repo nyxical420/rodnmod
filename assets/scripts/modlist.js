@@ -159,7 +159,7 @@ function generateModItems(modData) {
             } else {
                 const downloadButton = document.createElement('button');
                 downloadButton.type = "menuButton";
-                downloadButton.style = "display: block; --width: 135px; --height: 100px; margin-left: auto;";
+                downloadButton.style = "display: block; --width: 150px; --height: 100px; margin-left: auto;";
                 downloadButton.innerHTML = `
                     <div style="pointer-events: none; animation: none;" class="floatingIcon">
                         <img src="/assets/web/download_tacklebox.png" class="spinning-image">
