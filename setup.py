@@ -46,6 +46,8 @@ setup(
                 "lib2to3",
                 "pip",
                 "more_itertools",
+                "qtpy",
+                "pyinstaller"
             ]
         }
     },
@@ -54,7 +56,7 @@ setup(
             "main.py",
             icon="./assets/rodnmod.ico",
             base=("Win32GUI" if sys.platform == "win32" else None),
-            target_name="RodNMod"
+            target_name="rodnmod"
         )
     ],
 )
