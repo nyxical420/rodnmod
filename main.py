@@ -1,14 +1,11 @@
 # powered by hopes and dreams
 
-import sys
-import shutil
-import pymsgbox
 from httpx import get
+from shutil import rmtree
 from json import load, dump
-from threading import Thread
-from os import path, rename, walk, chdir
 from rapidfuzz import fuzz, process
 from webbrowser import open as openWeb
+from os import path, rename, walk, chdir
 from re import IGNORECASE, compile as comp
 from psutil import process_iter, NoSuchProcess
 from webview import create_window, start, windows as webWindows
@@ -27,12 +24,6 @@ else:
     print("WEBFISHING Installation Path Not Found")
 
 chdir(path.dirname(path.abspath(__name__)))
-
-def resource(rpath):
-    if hasattr(sys, '_MEIPASS'):
-        return path.join(sys._MEIPASS, rpath)
-    else:
-        return path.join(path.dirname(__file__), rpath)
 
 class RodNMod:
     modsList = getMods()
@@ -113,7 +104,7 @@ class RodNMod:
         unit_multipliers = {"minute": 1, "hour": 60, "day": 1440}
         return value * unit_multipliers.get(match.group(2).lower().split()[0], 1)
         
-    def searchModList(self, searchQuery: str, filter: str, modTag: str, nsfw: str):
+    def searchModList(self, searchQuery: str, filter: str, modTag: str, nsfw):
         searchQuery = searchQuery.strip().lower()
         nsfw = False if nsfw == "hidensfw" else True
 
@@ -325,7 +316,7 @@ class RodNMod:
         else:
             print(f"Uninstalling {mod}...")
             try:
-                shutil.rmtree(modpath)
+                rmtree(modpath)
                 try: modname = mod.split(".")[1].replace("_", " ")
                 except: modname = mod
                 window.evaluate_js(f"notify('{modname} has been successfully deleted!', 3000)")
@@ -338,21 +329,19 @@ rnm = RodNMod()
 
 if __name__ == "__main__":
     latestRMVersion = get("https://api.github.com/repos/nyxical420/rodnmod/tags").json()[0]["name"]
-    with open(resource("version.json")) as ver:
+    
+    with open("version.json") as ver:
         version = load(ver)
 
     if version["version"] != latestRMVersion:
-        latestVersion = version["version"]
+        latestVersion = latestRMVersion
 
     try: rename(installationPath + "\\GDWeave\\disabled.mods", installationPath + "\\GDWeave\\mods")
     except FileNotFoundError: pass
 
-    with open("data/config.json") as file:
-        config = load(file)
-
     window = create_window(
         "Rod n' Mod",
-        resource("main.html"),
+        "main.html",
         width=1080, height=720,
         frameless=True,
         js_api=RodNMod,
@@ -363,7 +352,7 @@ if __name__ == "__main__":
         if callable(func) and not name.startswith("_"):
             window.expose(func)
 
-    gdweaveLib = rnm.searchModList("GDWeave", "none", "all", False)["gdweave"]
+    gdweaveLib = rnm.searchModList("GDWeave", "none", "all", "hidensfw")["gdweave"]
     name, version, downloadUrl = gdweaveLib["modName"], gdweaveLib["latestVersion"], gdweaveLib["latestDownload"]
 
     if path.exists(installationPath + "\\GDWeave") and path.isdir(installationPath + "\\GDWeave"):
@@ -374,17 +363,14 @@ if __name__ == "__main__":
 
             if rnmInfo["version"] != version:
                 print("GDWeave update available")
-                Thread(target=pymsgbox.alert, args=("GDWeave is updating in the background. Please wait for Rod n' Mod to finish the update.")).start()
                 downloadRaw(downloadUrl, installationPath, {"name": name, "version": version})
             else:
                 print("no GDWeave update available")
         except FileNotFoundError:
             print("rnm gdweave version file info not found")
-            Thread(target=pymsgbox.alert, args=("GDWeave is installing in the background. Please wait for Rod n' Mod to finish the installation.", "Rod n' Mod")).start()
             downloadRaw(downloadUrl, installationPath, {"name": name, "version": version})
     else:
         print("downloading", downloadUrl)
-        Thread(target=pymsgbox.alert, args=("GDWeave is installing in the background. Please wait for Rod n' Mod to finish the installation.", "Rod n' Mod")).start()
         downloadRaw(downloadUrl, installationPath, {"name": name, "version": version})
 
     debugOption = True if rnm.configure("debugging") == "debena" else False

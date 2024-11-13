@@ -1,6 +1,5 @@
 httpx
 psutil
 pywebview
-pymsgbox
 rapidfuzz
-pyinstaller
+cx_Freeze

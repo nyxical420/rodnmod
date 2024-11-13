@@ -22,7 +22,7 @@ https://github.com/nyxical420/rodnmod/releases
 - **Installation Detection**: Automatically finds your WEBFISHING installation! no need to configure anything!
 
 # Requirements
-- A webview runtime. I recommend having [Microsoft Edge WebView2 Runtime](https://developer.microsoft.com/en-gb/microsoft-edge/webview2#download) for Windows, and `libwebkit2gtk-4.1-dev` for Linux.
+- A webview runtime. I recommend having [Microsoft Edge WebView2 Runtime](https://developer.microsoft.com/en-gb/microsoft-edge/webview2#download) for Windows, and `libwebkit2gtk-4.1-dev` for Linux. (no official Linux support yet)
 
 # Building Rod n' Mod
 > [!IMPORTANT]
@@ -36,15 +36,15 @@ python -m venv .venv; .\.venv\Scripts\Activate; pip install -r requirements.txt
 
 Once the command is done, you should see a (.venv) in your terminal. This means that the virtual environment is activated. and you can proceed to run the build script:
 ```PS
-python build.py
+python setup.py build
 ```
 
 This should automatically build Rod n' Mod for you and put the final build at the root folder.
 
 
 # Troubleshooting / Known Stuff
-- If Rod n' Mod doesn't close the splash screen, try exiting with ALT + F4 and relaunch Rod n' Mod.
-    - This is a rare-ish occurence where pywebview api just can't be accessed on launch. It still tries to save you by refreshing the page though, it may take long for it to do that though.
+- If Rod n' Mod doesn't reveal the content, try exiting with ALT + F4 and relaunch Rod n' Mod.
+    - This is an occurence where pywebview api just can't be called on launch. It still tries to save you by refreshing the page though, it may take long for it to show the content.
 - If it takes a while for you to install mods, try relaunching Rod n' Mod.
     - This happening is currently unsure and i am currently tryiing to figure out why it happens. Although this has never happened since alpha release, but i'm still keeping watch,
 - Mods may not be detected by Rod n' Mod if installed from [HLS](https://hooklinesinker.lol/) because of how different Rod n' Mod handles installing/detecting mods.
