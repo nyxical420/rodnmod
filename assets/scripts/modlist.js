@@ -6,11 +6,19 @@ function handleChange() {
     if (isUpdating) return;
     isUpdating = true;
 
+    const scrollElement = document.getElementById('Mods'); // Replace with your element's ID or reference
+    const scrollPosition = scrollElement.scrollTop;
+
     let searchValue = document.getElementById('searchInput').value;
 
     window.pywebview.api.searchModList(searchValue, getValue("filter"), getValue("category"), getValue("nsfw"))
         .then(generateModItems)
-        .finally(() => isUpdating = false);
+        .finally(() => {
+            window.requestAnimationFrame(() => {
+                scrollElement.scrollTop = scrollPosition;
+            });
+            isUpdating = false;
+        });
 }
 
 function toggleNSFW() {
@@ -31,6 +39,7 @@ function toggleNSFW() {
     }
 
     handleChange()
+    updateModsCount()
 }
 
 const ignoreList = [
@@ -193,8 +202,8 @@ function generateModItems(modData) {
 
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('searchInput').addEventListener('input', handleChange);
-    //document.getElementById('filterSelect').addEventListener('change', handleChange);
         
     setTimeout(() => window.pywebview.api.getModList().then(generateModItems), 50);
-    setTimeout(() => handleChange(), 50);
+    handleChange()
+    updateModsCount()
 });

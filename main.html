@@ -18,7 +18,7 @@
     
     <div class="content">
         <div id="toast-container"></div>
-        
+
         <div class="titleBar" style="background-color: #101c31; position: fixed; top: 0; left: 0; height: 34px; width: 100%; padding: 0 10px; z-index: 2;">
             <img src="/assets/web/rodnmod.png" style="width: 30px; height: 30px; margin-top: 2px; pointer-events: none;">
             <text id="titleText" style="position: relative; font-size: 22px; color: #ffeed5; top: -7px; left: 5px;">Rod n' Mod</text>
@@ -81,6 +81,24 @@
                         </div>
 
                         <div style="display: flex; margin-top: 5px;">
+                            <text style="margin: auto auto auto 0;">Transition between Tabs</text>
+    
+                            <div id="settingOption" class="custom-dropdown" data-name="transition" style=" width: 165px; margin-left: auto;">
+                                <div class="dropdown-header">
+                                    <span class="selected-option" style="pointer-events: none;">Yes</span>
+                                    <div style="display: grid; grid-template-rows: 1fr 1fr; pointer-events: none;">
+                                        <span class="dropdown-arrow" style="font-size: 7px;">▲</span>
+                                        <span class="dropdown-arrow" style="font-size: 7px;">▼</span>
+                                    </div>
+                                </div>
+                                <div class="dropdown-options">
+                                    <div class="option" data-value="notransition">No</div>
+                                    <div class="option selected" data-value="transition">Yes</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; margin-top: 5px;">
                             <text style="margin: auto auto auto 0;">Debugging <text style="color: #ff4545; font-size: 14px;">(Requires Restart)</text></text>
     
                             <div id="settingOption" class="custom-dropdown" data-name="debugging" style=" width: 165px; margin-left: auto;">
@@ -111,10 +129,10 @@
             <div class="tab active" id="Mods" style="max-height: calc(100vh + 91px); overflow-y: auto;" onscroll="updateModsCount()">
                 <div class="modList" style="display: flex; flex-direction: column;">
                     <div class="modCounts" style="z-index: 5;">
-                        <div id="mctparent" style="transition: 200ms; position: absolute; top: 64px; left: 50%; transform: translate(-50%, -50%); width: 300px; padding: 3px; justify-content: center; text-align: center; font-size: 24px; color: #ffeed5; background-color: #5a755a; border-radius: 15px;">
+                        <div id="mctparent" style="opacity: 0; transition: 750ms cubic-bezier(0.075, 0.82, 0.165, 1); position: absolute; top: -64px; left: 50%; transform: translate(-50%, -50%); width: 300px; padding: 3px; justify-content: center; text-align: center; font-size: 24px; color: #ffeed5; background-color: #5a755a; border-radius: 15px;">
                             <text id="mct">0</text> mods left above
                         </div>
-                        <div id="mcbparent" style="transition: 200ms; position: absolute; bottom: 44px; left: 50%; transform: translate(-50%, -50%); width: 300px; padding: 3px; justify-content: center; text-align: center; font-size: 24px; color: #ffeed5; background-color: #5a755a; border-radius: 15px;">
+                        <div id="mcbparent" style="opacity: 0; transition: 750ms cubic-bezier(0.075, 0.82, 0.165, 1); position: absolute; bottom: -44px; left: 50%; transform: translate(-50%, -50%); width: 300px; padding: 3px; justify-content: center; text-align: center; font-size: 24px; color: #ffeed5; background-color: #5a755a; border-radius: 15px;">
                             <text id="mcb">0</text> mods left below
                         </div>
                     </div>
@@ -211,7 +229,7 @@
                             
                             if (topCount == 0) {
                                 document.getElementById("mctparent").style.opacity = 0
-                                document.getElementById("mctparent").style.top = 0
+                                document.getElementById("mctparent").style.top = "-64px"
                             } else {
                                 document.getElementById("mctparent").style.opacity = 1
                                 document.getElementById("mctparent").style.top = "64px"
@@ -219,7 +237,7 @@
 
                             if (bottomCount == 0) {
                                 document.getElementById("mcbparent").style.opacity = 0
-                                document.getElementById("mcbparent").style.bottom = 0
+                                document.getElementById("mcbparent").style.bottom = "-44px"
                             } else {
                                 document.getElementById("mcbparent").style.opacity = 1
                                 document.getElementById("mcbparent").style.bottom = "44px"

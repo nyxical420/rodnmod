@@ -69,19 +69,31 @@ function changeScene(tabId) {
     }
 
     if (!sceneChanging && !settingsDisplayed) {
-        sceneChanging = true;
-        closeWindow(".tabs", false);
-
-        setTimeout(() => {
+        
+        window.pywebview.api.configure("transition").then((val) => {
             const tabs = document.querySelectorAll('.tab');
-            tabs.forEach(tab => {
-                tab.classList.remove('active');
-            });
+            if (val == "transition") {
+                sceneChanging = true;
+                closeWindow(".tabs", false);
+        
+                setTimeout(() => {
+                    tabs.forEach(tab => {
+                        tab.classList.remove('active');
+                    });
+        
+                    document.getElementById(tabId).classList.add('active');
+                    openWindow(".tabs");
+                    sceneChanging = false;
+                }, 1000);
+            } else {
+                tabs.forEach(tab => {
+                    tab.classList.remove('active');
+                });
+        
+                document.getElementById(tabId).classList.add('active');
+            }
 
-            document.getElementById(tabId).classList.add('active');
-            openWindow(".tabs");
-            sceneChanging = false;
-        }, 1000);
+        });
     }
 }
 
@@ -166,7 +178,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let isDragging = false;
     let startX, startY, offsetX, offsetY;
-    const movementThreshold = 0;
+    
+    const width = window.innerWidth;
+    const height = window.innerHeight;
 
     const titleBar = document.querySelector('.titleBar');
 
@@ -180,15 +194,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.addEventListener('mousemove', (e) => {
         if (isDragging) {
-            const dx = Math.abs(e.clientX - startX);
-            const dy = Math.abs(e.clientY - startY);
+            const scaledX = (e.clientX / width) * 1080;
+            const scaledY = (e.clientY / height) * 720;
 
-            if (dx > movementThreshold || dy > movementThreshold) {
-                const x = e.clientX - offsetX;
-                const y = e.clientY - offsetY;
+            const dx = Math.abs(scaledX - startX);
+            const dy = Math.abs(scaledY - startY);
+
+            if (dx > 1 || dy > 1) {
+                const x = scaledX - offsetX;
+                const y = scaledY - offsetY;
                 window.pywebview.api.dragWindow(x, y);
-                startX = e.clientX;
-                startY = e.clientY;
+
+                startX = scaledX;
+                startY = scaledY;
             }
         }
     });
@@ -249,18 +267,22 @@ document.addEventListener('DOMContentLoaded', function () {
       let isScrolling = false;
 
       scrollElement.addEventListener('scroll', function() {
-        if (!isScrolling) {
-          isScrolling = true;
-          audio.play();
-        }
-
-        clearTimeout(scrollElement.scrollTimeout);
-
-        scrollElement.scrollTimeout = setTimeout(function() {
-          isScrolling = false;
-          audio.pause();
-          audio.currentTime = 0;
-        }, 50);
+        window.pywebview.api.configure("reelsound").then((val) => {
+            if (val == "reel") {
+                if (!isScrolling) {
+                    isScrolling = true;
+                    audio.play();
+                }
+        
+                clearTimeout(scrollElement.scrollTimeout);
+        
+                scrollElement.scrollTimeout = setTimeout(function() {
+                    isScrolling = false;
+                    audio.pause();
+                    audio.currentTime = 0;
+                }, 50);
+            }
+        });
       });
     }
 

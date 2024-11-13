@@ -245,10 +245,7 @@ class RodNMod:
 
         if mod not in self.modsBeingDownloaded:
             if self.modsBeingDownloaded.count == 7:
-                pymsgbox.alert(
-                    title="Rod n' Mod",
-                    text=f"The max mods to be downloaded simultaneously (7) has been reached.\nPlease try again later once mods are installed!" + " "*30
-                )
+                window.evaluate_js(f"notify('The limit of 7 mods to be downloaded simultaneously has been reached. Please try again later!', 3000)")
                 return 
 
             self.modsBeingDownloaded.append(mod)
@@ -296,45 +293,41 @@ class RodNMod:
 
                         if mnrInfo["version"] != modVersion:
                             download(modDownload, installationPath + "\\GDWeave\\mods", {"name": modName, "author": modAuthor, "version": modVersion})
+                            window.evaluate_js(f"notify('{modName} has been updated successfully!', 3000)")
                         else:
-                            pymsgbox.alert(
-                                title="Rod n' Mod",
-                                text=f"{modName} is currently up to date!" + " "*30
-                            )
+                            window.evaluate_js(f"notify('{modName} is currently up to date!', 3000)")
 
                 except FileNotFoundError: # mnrInfo.json missing, skip version check and download mod immediately instead
+                    window.evaluate_js(f"notify('rnmInfo.json for {modName} missing. Forcing download...', 3000)")
                     download(modDownload, installationPath + "\\GDWeave\\mods", {"name": modName, "author": modAuthor, "version": modVersion})
 
             else:
                 download(modDownload, installationPath + "\\GDWeave\\mods", {"name": modName, "author": modAuthor, "version": modVersion})
+                window.evaluate_js(f"notify('{modName} has been downloaded successfully!', 3000)")
 
             self.modsBeingDownloaded.remove(mod)
             return "done"
         else:
-            pymsgbox.alert(
-                title="Rod n' Mod",
-                text=f"{modName} is already being downloaded!" + " "*30
-            )
+            window.evaluate_js(f"notify('{modName} is already being downloaded!', 3000)")
+
 
     def uninstallMod(self, mod: str, checkExists: bool = False):
-        mod = self.searchModFolders(mod)
+        modpath = self.searchModFolders(mod)
 
         if checkExists: # check only
-            if mod != None:
+            if modpath != None:
                 return True
             else:
                 return False
         else:
             print(f"Uninstalling {mod}...")
             try:
-                shutil.rmtree(mod)
+                shutil.rmtree(modpath)
+                window.evaluate_js(f"notify('{mod} has been successfully deleted!', 3000)")
+
             except TypeError: pass
             except PermissionError:
-                pymsgbox.alert(
-                    title="Rod n' Mod", 
-                    text="Permission denied! Please close the game first to uninstall the mod!"
-                )
-            return "done"
+                window.evaluate_js(f"notify('Permission denied! Please close WEBFISHING first to uninstall the mod!', 3000)")
 
 rnm = RodNMod()
 
