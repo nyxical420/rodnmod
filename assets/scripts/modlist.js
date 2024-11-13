@@ -56,7 +56,12 @@ function generateModItems(modData) {
         const mod = modData[modKey];
 
         if (ignoreList.includes(mod.modName) || mod.isDeprecated) {
-            return;
+            return
+        }
+
+        const configNsfw = window.pywebview.api.configure("nsfw") === "shownsfw" ? true : false
+        if (!configNsfw && mod.isNSFW) {
+            return
         }
         
         // Create the main item container
@@ -204,6 +209,5 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('searchInput').addEventListener('input', handleChange);
         
     setTimeout(() => window.pywebview.api.getModList().then(generateModItems), 50);
-    handleChange()
     updateModsCount()
 });

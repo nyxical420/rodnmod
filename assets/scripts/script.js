@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let isDragging = false;
     let startX, startY, offsetX, offsetY;
-    
+
     const width = window.innerWidth;
     const height = window.innerHeight;
 
@@ -306,4 +306,6 @@ document.addEventListener('DOMContentLoaded', function () {
     window.pywebview.api.configure("nsfw").then((val) => {
         setDropdownValue("nsfw", val)
     })
+
+    handleChange()
 });

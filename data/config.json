@@ -1,9 +1,9 @@
 {
-    "debugging": "debena",
-    "filter": "none",
+    "debugging": "debdis",
+    "filter": "installed",
     "category": "all",
     "nsfw": "hidensfw",
-    "hlsmods": "nofindhls",
+    "hlsmods": "findhls",
     "reelsound": "reel",
     "transition": "transition"
 }

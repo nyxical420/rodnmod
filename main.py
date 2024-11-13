@@ -5,7 +5,7 @@ import shutil
 import pymsgbox
 from json import load, dump
 from threading import Thread
-from os import path, rename, walk
+from os import path, rename, walk, chdir
 from rapidfuzz import fuzz, process
 from webbrowser import open as openWeb
 from re import IGNORECASE, compile as comp
@@ -24,6 +24,7 @@ if installationPath:
 else:
     print("WEBFISHING Installation Path Not Found")
 
+chdir(path.dirname(path.abspath(__name__)))
 
 def resource(rpath):
     if hasattr(sys, '_MEIPASS'):
@@ -59,7 +60,7 @@ class RodNMod:
         self.visitSite("steam://rungameid/3146520")
 
     def configure(self, configItem: str, configValue = None):
-        with open("./data/config.json") as file:
+        with open("data/config.json") as file:
             config = load(file)
 
         if configValue == None:
@@ -67,7 +68,7 @@ class RodNMod:
             except KeyError: return "Not a configuration item"
         else:
             config[configItem] = configValue
-            with open('./data/config.json', 'w') as f:
+            with open("data/config.json", 'w') as f:
                 dump(config, f, indent=4)
             return "Configured!"
 
@@ -323,7 +324,9 @@ class RodNMod:
             print(f"Uninstalling {mod}...")
             try:
                 shutil.rmtree(modpath)
-                window.evaluate_js(f"notify('{mod} has been successfully deleted!', 3000)")
+                try: modname = mod.split(".")[1].replace("_", " ")
+                except: modname = mod
+                window.evaluate_js(f"notify('{modname} has been successfully deleted!', 3000)")
 
             except TypeError: pass
             except PermissionError:
@@ -341,12 +344,12 @@ if __name__ == "__main__":
         try: rename(installationPath + "\\GDWeave\\disabled.mods", installationPath + "\\GDWeave\\mods")
         except FileNotFoundError: pass
 
-        with open("./data/config.json") as file:
+        with open("data/config.json") as file:
             config = load(file)
 
         window = create_window(
             "Rod n' Mod",
-            resource("./main.html"),
+            resource("main.html"),
             width=1080, height=720,
             frameless=True,
             js_api=RodNMod,

@@ -4,7 +4,7 @@ import subprocess
 
 buildCommand = [
     'pyinstaller',
-    '--onefile',
+    '--onedir',
     '--noconsole',
     '--icon=./assets/rodnmod.ico',
     '--paths=./rodnmod',
@@ -34,11 +34,11 @@ remove = [
     "./main.spec",
 ]
 
-for item in remove:
-    if os.path.exists(item):
-        if os.path.isdir(item):
-            shutil.rmtree(item)
-        else:
-            os.remove(item)
+#for item in remove:
+#    if os.path.exists(item):
+#        if os.path.isdir(item):
+#            shutil.rmtree(item)
+#        else:
+#            os.remove(item)
 
 print(f"Build complete.")
