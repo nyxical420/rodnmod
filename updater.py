@@ -1,5 +1,3 @@
-# powered by hopes and dreams
-
 from httpx import get
 from json import load
 from os import path, chdir, execv
