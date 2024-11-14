@@ -6,7 +6,7 @@ function handleChange() {
     if (isUpdating) return;
     isUpdating = true;
 
-    const scrollElement = document.getElementById('Mods'); // Replace with your element's ID or reference
+    const scrollElement = document.getElementById('Mods');
     const scrollPosition = scrollElement.scrollTop;
 
     let searchValue = document.getElementById('searchInput').value;
@@ -65,14 +65,10 @@ function generateModItems(modData) {
 
         window.pywebview.api.configure("nsfw").then((val) => {
             configNsfw = val === "shownsfw" ? true : false
-            console.log(mod.modName, configNsfw, mod.isNSFW)
-
-            if (!configNsfw && mod.isNSFW) {
-                return
-            }
         })
-        console.log(`${mod.modName} passed`)
         
+        if (configNsfw == false && mod.isNSFW == true) return;
+
         // Create the main item container
         const itemDiv = document.createElement('div');
         itemDiv.className = 'item';

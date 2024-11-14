@@ -334,6 +334,8 @@ if __name__ == "__main__":
         version = load(ver)
 
     if version["version"] != latestRMVersion:
+        print(version["version"], latestRMVersion)
+        print("has update")
         latestVersion = latestRMVersion
 
     window = create_window(
