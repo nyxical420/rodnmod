@@ -18,12 +18,16 @@ class RodNModUpdater:
         
         with open("version.json") as ver:
             version = load(ver)
+
+        for x in rnm["assets"]:
+            if str(x["name"]).__contains__("rodnmod-standalone"):
+                asset = x
         
         if version["version"] != rnm["tag_name"]:
-            newver = rnm["tag_name"]
-            curver = version["version"]
+            newver = asset["tag_name"]
+            curver = rnm["version"]
             window.evaluate_js(f"{status}.innerHTML = \"Downloading Update...<br>{curver} -> {newver}\"")
-            downloadRaw(rnm["assets"][0]["browser_download_url"], "./")
+            downloadRaw(asset["browser_download_url"], "./")
             window.evaluate_js(f"{status}.innerHTML = 'Update Downloaded!'")
         
         if installationPath != None:
@@ -68,5 +72,4 @@ if __name__ == "__main__":
         if callable(func) and not name.startswith("_"):
             window.expose(func)
 
-    debugOption = True if rnmu.configure("debugging") == "debena" else False
-    start(debug=debugOption)
+    start()

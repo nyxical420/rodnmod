@@ -11,7 +11,7 @@ from psutil import process_iter, NoSuchProcess
 from webview import create_window, start, windows as webWindows
 
 from rodnmod.fishfinder import findWebfishing
-from rodnmod.internet import getMods, download, downloadRaw
+from rodnmod.internet import getMods, download
 
 latestVersion = None
 webfishingInstalled = False
@@ -28,10 +28,6 @@ chdir(path.dirname(path.abspath(__name__)))
 class RodNMod:
     modsList = getMods()
     modsBeingDownloaded = []
-
-    def checkStatuses(self):
-        if not webfishingInstalled: window.evaluate_js(f"notify('Installation path for WEBFISHING not found.', 15000)")
-        if latestVersion != None: window.evaluate_js(f"notify('Rod n\\' Mod has a new update! ({latestVersion})', 15000)")
 
     def isInstalled(self):
         return {"installationStatus": webfishingInstalled}
@@ -57,15 +53,24 @@ class RodNMod:
         self.visitSite("steam://rungameid/3146520")
 
     def configure(self, configItem: str, configValue = None):
-        with open("data/config.json") as file:
+        configPath = "data/config.json"
+        if not path.exists(configPath):
+            default_config = {"debugging": "debdis"}
+            with open(configPath, 'w') as file:
+                dump(default_config, file, indent=4)
+        
+        # If config file exists, load it
+        with open(configPath) as file:
             config = load(file)
 
-        if configValue == None:
-            try: return config[configItem]
-            except KeyError: return "Not a configuration item"
+        if configValue is None:
+            try:
+                return config[configItem]
+            except KeyError:
+                return "Not a configuration item"
         else:
             config[configItem] = configValue
-            with open("data/config.json", 'w') as f:
+            with open(configPath, 'w') as f:
                 dump(config, f, indent=4)
             return "Configured!"
 

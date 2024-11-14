@@ -383,7 +383,7 @@ div.menuContainer button.text {
 
 div.menuContainer button:active {
     width: var(--width);
-    font-size: 20px;
+    font-size: 22px;
     color: #ffeed5;
     background-color: #6a4420;
     box-shadow: 0 -4px 0 #622810;

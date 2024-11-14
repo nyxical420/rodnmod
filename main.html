@@ -206,60 +206,22 @@
                         </div>
                     </div>
 
-                    <script>
-                        function updateModsCount() {
-                            const elements = document.querySelectorAll(".item");
-                            const topCountView = document.getElementById("mct");
-                            const bottomCountView = document.getElementById("mcb");
-
-                            let topCount = 0;
-                            let bottomCount = 0;
-
-                            elements.forEach(element => {
-                                const rect = element.getBoundingClientRect();
-
-                                if (rect.bottom < 34) {
-                                    topCount++;
-                                }
-
-                                if (rect.top > window.innerHeight - 30) {
-                                    bottomCount++;
-                                }
-                            });
-                            
-                            if (topCount == 0) {
-                                document.getElementById("mctparent").style.opacity = 0
-                                document.getElementById("mctparent").style.top = "-64px"
-                            } else {
-                                document.getElementById("mctparent").style.opacity = 1
-                                document.getElementById("mctparent").style.top = "64px"
-                            }
-
-                            if (bottomCount == 0) {
-                                document.getElementById("mcbparent").style.opacity = 0
-                                document.getElementById("mcbparent").style.bottom = "-44px"
-                            } else {
-                                document.getElementById("mcbparent").style.opacity = 1
-                                document.getElementById("mcbparent").style.bottom = "44px"
-                            }
-                            topCountView.textContent = topCount;
-                            bottomCountView.textContent = bottomCount;
-                         }
-
-                        
-                    </script>
-
                     <div class="modItems" style="width: 100%; height: 100%; margin-bottom: 30px;">
                         
                     </div>
                 </div>
             </div>
             <div class="tab" id="Modpacks">
-                <text style="font-size: 25px;">Modpacks</text>
-
+                <div style="text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                    <text style="font-size: 25px;">Modpacks</text><br>
+                    <text style="font-size: 50px;">Alright, you caught me. This feature of Rod n' Mod is comming soon!</text>
+                </div>
             </div>
             <div class="tab" id="SaveManager">
-                <text style="font-size: 25px;">Save Manager</text>
+                <div style="text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                    <text style="font-size: 25px;">Save Manager</text><br>
+                    <text style="font-size: 50px;">Alright, you caught me. This feature of Rod n' Mod is comming soon!</text>
+                </div>
             </div>
         </div>
 

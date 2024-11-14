@@ -10,6 +10,45 @@ function showResponse(response) {
     container.style.display = 'block';
 }
 
+function updateModsCount() {
+    const elements = document.querySelectorAll(".item");
+    const topCountView = document.getElementById("mct");
+    const bottomCountView = document.getElementById("mcb");
+
+    let topCount = 0;
+    let bottomCount = 0;
+
+    elements.forEach(element => {
+        const rect = element.getBoundingClientRect();
+
+        if (rect.bottom < 34) {
+            topCount++;
+        }
+
+        if (rect.top > window.innerHeight - 30) {
+            bottomCount++;
+        }
+    });
+    
+    if (topCount == 0) {
+        document.getElementById("mctparent").style.opacity = 0
+        document.getElementById("mctparent").style.top = "-64px"
+    } else {
+        document.getElementById("mctparent").style.opacity = 1
+        document.getElementById("mctparent").style.top = "64px"
+    }
+
+    if (bottomCount == 0) {
+        document.getElementById("mcbparent").style.opacity = 0
+        document.getElementById("mcbparent").style.bottom = "-44px"
+    } else {
+        document.getElementById("mcbparent").style.opacity = 1
+        document.getElementById("mcbparent").style.bottom = "44px"
+    }
+    topCountView.textContent = topCount;
+    bottomCountView.textContent = bottomCount;
+ }
+
 function checkInstall(response) {
     if (response.installationStatus == false) {
         window.pywebview.api.closeApplication();
@@ -305,6 +344,4 @@ document.addEventListener('DOMContentLoaded', function () {
     window.pywebview.api.configure("nsfw").then((val) => {
         setDropdownValue("nsfw", val)
     })
-
-    window.pywebview.api.checkStatuses()
 });
