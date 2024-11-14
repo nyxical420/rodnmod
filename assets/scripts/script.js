@@ -21,7 +21,7 @@ function checkInstall(response) {
 
 function openWindow(name) {
     if (name == null) { name = ".content"; }
-    document.querySelector(name).style.clipPath = 'circle(73% at 50% 50%)';
+    document.querySelector(name).style.clipPath = 'circle(75% at 50% 50%)';
     playAudio("/assets/web/fishing/sounds/guitar_out.ogg");
 }
 
@@ -32,7 +32,6 @@ function closeWindow(name, literally) {
     if (literally) {
         document.querySelector('.splashIcon').style.display = 'block';
         setTimeout(() => window.pywebview.api.closeApplication(), 3000);
-        //setTimeout(() => playAudio('/assets/web/get.mp3'), 2700);
     }
 }
 
