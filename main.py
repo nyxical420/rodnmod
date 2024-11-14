@@ -336,9 +336,6 @@ if __name__ == "__main__":
     if version["version"] != latestRMVersion:
         latestVersion = latestRMVersion
 
-    try: rename(installationPath + "\\GDWeave\\disabled.mods", installationPath + "\\GDWeave\\mods")
-    except FileNotFoundError: pass
-
     window = create_window(
         "Rod n' Mod",
         "main.html",
@@ -352,26 +349,30 @@ if __name__ == "__main__":
         if callable(func) and not name.startswith("_"):
             window.expose(func)
 
-    gdweaveLib = rnm.searchModList("GDWeave", "none", "all", "hidensfw")["gdweave"]
-    name, version, downloadUrl = gdweaveLib["modName"], gdweaveLib["latestVersion"], gdweaveLib["latestDownload"]
+    if installationPath != None:
+        try: rename(installationPath + "\\GDWeave\\disabled.mods", installationPath + "\\GDWeave\\mods")
+        except FileNotFoundError: pass
 
-    if path.exists(installationPath + "\\GDWeave") and path.isdir(installationPath + "\\GDWeave"):
-        print("gdweave installed. check for updates")
-        try:
-            with open(installationPath + "\\rnmInfo.json") as file:
-                rnmInfo = load(file)
+        gdweaveLib = rnm.searchModList("GDWeave", "none", "all", "hidensfw")["gdweave"]
+        name, version, downloadUrl = gdweaveLib["modName"], gdweaveLib["latestVersion"], gdweaveLib["latestDownload"]
 
-            if rnmInfo["version"] != version:
-                print("GDWeave update available")
+        if path.exists(installationPath + "\\GDWeave") and path.isdir(installationPath + "\\GDWeave"):
+            print("gdweave installed. check for updates")
+            try:
+                with open(installationPath + "\\rnmInfo.json") as file:
+                    rnmInfo = load(file)
+
+                if rnmInfo["version"] != version:
+                    print("GDWeave update available")
+                    downloadRaw(downloadUrl, installationPath, {"name": name, "version": version})
+                else:
+                    print("no GDWeave update available")
+            except FileNotFoundError:
+                print("rnm gdweave version file info not found")
                 downloadRaw(downloadUrl, installationPath, {"name": name, "version": version})
-            else:
-                print("no GDWeave update available")
-        except FileNotFoundError:
-            print("rnm gdweave version file info not found")
+        else:
+            print("downloading", downloadUrl)
             downloadRaw(downloadUrl, installationPath, {"name": name, "version": version})
-    else:
-        print("downloading", downloadUrl)
-        downloadRaw(downloadUrl, installationPath, {"name": name, "version": version})
 
     debugOption = True if rnm.configure("debugging") == "debena" else False
     start(debug=debugOption)

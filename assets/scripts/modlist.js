@@ -45,6 +45,8 @@ function toggleNSFW() {
 const ignoreList = [
     "Hook_Line_and_Sinker",
     "GDWeave",
+    "r2modman",
+    "GaleModManager"
 ];
 
 function generateModItems(modData) {
@@ -59,10 +61,17 @@ function generateModItems(modData) {
             return
         }
 
-        const configNsfw = window.pywebview.api.configure("nsfw") === "shownsfw" ? true : false
-        if (!configNsfw && mod.isNSFW) {
-            return
-        }
+        let configNsfw = false;
+
+        window.pywebview.api.configure("nsfw").then((val) => {
+            configNsfw = val === "shownsfw" ? true : false
+            console.log(mod.modName, configNsfw, mod.isNSFW)
+
+            if (!configNsfw && mod.isNSFW) {
+                return
+            }
+        })
+        console.log(`${mod.modName} passed`)
         
         // Create the main item container
         const itemDiv = document.createElement('div');
