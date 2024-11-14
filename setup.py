@@ -7,6 +7,7 @@ with open("version.json") as ver:
 
 include_files = [
     ('main.html', 'main.html'),
+    ('updater.html', 'updater.html'),
     ('version.json', 'version.json'),
     ('data/', 'data/'),
     ('data/modpacks', 'data/modpacks'),
@@ -57,6 +58,12 @@ setup(
             icon="./assets/rodnmod.ico",
             base=("Win32GUI" if sys.platform == "win32" else None),
             target_name="rodnmod"
+        ),
+        Executable(
+            "updater.py",
+            icon="./assets/rodnmod.ico",
+            base=("Win32GUI" if sys.platform == "win32" else None),
+            target_name="rnmupdater"
         )
     ],
 )

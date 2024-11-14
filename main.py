@@ -11,7 +11,7 @@ from psutil import process_iter, NoSuchProcess
 from webview import create_window, start, windows as webWindows
 
 from rodnmod.fishfinder import findWebfishing
-from rodnmod.thunderstore import getMods, download, downloadRaw
+from rodnmod.internet import getMods, download, downloadRaw
 
 latestVersion = None
 webfishingInstalled = False
@@ -350,31 +350,6 @@ if __name__ == "__main__":
         func = getattr(rnm, name)
         if callable(func) and not name.startswith("_"):
             window.expose(func)
-
-    if installationPath != None:
-        try: rename(installationPath + "\\GDWeave\\disabled.mods", installationPath + "\\GDWeave\\mods")
-        except FileNotFoundError: pass
-
-        gdweaveLib = rnm.searchModList("GDWeave", "none", "all", "hidensfw")["gdweave"]
-        name, version, downloadUrl = gdweaveLib["modName"], gdweaveLib["latestVersion"], gdweaveLib["latestDownload"]
-
-        if path.exists(installationPath + "\\GDWeave") and path.isdir(installationPath + "\\GDWeave"):
-            print("gdweave installed. check for updates")
-            try:
-                with open(installationPath + "\\rnmInfo.json") as file:
-                    rnmInfo = load(file)
-
-                if rnmInfo["version"] != version:
-                    print("GDWeave update available")
-                    downloadRaw(downloadUrl, installationPath, {"name": name, "version": version})
-                else:
-                    print("no GDWeave update available")
-            except FileNotFoundError:
-                print("rnm gdweave version file info not found")
-                downloadRaw(downloadUrl, installationPath, {"name": name, "version": version})
-        else:
-            print("downloading", downloadUrl)
-            downloadRaw(downloadUrl, installationPath, {"name": name, "version": version})
 
     debugOption = True if rnm.configure("debugging") == "debena" else False
     start(debug=debugOption)

@@ -3,8 +3,9 @@ import os
 import json
 import httpx
 import zipfile
-from datetime import datetime, timezone
 import shutil
+import tempfile
+from datetime import datetime, timezone
 
 def timeAgo(updated_time):
     now = datetime.now(timezone.utc)
@@ -148,13 +149,38 @@ def downloadRaw(url: str, extractPath: str, data: dict = {}):
             file_content = io.BytesIO(response.content)
             os.makedirs(extractPath, exist_ok=True)
 
-            with zipfile.ZipFile(file_content) as zip_ref:
-                zip_ref.extractall(extractPath)
+            # Use a temporary file for the zip extraction
+            with tempfile.NamedTemporaryFile(delete=False) as temp_zip:
+                temp_zip.write(response.content)
+                temp_zip_path = temp_zip.name
 
-            with open(os.path.join(extractPath, "rnmInfo.json"), "w", encoding='utf-8') as f:
-                json.dump(data, f, indent=4)
-                
-            print(f"File successfully extracted to {extractPath}")
-            
+            try:
+                # Extract to the destination folder
+                with zipfile.ZipFile(temp_zip_path) as zip_ref:
+                    zip_ref.extractall(extractPath)
+
+                # Now handle the optional data file
+                if data:
+                    # Create a temporary file for the rnmInfo.json
+                    with tempfile.NamedTemporaryFile(delete=False, mode='w', encoding='utf-8') as temp_json:
+                        json.dump(data, temp_json, indent=4)
+                        temp_json_path = temp_json.name
+
+                    try:
+                        # Replace the original rnmInfo.json with the new one atomically
+                        original_json_path = os.path.join(extractPath, "rnmInfo.json")
+                        shutil.move(temp_json_path, original_json_path)
+                        print(f"Updated rnmInfo.json successfully.")
+                    except Exception as json_error:
+                        print(f"Error updating rnmInfo.json: {json_error}")
+                        os.remove(temp_json_path)  # Clean up the temp file if something goes wrong
+
+                print(f"File successfully extracted to {extractPath}")
+            except Exception as e:
+                print(f"Error during extraction: {e}")
+            finally:
+                # Clean up the temporary zip file
+                os.remove(temp_zip_path)
+
         else:
             print(f"Failed to download the file, status code {response.status_code}")
