@@ -307,5 +307,4 @@ document.addEventListener('DOMContentLoaded', function () {
     })
 
     window.pywebview.api.checkStatuses()
-    handleChange()
 });

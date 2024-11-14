@@ -1,6 +1,10 @@
 let isUpdating = false;
 let nsfwToggled = true;
-let showNSFW = false;
+let configNsfw = false;
+
+window.pywebview.api.configure("nsfw").then((val) => {
+    configNsfw = val === "shownsfw" ? true : false
+})
 
 function handleChange() {
     if (isUpdating) return;
@@ -21,27 +25,6 @@ function handleChange() {
         });
 }
 
-function toggleNSFW() {
-    let text = document.getElementById('nsfwText');
-    let image = document.getElementById('nsfwImage');
-
-    if (nsfwToggled) {
-        text.innerText = "Hide NSFW"
-        image.src = "/assets/web/nsfw.png"
-        nsfwToggled = false;
-        showNSFW = true;
-        playAudio("/assets/web/fishing/sounds/zip.ogg")
-    } else {
-        text.innerText = "Show NSFW";
-        image.src = "/assets/web/normal.png";
-        nsfwToggled = true;
-        showNSFW = false;
-    }
-
-    handleChange()
-    updateModsCount()
-}
-
 const ignoreList = [
     "Hook_Line_and_Sinker",
     "GDWeave",
@@ -60,14 +43,12 @@ function generateModItems(modData) {
         if (ignoreList.includes(mod.modName) || mod.isDeprecated) {
             return
         }
-
-        let configNsfw = false;
-
-        window.pywebview.api.configure("nsfw").then((val) => {
-            configNsfw = val === "shownsfw" ? true : false
-        })
         
-        if (configNsfw == false && mod.isNSFW == true) return;
+        if (configNsfw == false) {
+            if (mod.isNSFW == true) {
+                return
+            }
+        }
 
         // Create the main item container
         const itemDiv = document.createElement('div');
@@ -213,6 +194,6 @@ function generateModItems(modData) {
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('searchInput').addEventListener('input', handleChange);
         
-    setTimeout(() => window.pywebview.api.getModList().then(generateModItems), 50);
+    window.pywebview.api.getModList().then(handleChange)
     updateModsCount()
 });
