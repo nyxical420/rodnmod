@@ -51,13 +51,13 @@ class RodNMod:
         except FileNotFoundError:
             pass
         self.visitSite("steam://rungameid/3146520")
-
+    
     def configure(self, configItem: str, configValue=None):
-        base_path = path.dirname(path.abspath(__file__))
-        configPath = path.join(base_path, "data", "config.json")
+        makedirs("data", exist_ok=True)
 
-        if not path.exists(configPath):
-            default_config = {
+        if not path.exists("data/config.json"):
+            with open("data/config.json", "w") as file:
+                default_config = {
                 "debugging": "debdis",
                 "hlsmods": "findhls",
                 "reelsound": "reel",
@@ -66,23 +66,18 @@ class RodNMod:
                 "category": "all",
                 "nsfw": "hidensfw"
             }
-
-            makedirs(path.dirname(configPath), exist_ok=True)
-            with open(configPath, 'w') as file:
+            with open("data/config.json", 'w') as file:
                 dump(default_config, file, indent=4)
 
-        with open(configPath) as file:
+        with open("data/config.json", "r") as file:
             config = load(file)
 
         if configValue is None:
-            try:
-                return config[configItem]
-            except KeyError:
-                return "Not a configuration item"
+            return config.get(configItem, "Not a configuration item")
         else:
             config[configItem] = configValue
-            with open(configPath, 'w') as f:
-                dump(config, f, indent=4)
+            with open("data/config.json", 'w') as file:
+                dump(config, file, indent=4)
             return "Configured!"
 
     def webfishingInstallation(self):
