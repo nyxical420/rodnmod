@@ -7,7 +7,7 @@ from rapidfuzz import fuzz, process
 from webbrowser import open as openWeb
 from re import IGNORECASE, compile as comp
 from psutil import process_iter, NoSuchProcess
-from os import path, rename, walk, chdir, listdir
+from os import path, rename, walk, chdir, listdir, makedirs
 from webview import create_window, start, windows as webWindows
 
 from rodnmod.fishfinder import findWebfishing
@@ -52,8 +52,10 @@ class RodNMod:
             pass
         self.visitSite("steam://rungameid/3146520")
 
-    def configure(self, configItem: str, configValue = None):
-        configPath = "data/config.json"
+    def configure(self, configItem: str, configValue=None):
+        base_path = path.dirname(path.abspath(__file__))
+        configPath = path.join(base_path, "data", "config.json")
+
         if not path.exists(configPath):
             default_config = {
                 "debugging": "debdis",
@@ -64,9 +66,11 @@ class RodNMod:
                 "category": "all",
                 "nsfw": "hidensfw"
             }
+            
+            makedirs(path.dirname(configPath), exist_ok=True)
             with open(configPath, 'w') as file:
                 dump(default_config, file, indent=4)
-        
+
         with open(configPath) as file:
             config = load(file)
 
