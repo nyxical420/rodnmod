@@ -66,7 +66,7 @@ class RodNMod:
                 "category": "all",
                 "nsfw": "hidensfw"
             }
-            
+
             makedirs(path.dirname(configPath), exist_ok=True)
             with open(configPath, 'w') as file:
                 dump(default_config, file, indent=4)

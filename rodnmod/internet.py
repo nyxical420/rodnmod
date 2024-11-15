@@ -1,4 +1,3 @@
-import io
 import os
 import json
 import httpx
@@ -6,6 +5,8 @@ import zipfile
 import shutil
 import tempfile
 from datetime import datetime, timezone
+
+httpx.Timeout(60, read=None)
 
 def timeAgo(updated_time):
     now = datetime.now(timezone.utc)
@@ -85,7 +86,7 @@ def download(url, extractPath, data: dict = {}):
     print("Starting download...")
 
     with httpx.Client() as client:
-        response = client.get(url, follow_redirects=True, timeout=60)
+        response = client.get(url, follow_redirects=True)
         response.raise_for_status()
 
         temp_folder = os.path.join(extractPath, "temp_extract")
