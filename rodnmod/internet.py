@@ -6,7 +6,7 @@ import shutil
 import tempfile
 from datetime import datetime, timezone
 
-httpx.Timeout(60, read=None)
+timeout = httpx.Timeout(60, read=None)
 
 def timeAgo(updated_time):
     now = datetime.now(timezone.utc)
@@ -28,7 +28,7 @@ def timeAgo(updated_time):
     return f"Updated {seconds // 31536000} year{'s' if seconds // 31536000 != 1 else ''} ago"
 
 def getMods():
-    response = httpx.get("https://thunderstore.io/c/webfishing/api/v1/package/")
+    response = httpx.get("https://thunderstore.io/c/webfishing/api/v1/package/", timeout=timeout)
     response.raise_for_status()
     data = response.json()
     
@@ -86,7 +86,7 @@ def download(url, extractPath, data: dict = {}):
     print("Starting download...")
 
     with httpx.Client() as client:
-        response = client.get(url, follow_redirects=True)
+        response = client.get(url, follow_redirects=True, timeout=timeout)
         response.raise_for_status()
 
         temp_folder = os.path.join(extractPath, "temp_extract")
@@ -143,7 +143,7 @@ def download(url, extractPath, data: dict = {}):
 
 def downloadRaw(url: str, extractPath: str, data: dict = {}):
     with httpx.Client() as client:
-        response = client.get(url, follow_redirects=True, timeout=60)
+        response = client.get(url, follow_redirects=True, timeout=timeout)
         response.raise_for_status()
 
         if response.status_code == 200:
