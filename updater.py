@@ -27,7 +27,7 @@ class RodNModUpdater:
             newver = asset["tag_name"]
             curver = rnm["version"]
             window.evaluate_js(f"{status}.innerHTML = \"Downloading Update...<br>{curver} -> {newver}\"")
-            downloadRaw(asset["browser_download_url"], "./")
+            #downloadRaw(asset["browser_download_url"], "./")
             window.evaluate_js(f"{status}.innerHTML = 'Update Downloaded!'")
         
         if installationPath != None:
@@ -47,7 +47,7 @@ class RodNModUpdater:
                     else:
                         window.evaluate_js(f"{status}.innerHTML = 'No GDWeave Updates Available...'")
                 except FileNotFoundError:
-                    window.evaluate_js(f"{status}.innerHTML = 'Reinstalling GDWeave...<br>(For Rod n' Mod versioning compatibility)'")
+                    window.evaluate_js(f"{status}.innerHTML = \"Reinstalling GDWeave...<br>(For Rod n' Mod versioning compatibility)\"")
                     downloadRaw(downloadUrl, installationPath, {"name": name, "version": version})
             else:
                 window.evaluate_js(f"{status}.innerHTML = 'Downloading GDWeave...'")
