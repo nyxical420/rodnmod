@@ -117,7 +117,7 @@
                         </div>
                     </div>
                 
-                    <div id="creditsMenu" class="settingTab">
+                    <div id="creditsMenu" class="settingTab" style="font-size: 18px;">
                         <text>Credits to Zoiudolo for the Rod n' Mod Banner, Icons, Point & Click cursors</text><br>
                         <text>westwerst for the Game Sounds & Cursor</text>
                     </div>
@@ -200,9 +200,15 @@
                                 </div>
                             </div>
                             
-                            <button type="normalButton" style="width: 150px; margin-left: auto;" onmouseup="handleChange()">
-                                <text style="pointer-events: none;">REFRESH MODS</text>
-                            </button>
+                            <div style="margin-left: auto;">
+                                <button type="normalButton" style="width: 125px;" onmouseup="window.pywebview.api.updateAllMods()">
+                                    <text style="pointer-events: none;">UPDATE MODS</text>
+                                </button>
+    
+                                <button type="normalButton" style="width: 140px;" onmouseup="handleChange()">
+                                    <text style="pointer-events: none;">REFRESH MODS</text>
+                                </button>
+                            </div>
                         </div>
                     </div>
 

@@ -5,9 +5,9 @@ from shutil import rmtree
 from json import load, dump
 from rapidfuzz import fuzz, process
 from webbrowser import open as openWeb
-from os import path, rename, walk, chdir
 from re import IGNORECASE, compile as comp
 from psutil import process_iter, NoSuchProcess
+from os import path, rename, walk, chdir, listdir
 from webview import create_window, start, windows as webWindows
 
 from rodnmod.fishfinder import findWebfishing
@@ -55,11 +55,18 @@ class RodNMod:
     def configure(self, configItem: str, configValue = None):
         configPath = "data/config.json"
         if not path.exists(configPath):
-            default_config = {"debugging": "debdis"}
+            default_config = {
+                "debugging": "debdis",
+                "hlsmods": "findhls",
+                "reelsound": "reel",
+                "transition": "transition",
+                "filter": "installed",
+                "category": "all",
+                "nsfw": "hidensfw"
+            }
             with open(configPath, 'w') as file:
                 dump(default_config, file, indent=4)
         
-        # If config file exists, load it
         with open(configPath) as file:
             config = load(file)
 
@@ -270,12 +277,12 @@ class RodNMod:
                         if dependencyPath:
                             try:
                                 with open(dependencyPath + "\\rnmInfo.json", "r") as f:
-                                    mnrInfo = load(f)
+                                    rnmInfo = load(f)
                             except:
                                 # cant do anything about this, probbably a mod installed via HLS.
-                                mnrInfo = {"version": "1.0.0"}
+                                rnmInfo = {"version": "1.0.0"}
 
-                            if mnrInfo["version"] != dependencyVersion:
+                            if rnmInfo["version"] != dependencyVersion:
                                 download(dependencyDownload, installationPath + "\\GDWeave\\mods", {"name": dependencyName, "author": dependencyAuthor, "version": dependencyVersion})
 
                         else:
@@ -288,15 +295,15 @@ class RodNMod:
                 try:
                     if modPath != None:
                         with open(modPath + "\\rnmInfo.json", "r") as f:
-                            mnrInfo = load(f)
+                            rnmInfo = load(f)
 
-                        if mnrInfo["version"] != modVersion:
+                        if rnmInfo["version"] != modVersion:
                             download(modDownload, installationPath + "\\GDWeave\\mods", {"name": modName, "author": modAuthor, "version": modVersion})
                             window.evaluate_js(f"notify('{modName} has been updated successfully!', 3000)")
                         else:
                             window.evaluate_js(f"notify('{modName} is currently up to date!', 3000)")
 
-                except FileNotFoundError: # mnrInfo.json missing, skip version check and download mod immediately instead
+                except FileNotFoundError: # rnmInfo.json missing, skip version check and download mod immediately instead
                     window.evaluate_js(f"notify('rnmInfo.json for {modName} missing. Forcing download...', 3000)")
                     download(modDownload, installationPath + "\\GDWeave\\mods", {"name": modName, "author": modAuthor, "version": modVersion})
 
@@ -329,6 +336,28 @@ class RodNMod:
             except TypeError: pass
             except PermissionError:
                 window.evaluate_js(f"notify('Permission denied! Please close WEBFISHING first to uninstall the mod!', 3000)")
+
+    def updateAllMods(self):
+        window.evaluate_js(f"notify('Updating Mods...', 3000)")
+        fpath = installationPath + "\\GDWeave\\mods"
+        folders = [entry for entry in listdir(fpath) if path.isdir(path.join(fpath, entry))]
+        
+        for mod in folders:
+            try: mod = mod.split(".")[1]
+            except IndexError: pass
+            _, value = next(iter(self.searchModList(mod, "none", "all", "shownsfw").items()))
+
+            try:
+                with open(f"{fpath}\\" + value.get("modAuthor") + "." + value.get("modName") + "\\rnmInfo.json", "r") as f:
+                    modInfo = load(f)
+            except FileNotFoundError:
+                modInfo = {"version": "null"}
+
+            if value.get("latestVersion") != modInfo["version"]:
+                self.downloadMod(value.get("modAuthor") + "-" + value.get("modName"))
+        
+        window.evaluate_js(f"notify('Updated all mods!', 3000)")
+
 
 rnm = RodNMod()
 

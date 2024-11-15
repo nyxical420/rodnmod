@@ -100,7 +100,7 @@ function generateModItems(modData) {
 
         // Add download count and score
         const downloadsDiv = document.createElement('div');
-        downloadsDiv.style = "font-size: 18px;";
+        downloadsDiv.style = "font-size: 20px;";
         downloadsDiv.innerHTML = `
             <img src="/assets/web/download.png" style="vertical-align: middle; width: 22px; height: 22px;"/> ${mod.totalDownloads.toLocaleString()} 
             <img src="/assets/web/like.png" style="vertical-align: middle; width: 22px; height: 22px;"/> ${mod.modScore.toLocaleString()}
