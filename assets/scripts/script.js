@@ -1,4 +1,4 @@
-document.body.style.zoom = '0.8';
+document.body.style.zoom = '0.85';
 
 let sceneChanging = false;
 let previousIsRunning = null;
@@ -194,7 +194,7 @@ function notify(message, duration = 3000) {
     setTimeout(() => {
         toast.classList.add("show")
         playAudio("/assets/web/fishing/sounds/notification.ogg")
-    }, 10);
+    }, 50);
 
     setTimeout(() => {
         toast.classList.remove("show");
@@ -232,8 +232,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.addEventListener('mousemove', (e) => {
         if (isDragging) {
-            const scaledX = (e.clientX / width) * 1080;
-            const scaledY = (e.clientY / height) * 720;
+            const scaledX = (e.clientX / width) * 1180;
+            const scaledY = (e.clientY / height) * 800;
 
             const dx = Math.abs(scaledX - startX);
             const dy = Math.abs(scaledY - startY);

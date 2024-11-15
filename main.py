@@ -1,14 +1,17 @@
 # powered by hopes and dreams
 
-from httpx import get
+import sys
+import logging
+import pyperclip
+import subprocess
 from shutil import rmtree
 from json import load, dump
 from rapidfuzz import fuzz, process
 from webbrowser import open as openWeb
 from re import IGNORECASE, compile as comp
 from psutil import process_iter, NoSuchProcess
-from os import path, rename, walk, chdir, listdir, makedirs
 from webview import create_window, start, windows as webWindows
+from os import path, rename, walk, chdir, listdir, makedirs, execv
 
 from rodnmod.fishfinder import findWebfishing
 from rodnmod.internet import getMods, download
@@ -24,6 +27,22 @@ else:
     print("WEBFISHING Installation Path Not Found")
 
 chdir(path.dirname(path.abspath(__name__)))
+
+logging.basicConfig(
+    level=logging.ERROR,
+    filename="rodnmod.log",
+    format="%(asctime)s - Application %(levelname)s - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S"
+)
+
+def exceptHook(exc_type, exc_value, exc_traceback):
+    if issubclass(exc_type, KeyboardInterrupt):
+        sys.__excepthook__(exc_type, exc_value, exc_traceback)
+        return
+
+    logging.error("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))
+
+sys.excepthook = exceptHook
 
 class RodNMod:
     modsList = getMods()
@@ -51,6 +70,18 @@ class RodNMod:
         except FileNotFoundError:
             pass
         self.visitSite("steam://rungameid/3146520")
+
+    def copyLogs(self):
+        with open("rodnmod.log", 'r') as file:
+            content = file.read()
+        pyperclip.copy(content)
+        window.evaluate_js(f"notify('Logs has been copied!', 3000)")
+
+    def clearLogs(self):
+        with open("rodnmod.log", 'w') as file:
+            file.write("")
+        window.evaluate_js(f"notify('Log File has been cleared!', 3000)")
+        
     
     def configure(self, configItem: str, configValue=None):
         makedirs("data", exist_ok=True)
@@ -88,6 +119,10 @@ class RodNMod:
 
     def closeApplication(self):
         window.destroy()
+
+    def restartApplication(self):
+        execv("./rodnmod.exe", ["./rodnmod.exe"])
+
 
     def webfishingRunning(self):
         try:
@@ -212,7 +247,8 @@ class RodNMod:
                 return folder
         
         # attempt finding mods downloaded from HLS.
-        if self.configure("hlsmods") == "findhls":
+        mods = [entry for entry in listdir(installationPath + "\\GDWeave\\mods") if path.isdir(path.join(installationPath + "\\GDWeave\\mods", entry))]
+        if self.configure("hlsmods") == "findhls" and mods != []:
             transformations = [
                 (lambda name: name.split(".")[1] if "." in name else name, 90),
                 (lambda name: name.replace("-", "."), 85),
@@ -339,8 +375,12 @@ class RodNMod:
     def updateAllMods(self):
         window.evaluate_js(f"notify('Updating Mods...', 3000)")
         fpath = installationPath + "\\GDWeave\\mods"
-        folders = [entry for entry in listdir(fpath) if path.isdir(path.join(fpath, entry))]
-        
+
+        try: folders = [entry for entry in listdir(fpath) if path.isdir(path.join(fpath, entry))]
+        except:
+            window.evaluate_js(f"notify('Could not update mods. (Mods folder missing in GDWeave directory)', 3000)")
+            return
+
         for mod in folders:
             try: mod = mod.split(".")[1]
             except IndexError: pass
@@ -354,27 +394,19 @@ class RodNMod:
 
             if value.get("latestVersion") != modInfo["version"]:
                 self.downloadMod(value.get("modAuthor") + "-" + value.get("modName"))
-        
+
         window.evaluate_js(f"notify('Updated all mods!', 3000)")
 
 
 rnm = RodNMod()
 
 if __name__ == "__main__":
-    latestRMVersion = get("https://api.github.com/repos/nyxical420/rodnmod/tags").json()[0]["name"]
-    
-    with open("version.json") as ver:
-        version = load(ver)
-
-    if version["version"] != latestRMVersion:
-        print(version["version"], latestRMVersion)
-        print("has update")
-        latestVersion = latestRMVersion
+    makedirs(installationPath + "\\GDWeave\\mods", exist_ok=True)
 
     window = create_window(
         "Rod n' Mod",
         "main.html",
-        width=1080, height=720,
+        width=1200, height=800,
         frameless=True,
         js_api=RodNMod,
     )

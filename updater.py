@@ -1,3 +1,5 @@
+import sys
+import logging
 from httpx import get
 from json import load
 from os import path, chdir, execv
@@ -10,6 +12,21 @@ installationPath = findWebfishing()
 
 chdir(path.dirname(path.abspath(__name__)))
 
+logging.basicConfig(
+    level=logging.ERROR,
+    filename="error.log",
+    format="%(asctime)s - Updater %(levelname)s " + "-"*15,
+    datefmt="%Y-%m-%d %H:%M:%S"
+)
+
+def exceptHook(exc_type, exc_value, exc_traceback):
+    if issubclass(exc_type, KeyboardInterrupt):
+        sys.__excepthook__(exc_type, exc_value, exc_traceback)
+        return
+
+    logging.error("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))
+
+sys.excepthook = exceptHook
 class RodNModUpdater:
     def doUpdates(self):
         status = "document.getElementById('status')"

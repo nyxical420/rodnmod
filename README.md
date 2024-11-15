@@ -3,6 +3,9 @@
     A webfishing-themed mod manager!
 </p>
 
+> [!NOTE]
+> Assets located in `assets/web/fishing` are WEBFISHING game assets and is excepted from the project's license.
+
 > [!WARNING]  
 > Rod n' Mod is still on it's alpha stage, so there may be bugs and issues. If you encounter any, please report them to me in the [issues page](https://github.com/nyxical420/rodnmod/issues) or at my discord! (@nyxical ID:583200866631155714)
 

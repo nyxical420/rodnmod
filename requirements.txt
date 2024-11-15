@@ -2,4 +2,5 @@ httpx
 psutil
 pywebview
 rapidfuzz
+pyperclip
 cx_Freeze
