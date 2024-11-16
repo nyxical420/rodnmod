@@ -2,10 +2,6 @@ let isUpdating = false;
 let nsfwToggled = true;
 let configNsfw = false;
 
-window.pywebview.api.configure("nsfw").then((val) => {
-    configNsfw = val === "shownsfw" ? true : false
-})
-
 function handleChange() {
     if (isUpdating) return;
     isUpdating = true;
@@ -190,10 +186,3 @@ function generateModItems(modData) {
         updateModsCount()
     });
 }
-
-document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('searchInput').addEventListener('input', handleChange);
-        
-    window.pywebview.api.getModList().then(handleChange)
-    updateModsCount()
-});

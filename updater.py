@@ -14,7 +14,7 @@ chdir(path.dirname(path.abspath(__name__)))
 
 logging.basicConfig(
     level=logging.ERROR,
-    filename="error.log",
+    filename="rodnmod.log",
     format="%(asctime)s - Updater %(levelname)s " + "-"*15,
     datefmt="%Y-%m-%d %H:%M:%S"
 )
@@ -28,7 +28,7 @@ def exceptHook(exc_type, exc_value, exc_traceback):
 
 sys.excepthook = exceptHook
 class RodNModUpdater:
-    def doUpdates(self):
+    def doUpdates():
         status = "document.getElementById('status')"
         window.evaluate_js(f"{status}.innerHTML = 'Checking for Updates...'")
         rnm = get("https://api.github.com/repos/nyxical420/rodnmod/releases?per_page=1").json()[0]
@@ -89,4 +89,5 @@ if __name__ == "__main__":
         if callable(func) and not name.startswith("_"):
             window.expose(func)
 
+    window.events.loaded += RodNModUpdater.doUpdates
     start()

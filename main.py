@@ -10,8 +10,10 @@ from rapidfuzz import fuzz, process
 from webbrowser import open as openWeb
 from re import IGNORECASE, compile as comp
 from psutil import process_iter, NoSuchProcess
-from webview import create_window, start, windows as webWindows
 from os import path, rename, walk, chdir, listdir, makedirs, execv
+
+from webview.dom import DOMEventHandler
+from webview import create_window, start, windows as webWindows
 
 from rodnmod.fishfinder import findWebfishing
 from rodnmod.internet import getMods, download
@@ -81,7 +83,9 @@ class RodNMod:
         with open("rodnmod.log", 'w') as file:
             file.write("")
         window.evaluate_js(f"notify('Log File has been cleared!', 3000)")
-        
+
+        buttons = window.dom.get_elements("asd")
+        buttons.on
     
     def configure(self, configItem: str, configValue=None):
         makedirs("data", exist_ok=True)
@@ -397,6 +401,10 @@ class RodNMod:
 
         window.evaluate_js(f"notify('Updated all mods!', 3000)")
 
+# A DISCOVERY HAS BEEN MADE AND A REWRITE IS IMPENDING
+class WindowFunctions:
+    def bind(window):
+        ...
 
 rnm = RodNMod()
 
@@ -408,6 +416,7 @@ if __name__ == "__main__":
         "main.html",
         width=1200, height=800,
         frameless=True,
+        easy_drag=True,
         js_api=RodNMod,
     )
 
@@ -417,4 +426,5 @@ if __name__ == "__main__":
             window.expose(func)
 
     debugOption = True if rnm.configure("debugging") == "debena" else False
+    window.events.loaded += lambda: window.evaluate_js(f"scriptsReady();")
     start(debug=debugOption)

@@ -204,63 +204,7 @@ function notify(message, duration = 3000) {
     }, duration);
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    function checkPywebviewApi() {
-        if (typeof window.pywebview === 'undefined' || typeof window.pywebview.api === 'undefined') {
-            console.warn("pywebview.api is not available. Refreshing page...");
-            location.reload();
-        }
-    }
-
-    checkPywebviewApi();
-
-    let isDragging = false;
-    let startX, startY, offsetX, offsetY;
-
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-
-    const titleBar = document.querySelector('.titleBar');
-
-    titleBar.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        startX = e.clientX;
-        startY = e.clientY;
-        offsetX = e.clientX - titleBar.getBoundingClientRect().left;
-        offsetY = e.clientY - titleBar.getBoundingClientRect().top;
-    });
-
-    document.addEventListener('mousemove', (e) => {
-        if (isDragging) {
-            const scaledX = (e.clientX / width) * 1180;
-            const scaledY = (e.clientY / height) * 800;
-
-            const dx = Math.abs(scaledX - startX);
-            const dy = Math.abs(scaledY - startY);
-
-            if (dx > 1 || dy > 1) {
-                const x = scaledX - offsetX;
-                const y = scaledY - offsetY;
-                window.pywebview.api.dragWindow(x, y);
-
-                startX = scaledX;
-                startY = scaledY;
-            }
-        }
-    });
-
-    document.addEventListener('mouseup', () => {
-        if (isDragging) {
-            isDragging = false;
-        }
-    });
-
-    document.addEventListener('mouseleave', () => {
-        if (isDragging) {
-            isDragging = false;
-        }
-    });
-
+function scriptsReady() {
     setInterval(() => {
         function changeState(response) {
             const isRunning = response.running;
@@ -344,4 +288,9 @@ document.addEventListener('DOMContentLoaded', function () {
     window.pywebview.api.configure("nsfw").then((val) => {
         setDropdownValue("nsfw", val)
     })
-});
+
+    document.getElementById('searchInput').addEventListener('input', handleChange);
+        
+    window.pywebview.api.getModList().then(handleChange)
+    updateModsCount()
+};
