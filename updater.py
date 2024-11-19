@@ -1,8 +1,6 @@
 import sys
 import semver
 import logging
-import platform
-import subprocess
 from httpx import get
 from json import load
 from os import path, chdir, execv
@@ -53,7 +51,7 @@ class RodNModUpdater:
             if response.status_code == 200:
                 with open("update.zip", 'wb') as f:
                     f.write(response.content)
-                window.evaluate_js(f"{status}.innerHTML = 'Update Downloaded!'")
+                window.evaluate_js(f"{status}.innerHTML = 'Unpacking Update...<br>Please wait for the updater to run again!'")
 
                 execv("./rnmunpacker.exe", ["./rnmunpacker.exe"])
             else:

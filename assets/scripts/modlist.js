@@ -88,7 +88,7 @@ function generateModItems(modData) {
 
         // Create the content container
         const contentDiv = document.createElement('div');
-        contentDiv.style = "background-color: #ffeed5; border-radius: 15px; box-shadow: 0 4px 0 #6a4420; padding: 7px 10px; display: flex; flex-direction: column; height: 100%; position: relative;";
+        contentDiv.style = "background-color: #ffeed5; border-radius: 15px; box-shadow: 0 4px 0 #6a4420; padding: 7px 10px; display: flex; flex-direction: column; height: 150px; position: relative;";
         
         // Add the updated time
         const updatedDiv = document.createElement('div');
