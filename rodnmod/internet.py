@@ -3,7 +3,7 @@ import json
 import httpx
 import zipfile
 import shutil
-import tempfile
+from io import BytesIO
 from datetime import datetime, timezone
 
 timeout = httpx.Timeout(60, read=None)
@@ -149,32 +149,17 @@ def downloadRaw(url: str, extractPath: str, data: dict = {}):
         if response.status_code == 200:
             os.makedirs(extractPath, exist_ok=True)
 
-            with tempfile.NamedTemporaryFile(delete=False) as temp_zip:
-                temp_zip.write(response.content)
-                temp_zip_path = temp_zip.name
-
             try:
-                with zipfile.ZipFile(temp_zip_path) as zip_ref:
+                with zipfile.ZipFile(BytesIO(response.content)) as zip_ref:
                     zip_ref.extractall(extractPath)
 
                 if data:
-                    with tempfile.NamedTemporaryFile(delete=False, mode='w', encoding='utf-8') as temp_json:
-                        json.dump(data, temp_json, indent=4)
-                        temp_json_path = temp_json.name
+                    json_path = os.path.join(extractPath, "rnmInfo.json")
+                    with open(json_path, "w", encoding="utf-8") as f:
+                        json.dump(data, f, indent=4)
 
-                    try:
-                        original_json_path = os.path.join(extractPath, "rnmInfo.json")
-                        shutil.move(temp_json_path, original_json_path)
-                        print(f"Updated rnmInfo.json successfully.")
-                    except Exception as json_error:
-                        print(f"Error updating rnmInfo.json: {json_error}")
-                        os.remove(temp_json_path)
-
-                print(f"File successfully extracted to {extractPath}")
+                print(f"File successfully downloaded and extracted to {extractPath}")
             except Exception as e:
                 print(f"Error during extraction: {e}")
-            finally:
-                os.remove(temp_zip_path)
-
         else:
             print(f"Failed to download the file, status code {response.status_code}")

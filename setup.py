@@ -47,8 +47,7 @@ setup(
                 "lib2to3",
                 "pip",
                 "more_itertools",
-                "qtpy",
-                "pyinstaller"
+                "email"
             ]
         }
     },
@@ -61,7 +60,7 @@ setup(
         ),
         Executable(
             "updater.py",
-            icon="./assets/rodnmod.ico",
+            icon="./assets/updater.ico",
             base=("Win32GUI" if sys.platform == "win32" else None),
             target_name="rnmupdater"
         )

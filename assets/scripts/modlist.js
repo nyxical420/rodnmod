@@ -1,6 +1,6 @@
 let isUpdating = false;
 let nsfwToggled = true;
-let configNsfw = false;
+let configNsfw = "hidensfw";
 
 function handleChange() {
     if (isUpdating) return;
@@ -32,18 +32,16 @@ function generateModItems(modData) {
     const modItemsContainer = document.querySelector('.modItems');
     modItemsContainer.innerHTML = '';
     console.log(modData);
-    
+
     Object.keys(modData).forEach(modKey => {
         const mod = modData[modKey];
 
-        if (ignoreList.includes(mod.modName) || mod.isDeprecated) {
+        if (ignoreList.includes(mod.modName)) {
             return
         }
         
-        if (configNsfw == false) {
-            if (mod.isNSFW == true) {
-                return
-            }
+        if (mod.isNSFW && getValue("nsfw") == "hidensfw") {
+            return
         }
 
         // Create the main item container
@@ -52,20 +50,52 @@ function generateModItems(modData) {
         itemDiv.style = "display: grid; grid-template-columns: auto 1fr; gap: 5px; width: 100%; height: 150px; margin-bottom: 25px;";
 
         // Create the mod icon image
+        const imageContainer = document.createElement('div');
+        imageContainer.style.position = 'relative';
+
         const img = document.createElement('img');
-        img.src = mod.versions[0].modIcon || 'https://placehold.co/150';
+        img.src = mod.versions[0].modIcon || 'assets/web/rodnmod.png';
         img.style = "width: 150px; height: 150px; border-radius: 15px; box-shadow: 0 4px 0 #6a4420;";
-        img.laz
-        itemDiv.appendChild(img);
+        imageContainer.appendChild(img);
+
+        if (mod.isDeprecated) {
+            const deprecatedContainer = document.createElement('div');
+            deprecatedContainer.style = "position: absolute; bottom: -8px; left: -14px; font-size: 18px; width: 145px; height: 30px; border-radius: 8px; padding: 5px 13px; background-color: #ffeed5; box-shadow: 0 4px 0 #6a4420; text-align: right;"
+            deprecatedContainer.innerText = "DEPRECATED"
+            
+            const deprecatedIndicator = document.createElement('img');
+            deprecatedIndicator.src = "assets/web/deprecated.png";
+            deprecatedIndicator.style = "pointer-events: none; position: absolute; top: -18px; left: 0; width: 48px; height: 48px; transform: rotate(-15deg);";
+            
+            deprecatedContainer.appendChild(deprecatedIndicator);
+            imageContainer.appendChild(deprecatedContainer);
+        }
+
+        if (mod.isNSFW) {
+            const nsfwContainer = document.createElement('div');
+            nsfwContainer.style = "position: absolute; bottom: -8px; left: -14px; font-size: 18px; width: 105px; height: 30px; border-radius: 8px; padding: 5px 13px; background-color: #ffeed5; box-shadow: 0 4px 0 #6a4420; text-align: right;"
+            nsfwContainer.innerText = "NSFW"
+            
+            const nsfwIndicator = document.createElement('img');
+            nsfwIndicator.src = "assets/web/nsfw.png";
+            nsfwIndicator.style = "pointer-events: none; position: absolute; top: -15px; left: 0; width: 48px; height: 48px; transform: rotate(-15deg);";
+            
+            nsfwContainer.appendChild(nsfwIndicator);
+            imageContainer.appendChild(nsfwContainer);
+        }
+
+        itemDiv.appendChild(imageContainer);
 
         // Create the content container
         const contentDiv = document.createElement('div');
-        contentDiv.style = "background-color: #ffeed5; border-radius: 15px; box-shadow: 0 4px 0 #6a4420; padding: 10px; display: flex; flex-direction: column; height: 100%; position: relative;";
+        contentDiv.style = "background-color: #ffeed5; border-radius: 15px; box-shadow: 0 4px 0 #6a4420; padding: 7px 10px; display: flex; flex-direction: column; height: 100%; position: relative;";
         
         // Add the updated time
         const updatedDiv = document.createElement('div');
         updatedDiv.style = "position: absolute; top: 8px; right: 10px; font-size: 16px; color: #6a4420;";
-        updatedDiv.textContent = mod.updatedAgo;
+        updatedDiv.innerHTML = `
+            <text style="position: relative; top: -3px">${mod.updatedAgo}</text> <img src="/assets/web/clock.png" style="width: 16px; height: 16px;">
+        `;
         contentDiv.appendChild(updatedDiv);
 
         const website = document.createElement('div');
@@ -175,7 +205,9 @@ function generateModItems(modData) {
     
         }
         
-        window.pywebview.api.uninstallMod(`${mod.modAuthor}.${mod.modName}`, true).then(addButtons);
+        if (!mod.isDeprecated) {
+            window.pywebview.api.uninstallMod(`${mod.modAuthor}.${mod.modName}`, true).then(addButtons);
+        }
 
 
         menuContainer.appendChild(buttonContainer);

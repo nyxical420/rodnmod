@@ -2,13 +2,16 @@ document.body.style.zoom = '0.85';
 
 let sceneChanging = false;
 let previousIsRunning = null;
-const preloadedAudio = {};  // Store preloaded audio objects
+const preloadedAudio = {};
 
 function showResponse(response) {
     var container = document.getElementById('res');
     container.textContent = response;
     container.style.display = 'block';
 }
+
+let previousTopCount = 0;
+let previousBottomCount = 0;
 
 function updateModsCount() {
     const elements = document.querySelectorAll(".item");
@@ -29,34 +32,47 @@ function updateModsCount() {
             bottomCount++;
         }
     });
-    
-    if (topCount == 0) {
-        document.getElementById("mctparent").style.opacity = 0
-        document.getElementById("mctparent").style.top = "-64px"
+
+    const topCountElement = document.getElementById("mctparent");
+    const bottomCountElement = document.getElementById("mcbparent");
+
+    if (topCount === 0) {
+        topCountElement.style.opacity = 0;
+        topCountElement.style.top = "-64px";
     } else {
-        document.getElementById("mctparent").style.opacity = 1
-        document.getElementById("mctparent").style.top = "64px"
+        topCountElement.style.opacity = 1;
+        topCountElement.style.top = "64px";
+
+        if (topCount !== previousTopCount) {
+            topCountElement.style.backgroundColor = "#9c914a";
+            setTimeout(() => {
+                topCountElement.style.backgroundColor = "#5a755a";
+            }, 300);
+        }
     }
 
-    if (bottomCount == 0) {
-        document.getElementById("mcbparent").style.opacity = 0
-        document.getElementById("mcbparent").style.bottom = "-44px"
+    if (bottomCount === 0) {
+        bottomCountElement.style.opacity = 0;
+        bottomCountElement.style.bottom = "-44px";
     } else {
-        document.getElementById("mcbparent").style.opacity = 1
-        document.getElementById("mcbparent").style.bottom = "44px"
+        bottomCountElement.style.opacity = 1;
+        bottomCountElement.style.bottom = "44px";
+
+        if (bottomCount !== previousBottomCount) {
+            bottomCountElement.style.backgroundColor = "#9c914a";
+            setTimeout(() => {
+                bottomCountElement.style.backgroundColor = "#5a755a";
+            }, 300);
+        }
     }
+
     topCountView.textContent = topCount;
     bottomCountView.textContent = bottomCount;
- }
 
-function checkInstall(response) {
-    if (response.installationStatus == false) {
-        window.pywebview.api.closeApplication();
-    } else {
-        setTimeout(() => openWindow(), 1000);
-        setTimeout(() => document.querySelector('.splashIcon').style.display = 'none', 1500);
-    }
+    previousTopCount = topCount;
+    previousBottomCount = bottomCount;
 }
+
 
 function openWindow(name) {
     if (name == null) { name = ".content"; }
@@ -69,7 +85,6 @@ function closeWindow(name, literally) {
     document.querySelector(name).style.clipPath = 'circle(0% at 50% 50%)';
     playAudio("/assets/web/fishing/sounds/guitar_in.ogg");
     if (literally) {
-        document.querySelector('.splashIcon').style.display = 'block';
         setTimeout(() => window.pywebview.api.closeApplication(), 3000);
     }
 }
@@ -96,7 +111,8 @@ function playAudio(url) {
             audioClone.remove();
         });
     } else {
-        console.warn(`Audio file ${url} is not preloaded.`);
+        console.warn(`Audio file ${url} is not preloaded. Preloading now...`);
+        preloadAudio(url);
     }
 }
 
@@ -205,25 +221,6 @@ function notify(message, duration = 3000) {
 }
 
 function scriptsReady() {
-    setInterval(() => {
-        function changeState(response) {
-            const isRunning = response.running;
-            if (isRunning !== previousIsRunning) {
-                previousIsRunning = isRunning;
-
-                if (isRunning === false) {
-                    document.querySelector(".run").style.opacity = '1';
-                    document.querySelector(".run").style.pointerEvents = 'all';
-                } else {
-                    document.querySelector(".run").style.opacity = '0';
-                    document.querySelector(".run").style.pointerEvents = 'none';
-                }
-            }
-        }
-
-        window.pywebview.api.webfishingRunning().then(changeState);
-    }, 500);
-
     const audioFiles = [
         '/assets/web/fishing/sounds/guitar_out.ogg',
         '/assets/web/fishing/sounds/guitar_in.ogg',
@@ -237,12 +234,11 @@ function scriptsReady() {
     ];
     preloadAudio(audioFiles);
 
-    window.pywebview.api.isInstalled().then(checkInstall);
     document.querySelectorAll('button').forEach(addSoundEffects);
     document.querySelectorAll('.tabButton').forEach(addSoundEffects);
     document.querySelectorAll(".dropdown-header").forEach(mouseOverEventSound);
 
-    const scrollElement = document.querySelector('#Mods');
+    const scrollElement = document.querySelector('.tabs');
     const audio = document.getElementById('audio');
 
     if (scrollElement && audio) {
@@ -268,29 +264,13 @@ function scriptsReady() {
       });
     }
 
-    // configs
-    window.pywebview.api.configure("hlsmods").then((val) => {
-        setDropdownValue("hlsmods", val === "findhls" ? "findhls" : "nofindhls")
-    })
+    let debounceTimer;
+    document.getElementById('searchInput').addEventListener('input', () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            handleChange();
+        }, 300);
+    });
 
-    window.pywebview.api.configure("debugging").then((val) => {
-        setDropdownValue("debugging", val === "debena" ? "debena" : "debdis")
-    })
-
-    window.pywebview.api.configure("filter").then((val) => {
-        setDropdownValue("filter", val)
-    })
-
-    window.pywebview.api.configure("category").then((val) => {
-        setDropdownValue("category", val)
-    })
-
-    window.pywebview.api.configure("nsfw").then((val) => {
-        setDropdownValue("nsfw", val)
-    })
-
-    document.getElementById('searchInput').addEventListener('input', handleChange);
-        
-    window.pywebview.api.getModList().then(handleChange)
-    updateModsCount()
+    updateModsCount();
 };

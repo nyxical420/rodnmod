@@ -1,19 +1,20 @@
 # powered by hopes and dreams
 
 import sys
+import time
 import logging
 import pyperclip
-import subprocess
 from shutil import rmtree
 from json import load, dump
+from threading import Thread
 from rapidfuzz import fuzz, process
 from webbrowser import open as openWeb
 from re import IGNORECASE, compile as comp
 from psutil import process_iter, NoSuchProcess
 from os import path, rename, walk, chdir, listdir, makedirs, execv
 
-from webview.dom import DOMEventHandler
-from webview import create_window, start, windows as webWindows
+from webview import create_window, start
+from webview.errors import JavascriptException
 
 from rodnmod.fishfinder import findWebfishing
 from rodnmod.internet import getMods, download
@@ -53,11 +54,6 @@ class RodNMod:
     def isInstalled(self):
         return {"installationStatus": webfishingInstalled}
     
-    def dragWindow(self, dx, dy):
-        if webWindows:
-            window = webWindows[0]
-            window.move(window.x + dx, window.y + dy)
-    
     def visitSite(self, site: str):
         openWeb(site)
 
@@ -84,9 +80,6 @@ class RodNMod:
             file.write("")
         window.evaluate_js(f"notify('Log File has been cleared!', 3000)")
 
-        buttons = window.dom.get_elements("asd")
-        buttons.on
-    
     def configure(self, configItem: str, configValue=None):
         makedirs("data", exist_ok=True)
 
@@ -125,18 +118,15 @@ class RodNMod:
         window.destroy()
 
     def restartApplication(self):
-        execv("./rodnmod.exe", ["./rodnmod.exe"])
-
+        if getattr(sys, 'frozen', False):
+            execv("./rodnmod.exe", ["./rodnmod.exe"])
+        else: # restart in development environment so you can immediately restart the entire code once its updated
+            execv(sys.executable, ['python'] + sys.argv)
 
     def webfishingRunning(self):
-        try:
-            running = any(proc.name() == "webfishing.exe" for proc in process_iter())
-        except NoSuchProcess:
-            running = False
+        try: running = any(proc.name() == "webfishing.exe" for proc in process_iter())
+        except NoSuchProcess: running = False
         return {"running": running}
-    
-    def say(self, text):
-        print(text)
         
     def getModList(self):
         return self.modsList
@@ -251,7 +241,9 @@ class RodNMod:
                 return folder
         
         # attempt finding mods downloaded from HLS.
-        mods = [entry for entry in listdir(installationPath + "\\GDWeave\\mods") if path.isdir(path.join(installationPath + "\\GDWeave\\mods", entry))]
+        try: mods = [entry for entry in listdir(installationPath + "\\GDWeave\\mods") if path.isdir(path.join(installationPath + "\\GDWeave\\mods", entry))]
+        except FileNotFoundError: mods = [entry for entry in listdir(installationPath + "\\GDWeave\\disabled.mods") if path.isdir(path.join(installationPath + "\\GDWeave\\disabled.mods", entry))]
+        
         if self.configure("hlsmods") == "findhls" and mods != []:
             transformations = [
                 (lambda name: name.split(".")[1] if "." in name else name, 90),
@@ -300,7 +292,6 @@ class RodNMod:
                 for dependency in modDependencies:
                     dp = dependency.split("-")
                     newDependencyName = f"{dp[0]}-{dp[1]}"
-                    reqDependencyVersion = dp[2] #unused for now, but this is the dependency version required by the mod
 
                     dependencyInfo = self.modsList[newDependencyName]
                     print(f"Checking if Required Dependency is installed...")
@@ -319,6 +310,8 @@ class RodNMod:
                                     rnmInfo = load(f)
                             except:
                                 # cant do anything about this, probbably a mod installed via HLS.
+                                # maybe once the modding community just comes togehter and make proper and similar
+                                # manifest files then i dont have to keep adding more data to mods.
                                 rnmInfo = {"version": "1.0.0"}
 
                             if rnmInfo["version"] != dependencyVersion:
@@ -360,10 +353,8 @@ class RodNMod:
         modpath = self.searchModFolders(mod)
 
         if checkExists: # check only
-            if modpath != None:
-                return True
-            else:
-                return False
+            if modpath != None: return True
+            else: return False
         else:
             print(f"Uninstalling {mod}...")
             try:
@@ -401,16 +392,74 @@ class RodNMod:
 
         window.evaluate_js(f"notify('Updated all mods!', 3000)")
 
-# A DISCOVERY HAS BEEN MADE AND A REWRITE IS IMPENDING
 class WindowFunctions:
-    def bind(window):
-        ...
+    sceneChanging = False
+    settingsDisplayed = False
+    state = ""
+
+    def checkRunning():
+        launchButtons = window.dom.get_element(".run")
+        while True:
+            try:
+                WindowFunctions.state = any(proc.name() == "webfishing.exe" for proc in process_iter())
+            except NoSuchProcess:
+                WindowFunctions.state = False
+            
+            try:
+                if WindowFunctions.state:
+                    launchButtons.style["opacity"] = 0
+                    launchButtons.style["pointerEvents"] = "none"
+                else:
+                    launchButtons.style["opacity"] = 1
+                    launchButtons.style["pointerEvents"] = "all"
+                time.sleep(0.05)
+            except JavascriptException:
+                pass
+    
+    # reloading the page wouldn't trigger this at all, so your best bet is to
+    # just restart the application from the settings menu instead
+    def onLoad():
+        # Window Buttons
+        window.dom.get_element(".minimizeButton").events.click += lambda e: window.minimize()
+        window.dom.get_element(".closeButton").events.click += lambda e: (
+            WindowFunctions.content(".content"),
+            time.sleep(3),
+            window.destroy()
+        )
+
+        # Background Processes n stuff
+        Thread(target=WindowFunctions.checkRunning, daemon=True).start()
+
+        # Configurations
+        configs = [
+            "debugging",
+            "hlsmods",
+            "reelsound",
+            "transition",
+            "filter",
+            "category",
+            "nsfw"
+        ]
+
+        for config in configs:
+            value = rnm.configure(config)
+            window.evaluate_js(f'setDropdownValue("{config}", "{value}")')
+
+        window.evaluate_js(f"handleChange();")
+        time.sleep(1) # short sleep to allow mods to load and prevent lag hopefully
+        window.evaluate_js(f"openWindow();") 
+
+    def content(element: str = None, visibility: str = "hide"):
+        if visibility == "hide":
+            window.dom.get_element(element).style["clipPath"] = r"circle(0% at 50% 50%)"
+            window.evaluate_js("playAudio('/assets/web/fishing/sounds/guitar_in.ogg');")
+        else:
+            window.dom.get_element(element).style["clipPath"] = r"circle(75% at 50% 50%)"
+            window.evaluate_js("playAudio('/assets/web/fishing/sounds/guitar_out.ogg');")
 
 rnm = RodNMod()
 
 if __name__ == "__main__":
-    makedirs(installationPath + "\\GDWeave\\mods", exist_ok=True)
-
     window = create_window(
         "Rod n' Mod",
         "main.html",
@@ -427,4 +476,6 @@ if __name__ == "__main__":
 
     debugOption = True if rnm.configure("debugging") == "debena" else False
     window.events.loaded += lambda: window.evaluate_js(f"scriptsReady();")
-    start(debug=debugOption)
+    start(WindowFunctions.onLoad, debug=debugOption)
+
+    

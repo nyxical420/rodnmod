@@ -106,8 +106,8 @@ html, body {
 
 .toast {
     font-size: 24px;
-    width: fit-content;
-    padding: 4px 12px;
+    min-width: 200px;
+    padding: 7px;
     background-color: #5a755a;
     color: #fff;
     border-radius: 100px;

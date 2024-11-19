@@ -11,15 +11,15 @@
         <img src="/assets/web/banner.png" style="width: 624px; height: 256px;">
     </div>
 
-    <div style="display: flex; flex-direction: column;position: absolute; top: 90%; left: 50%; transform: translate(-50%, -50%); color: #ffeed5; font-size: 28px; pointer-events: none; align-items: center;">
-        <img src="/assets/web/gdweave.png" style="width: 90px; height: 90px;">
+    <img src="/assets/web/gdweave.png" style="width: 90px; height: 90px; position: absolute; top: 89.5%; left: 50%; transform: translate(-50%, -50%); pointer-events: none;">
+    <div class="gdweave" style="position: absolute; top: 96%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; color: #ffeed5; font-size: 26px; text-align: center;">
         Powered by GDWeave
     </div>
     
     <div class="content">
         <div id="toast-container"></div>
 
-        <div class="pywebview-drag-region titleBar" style="background-color: #101c31; position: fixed; top: 0; left: 0; height: 34px; width: 100%; padding: 0 10px; z-index: 2;">
+        <div class="titleBar" style="background-color: #101c31; position: fixed; top: 0; left: 0; height: 34px; width: 100%; padding: 0 10px; z-index: 2;">
             <img src="/assets/web/rodnmod.png" style="width: 30px; height: 30px; margin-top: 2px; pointer-events: none;">
             <text id="titleText" style="position: relative; font-size: 22px; color: #ffeed5; top: -7px; left: 5px;">Rod n' Mod</text>
         </div>
@@ -43,123 +43,90 @@
             </div>
             <div id="settingContainer" style="color: #5a755a; font-size: 24px;">
                 <div id="content">
-                    <div id="settingsMenu" class="settingTab active" style="height: 100%;">
-                        <div style="display: flex; flex-direction: column; gap: 5px; height: 100%;">
-                            <div style="display: flex;">
-                                <text style="margin: auto auto auto 0;">Find Mods from Hook, Line, & Sinker</text>
-        
-                                <div id="settingOption" class="custom-dropdown" data-name="hlsmods" style=" width: 165px; margin-left: auto;">
-                                    <div class="dropdown-header">
-                                        <span class="selected-option" style="pointer-events: none;">No</span>
-                                        <div style="display: grid; grid-template-rows: 1fr 1fr; pointer-events: none;">
-                                            <span class="dropdown-arrow" style="font-size: 7px;">▲</span>
-                                            <span class="dropdown-arrow" style="font-size: 7px;">▼</span>
-                                        </div>
+                    <div id="settingsMenu" class="settingTab active">
+                        <div style="display: flex;">
+                            <text style="margin: auto auto auto 0;">Find Mods from Hook, Line, & Sinker</text>
+    
+                            <div id="settingOption" class="custom-dropdown" data-name="hlsmods" style=" width: 165px; margin-left: auto;">
+                                <div class="dropdown-header">
+                                    <span class="selected-option" style="pointer-events: none;">No</span>
+                                    <div style="display: grid; grid-template-rows: 1fr 1fr; pointer-events: none;">
+                                        <span class="dropdown-arrow" style="font-size: 7px;">▲</span>
+                                        <span class="dropdown-arrow" style="font-size: 7px;">▼</span>
                                     </div>
-                                    <div class="dropdown-options">
-                                        <div class="option selected" data-value="nofindhls">No</div>
-                                        <div class="option" data-value="findhls">Yes</div>
-                                    </div>
+                                </div>
+                                <div class="dropdown-options">
+                                    <div class="option selected" data-value="nofindhls">No</div>
+                                    <div class="option" data-value="findhls">Yes</div>
                                 </div>
                             </div>
+                        </div>
+
+                        <div style="display: flex; margin-top: 5px;">
+                            <text style="margin: auto auto auto 0;">Reel Sound when Scrolling</text>
     
-                            <div style="display: flex;">
-                                <text style="margin: auto auto auto 0;">Reel Sound when Scrolling</text>
-        
-                                <div id="settingOption" class="custom-dropdown" data-name="reelsound" style=" width: 165px; margin-left: auto;">
-                                    <div class="dropdown-header">
-                                        <span class="selected-option" style="pointer-events: none;">Enabled</span>
-                                        <div style="display: grid; grid-template-rows: 1fr 1fr; pointer-events: none;">
-                                            <span class="dropdown-arrow" style="font-size: 7px;">▲</span>
-                                            <span class="dropdown-arrow" style="font-size: 7px;">▼</span>
-                                        </div>
+                            <div id="settingOption" class="custom-dropdown" data-name="reelsound" style=" width: 165px; margin-left: auto;">
+                                <div class="dropdown-header">
+                                    <span class="selected-option" style="pointer-events: none;">Enabled</span>
+                                    <div style="display: grid; grid-template-rows: 1fr 1fr; pointer-events: none;">
+                                        <span class="dropdown-arrow" style="font-size: 7px;">▲</span>
+                                        <span class="dropdown-arrow" style="font-size: 7px;">▼</span>
                                     </div>
-                                    <div class="dropdown-options">
-                                        <div class="option" data-value="noreel">Disabled</div>
-                                        <div class="option selected" data-value="reel">Enabled</div>
-                                    </div>
+                                </div>
+                                <div class="dropdown-options">
+                                    <div class="option" data-value="noreel">Disabled</div>
+                                    <div class="option selected" data-value="reel">Enabled</div>
                                 </div>
                             </div>
+                        </div>
+
+                        <div style="display: flex; margin-top: 5px;">
+                            <text style="margin: auto auto auto 0;">Transition between Tabs</text>
     
-                            <div style="display: flex;">
-                                <text style="margin: auto auto auto 0;">Transition between Tabs</text>
-        
-                                <div id="settingOption" class="custom-dropdown" data-name="transition" style=" width: 165px; margin-left: auto;">
-                                    <div class="dropdown-header">
-                                        <span class="selected-option" style="pointer-events: none;">Yes</span>
-                                        <div style="display: grid; grid-template-rows: 1fr 1fr; pointer-events: none;">
-                                            <span class="dropdown-arrow" style="font-size: 7px;">▲</span>
-                                            <span class="dropdown-arrow" style="font-size: 7px;">▼</span>
-                                        </div>
+                            <div id="settingOption" class="custom-dropdown" data-name="transition" style=" width: 165px; margin-left: auto;">
+                                <div class="dropdown-header">
+                                    <span class="selected-option" style="pointer-events: none;">Yes</span>
+                                    <div style="display: grid; grid-template-rows: 1fr 1fr; pointer-events: none;">
+                                        <span class="dropdown-arrow" style="font-size: 7px;">▲</span>
+                                        <span class="dropdown-arrow" style="font-size: 7px;">▼</span>
                                     </div>
-                                    <div class="dropdown-options">
-                                        <div class="option" data-value="notransition">No</div>
-                                        <div class="option selected" data-value="transition">Yes</div>
-                                    </div>
+                                </div>
+                                <div class="dropdown-options">
+                                    <div class="option" data-value="notransition">No</div>
+                                    <div class="option selected" data-value="transition">Yes</div>
                                 </div>
                             </div>
+                        </div>
+
+                        <div style="display: flex; margin-top: 5px;">
+                            <text style="margin: auto auto auto 0;">Debugging <text style="color: #ff4545; font-size: 14px;">(Requires Restart)</text></text>
     
-                            <div style="display: flex; flex-direction: column;  gap: 5px; margin-top: auto;">
-                                <div style="display: flex; gap: 5px; margin-top: auto;">
-                                    <text style="margin: auto auto auto 0;">Logs</text>
-            
-                                    <button type="normalButton" style="width: 165px;" onmouseup="window.pywebview.api.copyLogs()">
-                                        <text style="pointer-events: none;">Copy Logs</text>
-                                    </button>
-        
-                                    <button type="normalButton" style="width: 165px;" onmouseup="window.pywebview.api.clearLogs()">
-                                        <text style="pointer-events: none;">Clear Logs</text>
-                                    </button>
-                                </div>
-    
-                                <div style="display: flex;">
-                                    <text style="margin: auto auto auto 0;">Debugging <text style="color: #ac0029; font-size: 14px;">(Requires Restart)</text></text>
-            
-                                    <div id="settingOption" class="custom-dropdown" data-name="debugging" style=" width: 165px; margin-left: auto;">
-                                        <div class="dropdown-header">
-                                            <span class="selected-option" style="pointer-events: none;">Disabled</span>
-                                            <div style="display: grid; grid-template-rows: 1fr 1fr; pointer-events: none;">
-                                                <span class="dropdown-arrow" style="font-size: 7px;">▲</span>
-                                                <span class="dropdown-arrow" style="font-size: 7px;">▼</span>
-                                            </div>
-                                        </div>
-                                        <div class="dropdown-options">
-                                            <div class="option selected" data-value="debdis">Disabled</div>
-                                            <div class="option" data-value="debena">Enabled</div>
-                                        </div>
+                            <div id="settingOption" class="custom-dropdown" data-name="debugging" style=" width: 165px; margin-left: auto;">
+                                <div class="dropdown-header">
+                                    <span class="selected-option" style="pointer-events: none;">Disabled</span>
+                                    <div style="display: grid; grid-template-rows: 1fr 1fr; pointer-events: none;">
+                                        <span class="dropdown-arrow" style="font-size: 7px;">▲</span>
+                                        <span class="dropdown-arrow" style="font-size: 7px;">▼</span>
                                     </div>
                                 </div>
-
-                                <div style="display: flex; gap: 5px;">
-                                    <text style="font-size: 20px; margin: auto auto auto 0;">Rod n Mod by Nyxical | Licensed under GPL v3</text>
-
-                                    <button type="normalButton" style="height: 24px; width: 80px; border-radius: 8px;" onmouseup="window.pywebview.api.restartApplication()">
-                                        <text style="pointer-events: none; font-size: 18px; position: relative; top: -3px;">Restart</text>
-                                    </button>
-
-                                    <button type="normalButton" style="height: 24px; width: 80px; border-radius: 8px;" onmouseup="location.reload()">
-                                        <text style="pointer-events: none; font-size: 18px; position: relative; top: -3px;">Refresh</text>
-                                    </button>
+                                <div class="dropdown-options">
+                                    <div class="option selected" data-value="debdis">Disabled</div>
+                                    <div class="option" data-value="debena">Enabled</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 
-                    <div id="creditsMenu" class="settingTab" style="font-size: 20px; text-align: center;">
-                        <p align="center" style="font-size: 16px; margin-bottom: 12px;">
-                            <img src="/assets/web/banner.png" width="500"/><br>
-                            A webfishing-themed mod manager!
-                        </p>
-
-                        <text>Zoiudolo<br>Rod n' Mod Banner, Icons, and Point & Click Cursors</text><br><br>
-                        <text>west<br>Game Sounds and Pointer Cursor</text>
+                    <div id="creditsMenu" class="settingTab" style="font-size: 18px;">
+                        <text>Credits to Zoiudolo for the Rod n' Mod Banner, Icons, Point & Click cursors</text><br>
+                        <text>westwerst for the Game Sounds & Cursor</text>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="tabs" style="transition: 750ms;">
-            <div class="tab active" id="Mods" style="max-height: calc(100vh + 56px); overflow-y: auto;" onscroll="updateModsCount()">
+            <div class="tab active" id="Mods" style="max-height: calc(100vh + 91px); overflow-y: auto;" onscroll="updateModsCount()">
                 <div class="modList" style="display: flex; flex-direction: column;">
                     <div class="modCounts" style="z-index: 5;">
                         <div id="mctparent" style="opacity: 0; transition: 750ms cubic-bezier(0.075, 0.82, 0.165, 1); position: absolute; top: -64px; left: 50%; transform: translate(-50%, -50%); width: 300px; padding: 3px; justify-content: center; text-align: center; font-size: 24px; color: #ffeed5; background-color: #5a755a; border-radius: 15px;">
@@ -176,15 +143,15 @@
                             
                             <div class="custom-dropdown" data-name="filter" style="width: 165px;">
                                 <div class="dropdown-header">
-                                    <span class="selected-option" style="pointer-events: none;">None</span>
+                                    <span class="selected-option" style="pointer-events: none;">Installed Mods</span>
                                     <div style="display: grid; grid-template-rows: 1fr 1fr; pointer-events: none;">
                                         <span class="dropdown-arrow" style="font-size: 7px;">▲</span>
                                         <span class="dropdown-arrow" style="font-size: 7px;">▼</span>
                                     </div>
                                 </div>
                                 <div class="dropdown-options">
-                                    <div class="option selected" data-value="none">None</div>
-                                    <div class="option" data-value="installed">Installed Mods</div>
+                                    <div class="option" data-value="none">None</div>
+                                    <div class="option selected" data-value="installed">Installed Mods</div>
                                     <div class="option" data-value="nameA-Z">Name (A-Z)</div>
                                     <div class="option" data-value="nameZ-A">Name (Z-A)</div>
                                     <div class="option" data-value="mostDownloaded">Most Downloaded</div>

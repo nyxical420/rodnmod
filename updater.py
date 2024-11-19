@@ -1,5 +1,8 @@
 import sys
+import semver
 import logging
+import platform
+import subprocess
 from httpx import get
 from json import load
 from os import path, chdir, execv
@@ -40,13 +43,35 @@ class RodNModUpdater:
             if str(x["name"]).__contains__("rodnmod-standalone"):
                 asset = x
         
-        if version["version"] != rnm["tag_name"]:
-            newver = asset["tag_name"]
-            curver = rnm["version"]
+        if semver.compare(version["version"], rnm["tag_name"]) < 0:
+            newver = rnm["tag_name"]
+            curver = version["version"]
             window.evaluate_js(f"{status}.innerHTML = \"Downloading Update...<br>{curver} -> {newver}\"")
-            #downloadRaw(asset["browser_download_url"], "./")
-            window.evaluate_js(f"{status}.innerHTML = 'Update Downloaded!'")
-        
+
+            response = get(asset["browser_download_url"], follow_redirects=True)
+
+            if response.status_code == 200:
+                with open("update.zip", 'wb') as f:
+                    f.write(response.content)
+                window.evaluate_js(f"{status}.innerHTML = 'Unpacking update...'")
+
+                if platform.system() == 'Windows':
+                    command = ['powershell', 'Expand-Archive', "update.zip", '-DestinationPath', '.', '-Force']
+                else:
+                    command = ['unzip', '-o', "update.zip", '-d', '.']
+
+                try:
+                    subprocess.run(command, check=True)
+                    window.evaluate_js(f"{status}.innerHTML = 'Update Downloaded!'")
+                except subprocess.CalledProcessError as e:
+                    window.evaluate_js(f"{status}.innerHTML = 'Update Download Failed!'")
+                    print(f"Error unzipping the file: {e}")
+            else:
+                window.evaluate_js(f"{status}.innerHTML = 'Failed to download Update.<br>Status Code: {response.status_code}'")
+            
+        elif semver.compare(version["version"], rnm["tag_name"]) > 0:
+            print("Version is greater than remote version. This is a Development Build.")
+
         if installationPath != None:
             gdweaveLib = getMods()["NotNet-GDWeave"]
             name, version, downloadUrl = gdweaveLib["modName"], gdweaveLib["latestVersion"], gdweaveLib["latestDownload"]

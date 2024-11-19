@@ -1,5 +1,6 @@
 httpx
 psutil
+semver
 pywebview
 rapidfuzz
 pyperclip

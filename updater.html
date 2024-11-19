@@ -2,29 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Rod n' Mod Updater</title>
+    <title>Rod n' Mod</title>
+    <link rel="stylesheet" href="/assets/web/style.css">
+    <link rel="icon" href="/assets/web/rodnmod.png" type="image/png">
 </head>
 <body>
     <style>
-        @font-face {
-            font-family: "WebfishingFont";
-            src: url("/assets/web/font.ttf");
-        }
-
-        body {
-            background-color: #101c31;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            cursor: url('/assets/web/fishing/cursor.png'), auto;
-            font-family: "WebfishingFont", sans-serif;
-            letter-spacing: 1px;
-            -webkit-font-smoothing: antialiased !important;
-        }
-
         .spinning-image {
             width: 128px;
             height: 128px;
@@ -45,5 +28,11 @@
     <div id="status" style="width: 100vw; position: absolute; top: 90%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; color: #ffeed5; font-size: 20px; text-align: center;">
         Loading...
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(() => window.pywebview.api.doUpdates(), 500);
+        });
+    </script>
 </body>
 </html>
