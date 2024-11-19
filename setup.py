@@ -63,6 +63,12 @@ setup(
             icon="./assets/updater.ico",
             base=("Win32GUI" if sys.platform == "win32" else None),
             target_name="rnmupdater"
+        ),
+        Executable(
+            "unpacker.py",
+            icon="./assets/unpacker.ico",
+            base=("Win32GUI" if sys.platform == "win32" else None),
+            target_name="rnmunpacker"
         )
     ],
 )

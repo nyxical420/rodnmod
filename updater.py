@@ -53,19 +53,9 @@ class RodNModUpdater:
             if response.status_code == 200:
                 with open("update.zip", 'wb') as f:
                     f.write(response.content)
-                window.evaluate_js(f"{status}.innerHTML = 'Unpacking update...'")
+                window.evaluate_js(f"{status}.innerHTML = 'Update Downloaded!'")
 
-                if platform.system() == 'Windows':
-                    command = ['powershell', 'Expand-Archive', "update.zip", '-DestinationPath', '.', '-Force']
-                else:
-                    command = ['unzip', '-o', "update.zip", '-d', '.']
-
-                try:
-                    subprocess.run(command, check=True)
-                    window.evaluate_js(f"{status}.innerHTML = 'Update Downloaded!'")
-                except subprocess.CalledProcessError as e:
-                    window.evaluate_js(f"{status}.innerHTML = 'Update Download Failed!'")
-                    print(f"Error unzipping the file: {e}")
+                execv("./rnmunpacker.exe", ["./rnmunpacker.exe"])
             else:
                 window.evaluate_js(f"{status}.innerHTML = 'Failed to download Update.<br>Status Code: {response.status_code}'")
             
