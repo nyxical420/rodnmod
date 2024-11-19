@@ -1,12 +1,12 @@
-import os
-import json
-import httpx
-import zipfile
-import shutil
+from json import dump
 from io import BytesIO
+from shutil import rmtree
+from zipfile import ZipFile
+from httpx import get, Timeout
 from datetime import datetime, timezone
+from os import path, makedirs, rename, remove
 
-timeout = httpx.Timeout(60, read=None)
+timeout = Timeout(60, read=None)
 
 def timeAgo(updated_time):
     now = datetime.now(timezone.utc)
@@ -28,7 +28,7 @@ def timeAgo(updated_time):
     return f"Updated {seconds // 31536000} year{'s' if seconds // 31536000 != 1 else ''} ago"
 
 def getMods():
-    response = httpx.get("https://thunderstore.io/c/webfishing/api/v1/package/", timeout=timeout)
+    response = get("https://thunderstore.io/c/webfishing/api/v1/package/", timeout=timeout)
     response.raise_for_status()
     data = response.json()
     
@@ -85,26 +85,25 @@ def getMods():
 def download(url, extractPath, data: dict = {}):
     print("Starting download...")
 
-    with httpx.Client() as client:
-        response = client.get(url, follow_redirects=True, timeout=timeout)
-        response.raise_for_status()
+    response = get(url, follow_redirects=True, timeout=timeout)
+    response.raise_for_status()
 
-        temp_folder = os.path.join(extractPath, "temp_extract")
-        os.makedirs(temp_folder, exist_ok=True)
+    temp_folder = path.join(extractPath, "temp_extract")
+    makedirs(temp_folder, exist_ok=True)
 
-        with open(os.path.join(temp_folder, "mod.zip"), 'wb') as f:
-            print("Downloading...")
-            for chunk in response.iter_bytes(chunk_size=8192):
-                if chunk:
-                    f.write(chunk)
+    with open(path.join(temp_folder, "mod.zip"), 'wb') as f:
+        print("Downloading...")
+        for chunk in response.iter_bytes(chunk_size=8192):
+            if chunk:
+                f.write(chunk)
 
     print("Download complete, extracting files...")
     
-    with zipfile.ZipFile(os.path.join(temp_folder, "mod.zip")) as zip_ref:
+    with ZipFile(path.join(temp_folder, "mod.zip")) as zip_ref:
         target_folder = None
         for file in zip_ref.namelist():
             if any(f in file for f in ["manifest.json", ".pck"]) and "/" in file:
-                target_folder = os.path.dirname(file)
+                target_folder = path.dirname(file)
                 break
         
         if not target_folder:
@@ -113,53 +112,52 @@ def download(url, extractPath, data: dict = {}):
 
         for file in zip_ref.namelist():
             if file.startswith(target_folder):
-                destination_path = os.path.join(temp_folder, os.path.relpath(file, target_folder))
-                os.makedirs(os.path.dirname(destination_path), exist_ok=True)
+                destination_path = path.join(temp_folder, path.relpath(file, target_folder))
+                makedirs(path.dirname(destination_path), exist_ok=True)
                 
                 if not file.endswith('/'):
                     with open(destination_path, 'wb') as f:
                         f.write(zip_ref.read(file))
 
     modId = data.get("author", "") + "." + data.get("name", "")
-    finalFolderPath = os.path.join(extractPath, modId if modId else "default")
+    finalFolderPath = path.join(extractPath, modId if modId else "default")
 
-    if os.path.exists(finalFolderPath):
-        shutil.rmtree(finalFolderPath)
+    if path.exists(finalFolderPath):
+        rmtree(finalFolderPath)
 
-    os.rename(temp_folder, finalFolderPath)
+    rename(temp_folder, finalFolderPath)
 
     print(f"Mod extracted to '{finalFolderPath}' with {'modId: ' + modId if modId else 'no modId specified'}.")
 
-    with open(os.path.join(finalFolderPath, "rnmInfo.json"), "w", encoding='utf-8') as f:
-        json.dump(data, f, indent=4)
+    with open(path.join(finalFolderPath, "rnmInfo.json"), "w", encoding='utf-8') as f:
+        dump(data, f, indent=4)
 
-    if os.path.exists(finalFolderPath + "\\\\mod.zip"):
-        os.remove(finalFolderPath + "\\\\mod.zip")
+    if path.exists(finalFolderPath + "\\\\mod.zip"):
+        remove(finalFolderPath + "\\\\mod.zip")
 
-    if os.path.exists(temp_folder):
-        shutil.rmtree(temp_folder)
+    if path.exists(temp_folder):
+        rmtree(temp_folder)
 
     print("Extraction complete.")
 
 def downloadRaw(url: str, extractPath: str, data: dict = {}):
-    with httpx.Client() as client:
-        response = client.get(url, follow_redirects=True, timeout=timeout)
-        response.raise_for_status()
+    response = get(url, follow_redirects=True, timeout=timeout)
+    response.raise_for_status()
 
-        if response.status_code == 200:
-            os.makedirs(extractPath, exist_ok=True)
+    if response.status_code == 200:
+        makedirs(extractPath, exist_ok=True)
 
-            try:
-                with zipfile.ZipFile(BytesIO(response.content)) as zip_ref:
-                    zip_ref.extractall(extractPath)
+        try:
+            with ZipFile(BytesIO(response.content)) as zip_ref:
+                zip_ref.extractall(extractPath)
 
-                if data:
-                    json_path = os.path.join(extractPath, "rnmInfo.json")
-                    with open(json_path, "w", encoding="utf-8") as f:
-                        json.dump(data, f, indent=4)
+            if data:
+                json_path = path.join(extractPath, "rnmInfo.json")
+                with open(json_path, "w", encoding="utf-8") as f:
+                    dump(data, f, indent=4)
 
-                print(f"File successfully downloaded and extracted to {extractPath}")
-            except Exception as e:
-                print(f"Error during extraction: {e}")
-        else:
-            print(f"Failed to download the file, status code {response.status_code}")
+            print(f"File successfully downloaded and extracted to {extractPath}")
+        except Exception as e:
+            print(f"Error during extraction: {e}")
+    else:
+        print(f"Failed to download the file, status code {response.status_code}")

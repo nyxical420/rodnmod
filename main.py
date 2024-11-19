@@ -1,15 +1,15 @@
 # powered by hopes and dreams
 
 import sys
-import time
-import logging
-import pyperclip
+from time import sleep
 from shutil import rmtree
+from pyperclip import copy
 from json import load, dump
 from threading import Thread
 from rapidfuzz import fuzz, process
 from webbrowser import open as openWeb
 from re import IGNORECASE, compile as comp
+from logging import basicConfig, ERROR, error
 from psutil import process_iter, NoSuchProcess
 from os import path, rename, walk, chdir, listdir, makedirs, execv
 
@@ -31,8 +31,8 @@ else:
 
 chdir(path.dirname(path.abspath(__name__)))
 
-logging.basicConfig(
-    level=logging.ERROR,
+basicConfig(
+    level=ERROR,
     filename="rodnmod.log",
     format="%(asctime)s - Application %(levelname)s - %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S"
@@ -43,7 +43,7 @@ def exceptHook(exc_type, exc_value, exc_traceback):
         sys.__excepthook__(exc_type, exc_value, exc_traceback)
         return
 
-    logging.error("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))
+    error("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))
 
 sys.excepthook = exceptHook
 
@@ -72,7 +72,7 @@ class RodNMod:
     def copyLogs(self):
         with open("rodnmod.log", 'r') as file:
             content = file.read()
-        pyperclip.copy(content)
+        copy(content)
         window.evaluate_js(f"notify('Logs has been copied!', 3000)")
 
     def clearLogs(self):
@@ -87,7 +87,7 @@ class RodNMod:
             with open("data/config.json", "w") as file:
                 default_config = {
                 "debugging": "debdis",
-                "hlsmods": "findhls",
+                "unprocessedmods": "findunp",
                 "reelsound": "reel",
                 "transition": "transition",
                 "filter": "installed",
@@ -412,7 +412,7 @@ class WindowFunctions:
                 else:
                     launchButtons.style["opacity"] = 1
                     launchButtons.style["pointerEvents"] = "all"
-                time.sleep(0.05)
+                sleep(0.05)
             except JavascriptException:
                 pass
     
@@ -423,7 +423,7 @@ class WindowFunctions:
         window.dom.get_element(".minimizeButton").events.click += lambda e: window.minimize()
         window.dom.get_element(".closeButton").events.click += lambda e: (
             WindowFunctions.content(".content"),
-            time.sleep(3),
+            sleep(3),
             window.destroy()
         )
 
@@ -433,7 +433,7 @@ class WindowFunctions:
         # Configurations
         configs = [
             "debugging",
-            "hlsmods",
+            "unprocessedmods",
             "reelsound",
             "transition",
             "filter",
@@ -446,7 +446,7 @@ class WindowFunctions:
             window.evaluate_js(f'setDropdownValue("{config}", "{value}")')
 
         window.evaluate_js(f"handleChange();")
-        time.sleep(1) # short sleep to allow mods to load and prevent lag hopefully
+        sleep(1) # short sleep to allow mods to load and prevent lag hopefully
         window.evaluate_js(f"openWindow();") 
 
     def content(element: str = None, visibility: str = "hide"):

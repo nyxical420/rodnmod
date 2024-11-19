@@ -3,4 +3,4 @@ Made some background function calls controled by the Python Script itself, fixes
 Fixed forced GDWeave reinstallation for users who already has GDWeave installed, but not from Rod n' Mod.
 Added Modpacks for Rod n' Mod so you're able to make and share modpacks easily!
 Added Save Manager to be able to manage your saves in Rod n' Mod!
-Updated how updaters work.
+Updated how new updates are extracted - updates the updater with it!

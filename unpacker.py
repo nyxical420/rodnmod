@@ -1,11 +1,11 @@
-import platform
-import subprocess
 from os import execv
+from platform import system
+from subprocess import run, CREATE_NO_WINDOW
 
-if platform.system() == 'Windows':
+if system() == 'Windows':
     command = ['powershell', 'Expand-Archive', "update.zip", '-DestinationPath', '.', '-Force']
 else:
     command = ['unzip', '-o', "update.zip", '-d', '.']
 
-subprocess.run(command, check=True, creationflags=subprocess.CREATE_NO_WINDOW)
+run(command, check=True, creationflags=CREATE_NO_WINDOW)
 execv("./rnmupdater.exe", ["./rnmupdater.exe"])

@@ -1,9 +1,9 @@
 {
-    "debugging": "debena",
-    "hlsmods": "findhls",
+    "debugging": "debdis",
+    "unprocessedmods": "findunp",
     "reelsound": "reel",
     "transition": "transition",
-    "filter": "none",
+    "filter": "installed",
     "category": "all",
     "nsfw": "hidensfw"
 }

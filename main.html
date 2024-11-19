@@ -48,11 +48,11 @@
                         <div style="display: flex; flex-direction: column; gap: 5px; height: 100%;">
                             <div style="display: flex;">
                                 <div style="display: grid; grid-template-rows: 1fr auto; margin: auto auto auto 0;">
-                                    <text style="font-size: 22px;">Find Mods from Hook, Line, & Sinker</text>
+                                    <text style="font-size: 22px;">Find Unprocessed WEBFISHING Mods</text>
                                     <text style="font-size: 14px; color: #ac6700;">Degraded performance while searching mods. (sorry)</text>
                                 </div>
         
-                                <div id="settingOption" class="custom-dropdown" data-name="hlsmods" style=" width: 165px; margin-left: auto;">
+                                <div id="settingOption" class="custom-dropdown" data-name="unprocessedmods" style=" width: 165px; margin-left: auto;">
                                     <div class="dropdown-header">
                                         <span class="selected-option" style="pointer-events: none;">No</span>
                                         <div style="display: grid; grid-template-rows: 1fr 1fr; pointer-events: none;">
@@ -61,14 +61,17 @@
                                         </div>
                                     </div>
                                     <div class="dropdown-options">
-                                        <div class="option selected" data-value="nofindhls">No</div>
-                                        <div class="option" data-value="findhls">Yes</div>
+                                        <div class="option selected" data-value="nofindunp">No</div>
+                                        <div class="option" data-value="findunp">Yes</div>
                                     </div>
                                 </div>
                             </div>
     
                             <div style="display: flex;">
-                                <text style="margin: auto auto auto 0;">Reel Sound when Scrolling</text>
+                                <div style="display: grid; grid-template-rows: 1fr auto; margin: auto auto auto 0;">
+                                    <text style="font-size: 22px;">Reel Sound when Scrolling</text>
+                                    <text style="font-size: 14px;">Plays a reeling sound when you scroll on scrollable content</text>
+                                </div>
         
                                 <div id="settingOption" class="custom-dropdown" data-name="reelsound" style=" width: 165px; margin-left: auto;">
                                     <div class="dropdown-header">
@@ -86,7 +89,10 @@
                             </div>
     
                             <div style="display: flex;">
-                                <text style="margin: auto auto auto 0;">Transition between Tabs</text>
+                                <div style="display: grid; grid-template-rows: 1fr auto; margin: auto auto auto 0;">
+                                    <text style="font-size: 22px;">Tabs Transition</text>
+                                    <text style="font-size: 14px;">Whether you want to waste your time or not :3</text>
+                                </div>
         
                                 <div id="settingOption" class="custom-dropdown" data-name="transition" style=" width: 165px; margin-left: auto;">
                                     <div class="dropdown-header">
@@ -102,12 +108,35 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div style="display: flex;">
+                                <div style="display: grid; grid-template-rows: 1fr auto; margin: auto auto auto 0;">
+                                    <text style="font-size: 22px;">Logs Telemetry</text>
+                                    <text style="font-size: 14px;">Sends logs online for debugging purposes</text>
+                                </div>
+        
+                                <div id="settingOption" class="custom-dropdown" data-name="logtelemetry" style=" width: 165px; margin-left: auto;">
+                                    <div class="dropdown-header">
+                                        <span class="selected-option" style="pointer-events: none;">Disabled</span>
+                                        <div style="display: grid; grid-template-rows: 1fr 1fr; pointer-events: none;">
+                                            <span class="dropdown-arrow" style="font-size: 7px;">▲</span>
+                                            <span class="dropdown-arrow" style="font-size: 7px;">▼</span>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-options">
+                                        <div class="option selected" data-value="nolesendlogs">No</div>
+                                        <div class="option" data-value="sendlogs">Yes</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Below here are settings below the settings -->
     
                             <div style="display: flex; flex-direction: column;  gap: 5px; margin-top: auto;">
                                 <div style="display: flex;">
                                     <div style="display: grid; grid-template-rows: 1fr auto; margin: auto auto auto 0;">
                                         <text style="font-size: 22px;">Debugging Mode</text>
-                                        <text style="font-size: 14px; color: #ac0029;">Requires restarting Rod n' Mod to enable Developer Tools</text>
+                                        <text style="font-size: 14px; color: #ac0029;">Requires restarting Rod n' Mod to enable Debugging Mode</text>
                                     </div>
             
                                     <div id="settingOption" class="custom-dropdown" data-name="debugging" style=" width: 165px; margin-left: auto;">
@@ -162,7 +191,7 @@
         </div>
 
         <div class="tabs" style="transition: 750ms;" onscroll="updateModsCount()">
-            <div class="tab active" id="Mods" style="max-height: calc(100vh + 56px);">
+            <div class="tab active" id="Mods" style="max-height: calc(100vh + 57px);">
                 <div class="modList" style="display: flex; flex-direction: column;">
                     <div class="modCounts" style="z-index: 5;">
                         <div id="mctparent" style="opacity: 0; transition: position 1s cubic-bezier(0.075, 0.82, 0.165, 1), opacity 1s cubic-bezier(0.075, 0.82, 0.165, 1), background-color 200ms cubic-bezier(0.87, 0, 0.13, 1), top 1s cubic-bezier(0.075, 0.82, 0.165, 1); position: absolute; top: -64px; left: 50%; transform: translate(-50%, -50%); width: 300px; padding: 3px; justify-content: center; text-align: center; font-size: 24px; color: #ffeed5; background-color: #5a755a; border-radius: 15px;">
@@ -253,12 +282,12 @@
                     </div>
                 </div>
             </div>
-            <div class="tab" id="Modpacks" style="height: calc(100vh + 56px);">
+            <div class="tab" id="Modpacks" style="height: calc(100vh + 57px);">
                 <div style="background-color: #5a755a; width: 100%; height: 100%;">
                     working space for modpacks
                 </div>
             </div>
-            <div class="tab" id="SaveManager" style="height: calc(100vh + 56px);">
+            <div class="tab" id="SaveManager" style="height: calc(100vh + 57px);">
                 <div style="background-color: #5a755a; width: 100%; height: 100%;">
                     working space for save manager
                 </div>

@@ -1,5 +1,5 @@
-import sys
 from json import load
+from sys import platform
 from cx_Freeze import setup, Executable
 
 with open("version.json") as ver:
@@ -30,6 +30,7 @@ setup(
                 "psutil",
                 "webview",
                 "rapidfuzz",
+                "pyperclip",
             ],
             "excludes": [ # why
                 "_distutils_hack",
@@ -55,19 +56,19 @@ setup(
         Executable(
             "main.py",
             icon="./assets/rodnmod.ico",
-            base=("Win32GUI" if sys.platform == "win32" else None),
+            base=("Win32GUI" if platform == "win32" else None),
             target_name="rodnmod"
         ),
         Executable(
             "updater.py",
             icon="./assets/updater.ico",
-            base=("Win32GUI" if sys.platform == "win32" else None),
+            base=("Win32GUI" if platform == "win32" else None),
             target_name="rnmupdater"
         ),
         Executable(
             "unpacker.py",
             icon="./assets/unpacker.ico",
-            base=("Win32GUI" if sys.platform == "win32" else None),
+            base=("Win32GUI" if platform == "win32" else None),
             target_name="rnmunpacker"
         )
     ],
