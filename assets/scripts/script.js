@@ -226,8 +226,6 @@ function notify(message, duration = 3000) {
 }
 
 function scriptsReady() {
-    const splashText = document.getElementById("splashText")
-
     const audioFiles = [
         '/assets/web/fishing/sounds/guitar_out.ogg',
         '/assets/web/fishing/sounds/guitar_in.ogg',

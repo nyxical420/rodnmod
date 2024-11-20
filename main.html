@@ -53,10 +53,12 @@
                 <div class="tabButton active" onmouseup="switchSettingView('settingsMenu')" data-tab="settingsMenu">
                     <text style="font-size: 22px; pointer-events: none;">Settings</text>
                 </div>
+                <div class="tabButton" onmouseup="switchSettingView('controlsMenu')" data-tab="controlsMenu">
+                    <text style="font-size: 22px; pointer-events: none;">Controls</text>
+                </div>
                 <div class="tabButton" onmouseup="switchSettingView('creditsMenu')" data-tab="creditsMenu">
                     <text style="font-size: 22px; pointer-events: none;">Credits</text>
                 </div>
-                <img src="">
             </div>
 
             <div id="settingContainer" style="color: #5a755a; font-size: 24px;">
@@ -175,7 +177,7 @@
                             <!-- Below here are settings below the settings -->
     
                             <div style="display: flex; flex-direction: column;  gap: 5px; margin-top: auto;">
-                                <div style="display: flex;">
+                                <div id="debuggingSetting" style="display: flex; opacity: 0; pointer-events: none; transition: 500ms;">
                                     <div style="display: grid; grid-template-rows: 1fr auto; margin: auto auto auto 0;">
                                         <text style="font-size: 22px;">Debugging Mode</text>
                                         <text style="font-size: 14px; color: #ac0029;">Requires restarting Rod n' Mod to enable Debugging Mode</text>
@@ -216,6 +218,12 @@
                                     </button>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <div id="controlsMenu" class="settingTab" style="font-size: 20px;">
+                        <div style="display: flex; flex-direction: row;">
+                            <text>ESC x3</text> <text style="margin: auto 0 auto auto;">Restart Rod n' Mod</text>
                         </div>
                     </div>
                 
@@ -424,7 +432,8 @@
             </div>
             <div class="tab" id="SecretMenu" style="height: calc(100vh + 55px);">
                 <div style="text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-                    <text style="font-size: 50px;">You're not supposed to be here...</text>
+                    <text style="font-size: 25px;">You're not supposed to be here... although,</text><br>
+                    <text style="font-size: 25px;">This is going to be a secret menu for Rod n' Mod very soon!</text>
                 </div>
             </div>
         </div>
@@ -477,6 +486,7 @@
 
     <script src="/assets/scripts/script.js" defer></script>
     <script src="/assets/scripts/modlist.js" defer></script>
+    <script src="/assets/scripts/secrets.js" defer></script>
     <script src="/assets/scripts/dropdowns.js" defer></script>
     <audio id="audio" src="/assets/web/fishing/sounds/minigame_reeling.ogg" loop="true" preload="auto"></audio>
 </body>

@@ -24,3 +24,9 @@
 jasoner @ WF community discord: Fixed a bug where Rod n' Mod cannot be reinstalled due to the updater raising an error when trying to forcely reinstall GDWeave.
 Opening the settings now hides every menu buttons, immerse yourself with the green close button!!!!
 Made the window bigger to account for high-res monitors.
+
+
+
+----------------------
+
+stupid you forfot to add automatic .NET installation for gdweave..
