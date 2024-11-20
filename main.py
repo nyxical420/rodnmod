@@ -88,7 +88,7 @@ class RodNMod:
                 default_config = {
                 "debugging": "debdis",
                 "unprocessedmods": "findunp",
-                "unprocessedmods": "savebackups",
+                "savebackups": "save",
                 "reelsound": "reel",
                 "transition": "transition",
                 "filter": "installed",
@@ -345,9 +345,10 @@ class RodNMod:
                 window.evaluate_js(f"notify('{modName} has been downloaded successfully!', 3000)")
 
             self.modsBeingDownloaded.remove(mod)
-            return "done"
         else:
             window.evaluate_js(f"notify('{modName} is already being downloaded!', 3000)")
+
+        return "done"
 
 
     def uninstallMod(self, mod: str, checkExists: bool = False):
@@ -363,10 +364,10 @@ class RodNMod:
                 try: modname = mod.split(".")[1].replace("_", " ")
                 except: modname = mod
                 window.evaluate_js(f"notify('{modname} has been successfully deleted!', 3000)")
-
-            except TypeError: pass
             except PermissionError:
                 window.evaluate_js(f"notify('Permission denied! Please close WEBFISHING first to uninstall the mod!', 3000)")
+        return "done"
+        
 
     def updateAllMods(self):
         window.evaluate_js(f"notify('Updating Mods...', 3000)")
@@ -440,6 +441,7 @@ class WindowFunctions:
         configs = [
             "debugging",
             "unprocessedmods",
+            "savebackups",
             "reelsound",
             "transition",
             "filter",
@@ -454,7 +456,7 @@ class WindowFunctions:
 
         splashText.text = "Starting Rod n\\' Mod..."
         window.evaluate_js(f"handleChange();")
-        sleep(1) # short sleep to allow mods to load and prevent lag hopefully
+        sleep(.3) # short sleep to allow mods to load and prevent lag hopefully
         window.evaluate_js(f"openWindow();") 
 
     def content(element: str = None, visibility: str = "hide"):

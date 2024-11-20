@@ -3,7 +3,7 @@
     "unprocessedmods": "findunp",
     "reelsound": "reel",
     "transition": "notransition",
-    "filter": "installed",
+    "filter": "none",
     "category": "all",
-    "nsfw": "hidensfw"
+    "nsfw": "shownsfw"
 }

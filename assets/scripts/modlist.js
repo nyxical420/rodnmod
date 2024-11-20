@@ -30,7 +30,7 @@ const ignoreList = [
 
 function generateModItems(modData) {
     const modItemsContainer = document.querySelector('.modItems');
-    modItemsContainer.innerHTML = '';
+    const fragment = document.createDocumentFragment();
     console.log(modData);
 
     Object.keys(modData).forEach(modKey => {
@@ -54,6 +54,7 @@ function generateModItems(modData) {
         imageContainer.style.position = 'relative';
 
         const img = document.createElement('img');
+        img.loading = "lazy";
         img.src = mod.versions[0].modIcon || 'assets/web/rodnmod.png';
         img.style = "width: 150px; height: 150px; border-radius: 15px; box-shadow: 0 4px 0 #6a4420;";
         imageContainer.appendChild(img);
@@ -143,6 +144,8 @@ function generateModItems(modData) {
         buttonContainer.style = "display: flex; flex-direction: row; gap: 10px; margin-left: auto; margin-right: 10px;";
         
         function addButtons(installedState) {
+            buttonContainer.innerHTML = "";
+
             if (installedState) {
                 const deleteButton = document.createElement('button');
                 deleteButton.type = "menuButton";
@@ -158,7 +161,11 @@ function generateModItems(modData) {
 
                     delText.innerText = "Deleting...";
                     deleteButton.onmouseup = "";
-                    window.pywebview.api.uninstallMod(`${mod.modAuthor}.${mod.modName}`).then(handleChange);
+                    async function updateMod() {
+                        await window.pywebview.api.uninstallMod(`${mod.modAuthor}.${mod.modName}`);
+                        addButtons(false)
+                    }
+                    updateMod()
                 };
                 addSoundEffects(deleteButton);
                 buttonContainer.appendChild(deleteButton);
@@ -177,7 +184,11 @@ function generateModItems(modData) {
 
                     downText.innerText = "Updating...";
                     updateButton.onmouseup = "";
-                    window.pywebview.api.downloadMod(`${mod.modAuthor}-${mod.modName}`).then(handleChange);
+                    async function updateMod() {
+                        await window.pywebview.api.downloadMod(`${mod.modAuthor}-${mod.modName}`);
+                        addButtons(true)
+                    }
+                    updateMod()
                 };
                 addSoundEffects(updateButton);
                 buttonContainer.appendChild(updateButton);
@@ -197,7 +208,11 @@ function generateModItems(modData) {
 
                     downText.innerText = "Downloading...";
                     downloadButton.onmouseup = "";
-                    window.pywebview.api.downloadMod(`${mod.modAuthor}-${mod.modName}`).then(handleChange);
+                    async function download() {
+                        await window.pywebview.api.downloadMod(`${mod.modAuthor}-${mod.modName}`);
+                        addButtons(true)
+                    }
+                    download()
                 };
                 addSoundEffects(downloadButton);
                 buttonContainer.appendChild(downloadButton);
@@ -214,7 +229,10 @@ function generateModItems(modData) {
         contentDiv.appendChild(menuContainer);
 
         itemDiv.appendChild(contentDiv);
-        modItemsContainer.appendChild(itemDiv);
-        updateModsCount()
+        fragment.appendChild(itemDiv);
     });
+    
+    modItemsContainer.innerHTML = '';
+    modItemsContainer.appendChild(fragment)
+    updateModsCount()
 }

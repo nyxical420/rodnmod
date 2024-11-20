@@ -270,8 +270,8 @@ function scriptsReady() {
     document.getElementById('searchInput').addEventListener('input', () => {
         clearTimeout(debounceTimer);
         debounceTimer = setTimeout(() => {
-            handleChange();
-        }, 300);
+        }, 250);
+        handleChange();
     });
 
     updateModsCount();

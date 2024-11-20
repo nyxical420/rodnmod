@@ -11,11 +11,23 @@
         <img src="/assets/web/banner.png" style="width: 624px; height: 256px;">
     </div>
 
-    <div id="splashText" style="display: flex; flex-direction: column;position: absolute; top: 75%; left: 50%; transform: translate(-50%, -50%); color: #ffeed5; font-size: 22px; pointer-events: none; align-items: center;">
-        Loading...
+    <style>
+        @keyframes loading {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+    </style>
+
+    <div style="display: flex; flex-direction: row; gap: 10px; position: absolute; bottom: 0; left: 50%; transform: translate(-50%, -50%); color: #ffeed5; font-size: 22px; pointer-events: none; align-items: center;">
+        <img src="/assets/web/loading.png" style="width: 40px; height: 40px; animation: loading 2s linear infinite;">
+        <text id="splashText">Loading...</text>
     </div>
 
-    <div style="display: flex; flex-direction: column;position: absolute; top: 91%; left: 50%; transform: translate(-50%, -50%); color: #ffeed5; font-size: 28px; pointer-events: none; align-items: center;">
+    <div style="display: flex; flex-direction: column; position: absolute; bottom: 5px; left: 50%; transform: translate(-50%, -50%); color: #ffeed5; font-size: 28px; pointer-events: none; align-items: center;">
         <img src="/assets/web/gdweave.png" style="width: 90px; height: 90px;">
         Powered by GDWeave
     </div>
@@ -58,7 +70,7 @@
                             <div style="display: flex;">
                                 <div style="display: grid; grid-template-rows: 1fr auto; margin: auto auto auto 0;">
                                     <text style="font-size: 22px;">Find Unprocessed WEBFISHING Mods</text>
-                                    <text style="font-size: 14px; color: #ac6700;">Degraded performance while searching mods. (sorry)</text>
+                                    <text style="font-size: 14px;">Finds mods that have not been processed or installed to Rod n' Mod</text>
                                 </div>
         
                                 <div id="settingOption" class="custom-dropdown" data-name="unprocessedmods" style=" width: 165px; margin-left: auto;">
@@ -133,8 +145,8 @@
                                         </div>
                                     </div>
                                     <div class="dropdown-options">
-                                        <div class="option" data-value="nosavebackups">No</div>
-                                        <div class="option selected" data-value="savebackups">Yes</div>
+                                        <div class="option" data-value="nosave">No</div>
+                                        <div class="option selected" data-value="save">Yes</div>
                                     </div>
                                 </div>
                             </div>
