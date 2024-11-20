@@ -11,7 +11,11 @@
         <img src="/assets/web/banner.png" style="width: 624px; height: 256px;">
     </div>
 
-    <div style="display: flex; flex-direction: column;position: absolute; top: 90%; left: 50%; transform: translate(-50%, -50%); color: #ffeed5; font-size: 28px; pointer-events: none; align-items: center;">
+    <div id="splashText" style="display: flex; flex-direction: column;position: absolute; top: 75%; left: 50%; transform: translate(-50%, -50%); color: #ffeed5; font-size: 22px; pointer-events: none; align-items: center;">
+        Loading...
+    </div>
+
+    <div style="display: flex; flex-direction: column;position: absolute; top: 91%; left: 50%; transform: translate(-50%, -50%); color: #ffeed5; font-size: 28px; pointer-events: none; align-items: center;">
         <img src="/assets/web/gdweave.png" style="width: 90px; height: 90px;">
         Powered by GDWeave
     </div>
@@ -28,11 +32,11 @@
             _
         </button>
         
-        <button class="closeButton" style="font-size: 30px; z-index: 2;" onmouseup="window.pywebview.api">
+        <button class="closeButton" style="font-size: 30px; z-index: 2;" onmouseup="document.getElementById('splashText').innerText = 'Exiting...'">
             X
         </button>
 
-        <div id="settings" class="settingsMenu" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 550px; height: 600px; z-index: 10;">
+        <div id="settings" class="settingsMenu" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 630px; height: 700px; z-index: 10;">
             <div id="tabs" style="position: absolute; top: -30px; display: flex; flex-direction: row; z-index: -1;">
                 <div class="tabButton active" onmouseup="switchSettingView('settingsMenu')" data-tab="settingsMenu">
                     <text style="font-size: 22px; pointer-events: none;">Settings</text>
@@ -42,7 +46,12 @@
                 </div>
                 <img src="">
             </div>
+
             <div id="settingContainer" style="color: #5a755a; font-size: 24px;">
+                <button type="normalButton" style="font-size: 22px; position: absolute; right: -24px; top: -26px; height: 42px; width: 85px; border-radius: 8px;" onmouseup="toggleSettings(); document.querySelector('#menuCt').style.opacity = '1'; document.querySelector('#menuCt').style.pointerEvents = 'auto';">
+                    Close
+                </button>
+
                 <div id="content">
                     <div id="settingsMenu" class="settingTab active" style="height: 100%;">
                         <div style="display: flex; flex-direction: column; gap: 5px; height: 100%;">
@@ -111,7 +120,28 @@
 
                             <div style="display: flex;">
                                 <div style="display: grid; grid-template-rows: 1fr auto; margin: auto auto auto 0;">
-                                    <text style="font-size: 22px;">Logs Telemetry</text>
+                                    <text style="font-size: 22px;">Save Backups</text>
+                                    <text style="font-size: 14px;">Automatically creates a backup everytime WEBFISHING is ran Modded</text>
+                                </div>
+        
+                                <div id="settingOption" class="custom-dropdown" data-name="savebackups" style=" width: 165px; margin-left: auto;">
+                                    <div class="dropdown-header">
+                                        <span class="selected-option" style="pointer-events: none;">Yes</span>
+                                        <div style="display: grid; grid-template-rows: 1fr 1fr; pointer-events: none;">
+                                            <span class="dropdown-arrow" style="font-size: 7px;">▲</span>
+                                            <span class="dropdown-arrow" style="font-size: 7px;">▼</span>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-options">
+                                        <div class="option" data-value="nosavebackups">No</div>
+                                        <div class="option selected" data-value="savebackups">Yes</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="display: flex;">
+                                <div style="display: grid; grid-template-rows: 1fr auto; margin: auto auto auto 0;">
+                                    <text style="font-size: 22px;">Logs Telemetry (might be removed)</text>
                                     <text style="font-size: 14px;">Sends logs online for debugging purposes</text>
                                 </div>
         
@@ -124,8 +154,8 @@
                                         </div>
                                     </div>
                                     <div class="dropdown-options">
-                                        <div class="option selected" data-value="nolesendlogs">No</div>
-                                        <div class="option" data-value="sendlogs">Yes</div>
+                                        <div class="option selected" data-value="nolesendlogs">Disabled</div>
+                                        <div class="option" data-value="sendlogs">Enabled</div>
                                     </div>
                                 </div>
                             </div>
@@ -158,18 +188,18 @@
                                     <text style="font-size: 20px; margin: auto auto auto 0;">Rod n' Mod Logs</text>
             
                                     <button type="normalButton" style="height: 24px; width: 80px; border-radius: 8px;" onmouseup="window.pywebview.api.copyLogs()">
-                                        <text style="pointer-events: none; font-size: 18px; position: relative; top: -3px;">Copy</text>
+                                        <text style="pointer-events: none; font-size: 18px; position: relative; top: -5px;">Copy</text>
                                     </button>
         
                                     <button type="normalButton" style="height: 24px; width: 80px; border-radius: 8px;" onmouseup="window.pywebview.api.clearLogs()">
-                                        <text style="pointer-events: none; font-size: 18px; position: relative; top: -3px;">Clear</text>
+                                        <text style="pointer-events: none; font-size: 18px; position: relative; top: -5px;">Clear</text>
                                     </button>
                                 </div>
 
                                 <div style="display: flex; gap: 5px;">
                                     <text style="font-size: 20px; margin: auto auto auto 0;">Made by Nyxical | Licensed under GPL v3</text>
 
-                                    <button type="normalButton" style="height: 24px; width: 165px; border-radius: 8px;" onmouseup="window.pywebview.api.restartApplication()">
+                                    <button type="normalButton" style="height: 24px; width: 165px; border-radius: 8px;" onmouseup="window.pywebview.api.restartApplication(); closeWindow(); document.getElementById('splashText').innerText = 'Restarting Rod n\' Mod...'">
                                         <text style="pointer-events: none; font-size: 18px; position: relative; top: -3px;">Restart</text>
                                     </button>
                                 </div>
@@ -282,20 +312,108 @@
                     </div>
                 </div>
             </div>
-            <div class="tab" id="Modpacks" style="height: calc(100vh + 57px);">
-                <div style="background-color: #5a755a; width: 100%; height: 100%;">
-                    working space for modpacks
-                </div>
+            <div class="tab" id="Modpacks" style="height: calc(100vh + 55px);">
+                <style>
+                    .modpackContainer {  
+                        display: grid;
+                        grid-template-columns: 1fr 2fr;
+                        grid-template-rows: 0.5fr 2.3fr 0.2fr;
+                        gap: 8px;
+                        grid-auto-flow: row;
+                        grid-template-areas:
+                            "modpackList modpackInfo"
+                            "modpackList modpackModslist"
+                            "modpackList modpackOptions";
+                    }
+
+                    .modpackInfo { grid-area: modpackInfo; }
+                    .modpackModslist { grid-area: modpackModslist; }
+                    .modpackList { grid-area: modpackList; }
+                    .modpackOptions { grid-area: modpackOptions; }
+
+                </style>
+                <div class="modpackContainer" style="width: 100%; height: 100%; padding: 10px 0 30px 0;">
+                    <div class="modpackList" style="background-color: #ffeed5; box-shadow: 0 4px 0 #6a4420; border-radius: 15px; height: 100%;">
+                        <div style="display: flex; height: calc(100% - 48px); border-radius: 15px; margin: 12px; background-color: #d5aa73; padding: 12px; box-sizing: content-box;">
+                            <button type="normalButton" style="width: 100%; text-align: center;" onmouseup="">
+                                <text style="pointer-events: none;">Create Modpack</text>
+                            </button>
+
+                        </div>
+                    </div>
+
+                    <div class="modpackInfo" style="background-color: #ffeed5; box-shadow: 0 4px 0 #6a4420; border-radius: 15px; height: 100%;">
+
+                    </div>
+
+                    <div class="modpackModslist" style="background-color: #ffeed5; box-shadow: 0 4px 0 #6a4420; border-radius: 15px; height: 100%;">
+
+                    </div>
+
+                    <div class="modpackOptions" style="display: flex; background-color: #ffeed5; box-shadow: 0 4px 0 #6a4420; border-radius: 15px; height: 100%;">
+                        <div style="margin-left: auto; padding: 10px;">
+                            <button type="normalButton" style="width: 125px;">
+                                <text style="pointer-events: none;">TESTBUTTON</text>
+                            </button>
+
+                            <button type="normalButton" style="width: 150px;">
+                                <text style="pointer-events: none;">TESTBUTTON</text>
+                            </button>
+                        </div>
+                    </div>
+                  </div>
             </div>
-            <div class="tab" id="SaveManager" style="height: calc(100vh + 57px);">
-                <div style="background-color: #5a755a; width: 100%; height: 100%;">
-                    working space for save manager
-                </div>
+            <div class="tab" id="SaveManager" style="height: calc(100vh + 55px);">
+                <style>
+                    .savemanContainer {  
+                        display: grid;
+                        grid-template-rows: 1fr;
+                        gap: 8px;
+                        grid-auto-flow: row;
+                        grid-template-areas:
+                            "savesList"
+                            "savesOptions";
+                    }
+
+                    .savesList { grid-area: savesList; }
+                    .savesOptions { grid-area: savesOptions; }
+
+                </style>
+                <div class="savemanContainer" style="width: 100%; height: 100%; padding: 10px 0 30px 0;">
+                    <div class="savesList" style="display: flex; flex-direction: column; gap: 8px; overflow-y: auto; border-radius: 15px; box-sizing: content-box;">
+                        <div style="color: #5a755a; font-size: 24px; display: flex; gap: 5px; background-color: #ffeed5; border-radius: 15px; box-shadow: 0 4px 0 #6a4420; padding: 5px; height: 40px; width: 100%;">
+                            <text style="margin: auto auto auto 5px;">webfishing_save_slot_0.sav</text>
+
+                            <div style="margin-left: auto;">
+                                <text>XX/XX/XXXX @ XX:XX:XX AM</text>
+                            </div>
+
+                            <div style="margin-left: auto;">
+                                <button type="normalButton" style="width: 100px; height: 30px;" onmouseup="">
+                                    <text style="pointer-events: none;">Delete</text>
+                                </button>
+        
+                                <button type="normalButton" style="width: 150px; height: 30px;" onmouseup="">
+                                    <text style="pointer-events: none;">Load</text>
+                                </button>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="savesOptions" style="display: flex; background-color: #ffeed5; box-shadow: 0 4px 0 #6a4420; border-radius: 15px; height: 100%;">
+                        <div style="margin-left: auto; padding: 10px;">
+                            <button type="normalButton" style="width: 150px;" onmouseup="">
+                                <text style="pointer-events: none;">Create Save</text>
+                            </button>
+                        </div>
+                    </div>
+                  </div>
             </div>
         </div>
 
         <div class="menuContainer">
-            <div style="width: 100%; display: flex; flex-direction: row; gap: 10px; position: fixed; bottom: 25px; padding: 0 10px;">
+            <div id="menuCt" style="transition: 500ms; width: 100%; display: flex; flex-direction: row; gap: 10px; position: fixed; bottom: 25px; padding: 0 10px;">
                 <button id="modsButton" type="menuButton" style="--width: 120px;" onmouseup="changeScene('Mods')">
                     <div style="pointer-events: none;" class="floatingIcon">
                         <img src="/assets/web/toolbox.png" class="spinning-image">
@@ -314,7 +432,7 @@
                     </div>
                     <text style="pointer-events: none;">Save Manager</text>
                 </button>
-                <button id="settingsButton" type="menuButton" style="--width: 120px;" onmouseup="toggleSettings()">
+                <button id="settingsButton" type="menuButton" style="--width: 120px;" onmouseup="toggleSettings(); document.querySelector('#menuCt').style.opacity = '0'; document.querySelector('#menuCt').style.pointerEvents = 'none';">
                     <div style="pointer-events: none;" class="floatingIcon">
                         <img src="/assets/web/settings.png" class="spinning-image">
                     </div>

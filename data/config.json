@@ -1,8 +1,8 @@
 {
-    "debugging": "debdis",
+    "debugging": "debena",
     "unprocessedmods": "findunp",
     "reelsound": "reel",
-    "transition": "transition",
+    "transition": "notransition",
     "filter": "installed",
     "category": "all",
     "nsfw": "hidensfw"

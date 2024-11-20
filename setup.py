@@ -21,7 +21,6 @@ include_files = [
 setup(
     name="Rod n' Mod",
     version=version,
-    description="Rod n' Mod",
     options={
         "build_exe": {
             "include_files": include_files,

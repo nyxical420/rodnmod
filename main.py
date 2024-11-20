@@ -88,6 +88,7 @@ class RodNMod:
                 default_config = {
                 "debugging": "debdis",
                 "unprocessedmods": "findunp",
+                "unprocessedmods": "savebackups",
                 "reelsound": "reel",
                 "transition": "transition",
                 "filter": "installed",
@@ -396,7 +397,7 @@ class WindowFunctions:
     sceneChanging = False
     settingsDisplayed = False
     state = ""
-
+    
     def checkRunning():
         launchButtons = window.dom.get_element(".run")
         while True:
@@ -419,7 +420,10 @@ class WindowFunctions:
     # reloading the page wouldn't trigger this at all, so your best bet is to
     # just restart the application from the settings menu instead
     def onLoad():
+        splashText = window.dom.get_element("#splashText")
+        
         # Window Buttons
+        splashText.text = "Setting Button Events"
         window.dom.get_element(".minimizeButton").events.click += lambda e: window.minimize()
         window.dom.get_element(".closeButton").events.click += lambda e: (
             WindowFunctions.content(".content"),
@@ -427,9 +431,11 @@ class WindowFunctions:
             window.destroy()
         )
 
+        splashText.text = "Starting Background Processes"
         # Background Processes n stuff
         Thread(target=WindowFunctions.checkRunning, daemon=True).start()
-
+        
+        splashText.text = "Setting Configs"
         # Configurations
         configs = [
             "debugging",
@@ -443,8 +449,10 @@ class WindowFunctions:
 
         for config in configs:
             value = rnm.configure(config)
+            splashText.text = f"set config: {config} -> {value}"
             window.evaluate_js(f'setDropdownValue("{config}", "{value}")')
 
+        splashText.text = "Starting Rod n\\' Mod..."
         window.evaluate_js(f"handleChange();")
         sleep(1) # short sleep to allow mods to load and prevent lag hopefully
         window.evaluate_js(f"openWindow();") 
