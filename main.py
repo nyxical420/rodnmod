@@ -55,7 +55,8 @@ class RodNMod:
         return {"installationStatus": webfishingInstalled}
     
     def visitSite(self, site: str):
-        openWeb(site)
+        try: openWeb(site)
+        except TypeError: pass
 
     def launchWebfishing(self, vanilla: bool = False):
         mods_folder = installationPath + "\\GDWeave\\mods"
@@ -456,7 +457,6 @@ class WindowFunctions:
 
         splashText.text = "Starting Rod n\\' Mod..."
         window.evaluate_js(f"handleChange();")
-        sleep(.3) # short sleep to allow mods to load and prevent lag hopefully
         window.evaluate_js(f"openWindow();") 
 
     def content(element: str = None, visibility: str = "hide"):

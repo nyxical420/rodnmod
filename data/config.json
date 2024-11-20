@@ -2,8 +2,8 @@
     "debugging": "debena",
     "unprocessedmods": "findunp",
     "reelsound": "reel",
-    "transition": "notransition",
+    "transition": "transition",
     "filter": "none",
     "category": "all",
-    "nsfw": "shownsfw"
+    "nsfw": "hidensfw"
 }

@@ -165,14 +165,19 @@ let settingsDisplayed = false;
 
 function toggleSettings() {
     const settings = document.getElementById('settings');
+    const menu = document.getElementById('menuCt');
     if (!sceneChanging && !settingsDisplayed) {
         settings.style.display = "block";
+        menu.style.opacity = '0'; 
+        menu.style.pointerEvents = 'none';
         playAudio("/assets/web/fishing/sounds/menu_blip.ogg");
         settingsDisplayed = true;
         closeWindow(".tabs", false);
         return
     } if (!sceneChanging && settingsDisplayed) {
         settings.style.display = "none";
+        menu.style.opacity = '1'; 
+        menu.style.pointerEvents = 'auto';
         playAudio("/assets/web/fishing/sounds/menu_blipb.ogg");
         settingsDisplayed = false;
         openWindow(".tabs");

@@ -93,17 +93,20 @@ function generateModItems(modData) {
         
         // Add the updated time
         const updatedDiv = document.createElement('div');
-        updatedDiv.style = "position: absolute; top: 8px; right: 10px; font-size: 16px; color: #6a4420;";
+        updatedDiv.style = "position: absolute; top: 6px; right: 10px; font-size: 16px; color: #6a4420;";
         updatedDiv.innerHTML = `
             <text style="position: relative; top: -3px">${mod.updatedAgo}</text> <img src="/assets/web/clock.png" style="width: 16px; height: 16px;">
         `;
         contentDiv.appendChild(updatedDiv);
 
         const website = document.createElement('div');
-        website.style = "position: absolute; top: 22px; right: 10px; font-size: 16px; color: #6a4420;";
-        website.textContent = mod.latestWebsite;
+        website.style = "position: absolute; top: 22px; right: 10px; font-size: 18px; color: #6a4420;";
+        //website.textContent = mod.latestWebsite;
+        website.innerHTML = `
+           <text style="position: relative; top: -3px">${mod.latestWebsite || "No Website"}</text> <img src="/assets/web/internet.png" style="width: 16px; height: 16px;">
+        `;
         website.onmouseup = function () {
-            window.pywebview.api.visitSite(mod.latestWebsite);
+            window.pywebview.api.visitSite(mod.latestWebsite || null);
         }
         contentDiv.appendChild(website);
 

@@ -60,7 +60,7 @@
             </div>
 
             <div id="settingContainer" style="color: #5a755a; font-size: 24px;">
-                <button type="normalButton" style="font-size: 22px; position: absolute; right: -24px; top: -26px; height: 42px; width: 85px; border-radius: 8px;" onmouseup="toggleSettings(); document.querySelector('#menuCt').style.opacity = '1'; document.querySelector('#menuCt').style.pointerEvents = 'auto';">
+                <button type="normalButton" style="font-size: 22px; position: absolute; right: -24px; top: -26px; height: 42px; width: 85px; border-radius: 8px;" onmouseup="toggleSettings();">
                     Close
                 </button>
 
@@ -70,7 +70,7 @@
                             <div style="display: flex;">
                                 <div style="display: grid; grid-template-rows: 1fr auto; margin: auto auto auto 0;">
                                     <text style="font-size: 22px;">Find Unprocessed WEBFISHING Mods</text>
-                                    <text style="font-size: 14px;">Finds mods that have not been processed or installed to Rod n' Mod</text>
+                                    <text style="font-size: 14px;">Finds mods that have not been processed or installed by Rod n' Mod</text>
                                 </div>
         
                                 <div id="settingOption" class="custom-dropdown" data-name="unprocessedmods" style=" width: 165px; margin-left: auto;">
@@ -319,7 +319,7 @@
                         </div>
                     </div>
 
-                    <div class="modItems" style="display: flex; flex-direction: column; gap: 10px; width: 100%; height: 100%; margin-bottom: 100px;">
+                    <div class="modItems" style="display: flex; flex-direction: column; gap: 3px; width: 100%; height: 100%; margin-bottom: 100px;">
                         
                     </div>
                 </div>
@@ -373,7 +373,7 @@
                             </button>
                         </div>
                     </div>
-                  </div>
+                </div>
             </div>
             <div class="tab" id="SaveManager" style="height: calc(100vh + 55px);">
                 <style>
@@ -415,12 +415,17 @@
 
                     <div class="savesOptions" style="display: flex; background-color: #ffeed5; box-shadow: 0 4px 0 #6a4420; border-radius: 15px; height: 100%;">
                         <div style="margin-left: auto; padding: 10px;">
-                            <button type="normalButton" style="width: 150px;" onmouseup="">
-                                <text style="pointer-events: none;">Create Save</text>
+                            <button type="normalButton" style="width: 200px;" onmouseup="">
+                                <text style="pointer-events: none;">Backup Current Save</text>
                             </button>
                         </div>
                     </div>
-                  </div>
+                </div>
+            </div>
+            <div class="tab" id="SecretMenu" style="height: calc(100vh + 55px);">
+                <div style="text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                    <text style="font-size: 50px;">You're not supposed to be here...</text>
+                </div>
             </div>
         </div>
 
@@ -444,7 +449,7 @@
                     </div>
                     <text style="pointer-events: none;">Save Manager</text>
                 </button>
-                <button id="settingsButton" type="menuButton" style="--width: 120px;" onmouseup="toggleSettings(); document.querySelector('#menuCt').style.opacity = '0'; document.querySelector('#menuCt').style.pointerEvents = 'none';">
+                <button id="settingsButton" type="menuButton" style="--width: 120px;" onmouseup="toggleSettings();">
                     <div style="pointer-events: none;" class="floatingIcon">
                         <img src="/assets/web/settings.png" class="spinning-image">
                     </div>
