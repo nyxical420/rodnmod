@@ -50,8 +50,7 @@ detector.addSequence(
         const debuggingSetting = document.getElementById("debuggingSetting")
         debuggingSetting.style.opacity = 1
         debuggingSetting.style.pointerEvents = "all"
-    },
-    true
+    }
 );
 
 detector.addSequence(

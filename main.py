@@ -88,7 +88,7 @@ class RodNMod:
             with open("data/config.json", "w") as file:
                 default_config = {
                 "debugging": "debdis",
-                "unprocessedmods": "findunp",
+                "nonrnmmods": "findnonrnm",
                 "savebackups": "save",
                 "reelsound": "reel",
                 "transition": "transition",
@@ -242,11 +242,12 @@ class RodNMod:
             if path.basename(folder) == splitted:
                 return folder
         
-        # attempt finding mods downloaded from HLS.
+        # attempt finding mods downloaded from other mod managers.
+        # most likely unnamed mod files thats only been installed and extracted
         try: mods = [entry for entry in listdir(installationPath + "\\GDWeave\\mods") if path.isdir(path.join(installationPath + "\\GDWeave\\mods", entry))]
         except FileNotFoundError: mods = [entry for entry in listdir(installationPath + "\\GDWeave\\disabled.mods") if path.isdir(path.join(installationPath + "\\GDWeave\\disabled.mods", entry))]
         
-        if self.configure("hlsmods") == "findhls" and mods != []:
+        if self.configure("unprocessedmods") == "findnonrnm" and mods != []:
             transformations = [
                 (lambda name: name.split(".")[1] if "." in name else name, 90),
                 (lambda name: name.replace("-", "."), 85),
@@ -441,7 +442,7 @@ class WindowFunctions:
         # Configurations
         configs = [
             "debugging",
-            "unprocessedmods",
+            "nonrnmmods",
             "savebackups",
             "reelsound",
             "transition",
