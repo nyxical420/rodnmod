@@ -30,6 +30,7 @@ setup(
                 "webview",
                 "rapidfuzz",
                 "pyperclip",
+                "pythonnet", # appears to be required
             ],
             "excludes": [ # why
                 "_distutils_hack",
@@ -47,7 +48,6 @@ setup(
                 "lib2to3",
                 "pip",
                 "more_itertools",
-                "email"
             ]
         }
     },
