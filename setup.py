@@ -6,6 +6,7 @@ with open("version.json") as ver:
     version = load(ver)["version"]
 
 include_files = [
+    ('LICENSE', 'LICENSE'),
     ('main.html', 'main.html'),
     ('updater.html', 'updater.html'),
     ('version.json', 'version.json'),

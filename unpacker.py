@@ -1,15 +1,18 @@
-from platform import system
+import errno
+from zipfile import ZipFile
 from os import execv, path, chdir
-from subprocess import run, CREATE_NO_WINDOW
 
-chdir(path.dirname(path.abspath(__name__)))
+chdir(path.dirname(path.abspath(__file__)))
 
 if path.exists("update.zip"):
-    if system() == 'Windows':
-        command = ['powershell', 'Expand-Archive', "update.zip", '-DestinationPath', '.', '-Force']
-    else:
-        command = ['unzip', '-o', "update.zip", '-d', '.']
-
-    run(command, check=True, creationflags=CREATE_NO_WINDOW)
+    with ZipFile("update.zip", 'r') as zip_ref:
+        for file in zip_ref.namelist():
+            try:
+                zip_ref.extract(file)
+            except OSError as e:
+                if e.errno == errno.EACCES:
+                    print(f"Skipped '{file}' as it is currently in use.")
+                else:
+                    raise
 
 execv("./rnmupdater.exe", ["./rnmupdater.exe"])

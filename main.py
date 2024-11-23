@@ -92,7 +92,7 @@ class RodNMod:
                 "savebackups": "save",
                 "reelsound": "reel",
                 "transition": "transition",
-                "filter": "installed",
+                "filter": "none",
                 "category": "all",
                 "nsfw": "hidensfw"
             }
@@ -458,6 +458,7 @@ class WindowFunctions:
 
         splashText.text = "Starting Rod n\\' Mod..."
         window.evaluate_js(f"handleChange();")
+        sleep(.5)
         window.evaluate_js(f"openWindow();") 
 
     def content(element: str = None, visibility: str = "hide"):
