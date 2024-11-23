@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/web/banner.png?raw=true" width="800"/><br>
+    <img src="assets/web/banner.png" width="800"/><br>
     A webfishing-themed mod manager!
 </p>
 
@@ -27,7 +27,7 @@ You can download Rod n' Mod here!<br>
 - **Installation Detection**: Automatically finds your WEBFISHING installation! no need to configure the installation path!
 
 # Requirements
-- A webview runtime. I recommend having [Microsoft Edge WebView2 Runtime](https://developer.microsoft.com/en-gb/microsoft-edge/webview2#download) for Windows, and `libwebkit2gtk-4.1-dev` for Linux. (no official Linux support yet)
+- A webview runtime. I recommend having [Microsoft Edge WebView2 Runtime](https://developer.microsoft.com/en-gb/microsoft-edge/webview2#download) for Windows (OPTIONAL, ALTHOUGH RECOMMENDED STILL), and `libwebkit2gtk-4.1-dev` for Linux. (no official Linux support yet) (SOON!!!)
 
 # Building Rod n' Mod
 > [!IMPORTANT]

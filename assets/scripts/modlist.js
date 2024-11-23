@@ -25,7 +25,8 @@ const ignoreList = [
     "Hook_Line_and_Sinker",
     "GDWeave",
     "r2modman",
-    "GaleModManager"
+    "GaleModManager",
+    "HLSReborn"
 ];
 
 function generateModItems(modData) {

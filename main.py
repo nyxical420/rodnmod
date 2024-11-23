@@ -26,6 +26,10 @@ installationPath = findWebfishing()
 if installationPath:
     print(f"Installation Path: {installationPath}")
     webfishingInstalled = True
+
+    if not path.exists(installationPath + f"\\GDWeave\\mods"):
+        if not path.exists(installationPath + f"\\GDWeave\\disabled.mods"):
+            makedirs(installationPath + "\\GDWeave\\mods")
 else:
     print("WEBFISHING Installation Path Not Found")
 
@@ -239,7 +243,8 @@ class RodNMod:
             except: splitted = folderName.split("-")[1]
             if path.basename(folder) == splitted:
                 return folder
-        
+
+        # this is absolutely not the way you do it strupid idito!!!! check pyoid dms
         # attempt finding mods downloaded from other mod managers.
         # most likely unnamed mod files thats only been installed and extracted
         try: mods = [entry for entry in listdir(installationPath + "\\GDWeave\\mods") if path.isdir(path.join(installationPath + "\\GDWeave\\mods", entry))]
@@ -268,6 +273,7 @@ class RodNMod:
         print(f"Downloading {mod}...")    
         ignoredDependencies = [
             "Pyoid-Hook_Line_and_Sinker",
+            "PawsBeGamin-HLSReborn",
             "NotNet-GDWeave"
         ]
 
@@ -310,7 +316,7 @@ class RodNMod:
                                 with open(dependencyPath + "\\rnmInfo.json", "r") as f:
                                     rnmInfo = load(f)
                             except:
-                                # cant do anything about this, probbably a mod installed via HLS.
+                                # cant do anything about this, probbably a mod installed via another mod manager like HLS.
                                 # maybe once the modding community just comes togehter and make proper and similar
                                 # manifest files then i dont have to keep adding more data to mods.
                                 rnmInfo = {"version": "1.0.0"}
@@ -419,7 +425,7 @@ class WindowFunctions:
                 pass
     
     # reloading the page wouldn't trigger this at all, so your best bet is to
-    # just restart the application from the settings menu instead
+    # just restart the application by pressing escape 3 times
     def onLoad():
         splashText = window.dom.get_element("#splashText")
         
