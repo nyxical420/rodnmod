@@ -8,8 +8,8 @@
 </p>
 
 <p align="center">
-  <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/redbutton.png?raw=true" width="100" />
-  <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/greenbutton.png?raw=true" width="100" />
+  <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/redbutton.png?raw=true" width="300" />
+  <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/greenbutton.png?raw=true" width="300" />
 </p>
 
 > [!NOTE]
