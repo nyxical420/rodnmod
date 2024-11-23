@@ -403,10 +403,10 @@
 
                 </style>
 
-                <div style="background-color: #11111180; position: fixed; left: 0; width: 100%; height: calc(100vh + 56px);">
-                    <div class="settingsMenu" style="display: block; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 450px; height: auto; z-index: 10;">
+                <div id="saveWhatSlot" style="display: none; background-color: #11111180; position: fixed; left: 0; width: 100%; height: calc(100vh + 56px);">
+                    <div class="settingsMenu" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 450px; height: auto; z-index: 10;">
                         <div id="settingContainer" style="color: #5a755a; font-size: 24px;">
-                            <button type="normalButton" style="font-size: 22px; position: absolute; right: -24px; top: -26px; height: 42px; width: 85px; border-radius: 8px;" onmouseup="toggleSettings();">
+                            <button type="normalButton" style="font-size: 22px; position: absolute; right: -24px; top: -26px; height: 42px; width: 85px; border-radius: 8px;" onmouseup="document.getElementById('saveWhatSlot').style.display ='none'; playAudio('/assets/web/fishing/sounds/menu_blipb.ogg');">
                                 Close
                             </button>
             
@@ -415,16 +415,16 @@
                             </div>
 
                             <div style="display: flex; flex-direction: row; position: absolute; left: 50%; transform: translate(-50%, 0); bottom: -26px; gap: 5px">
-                                <button type="normalButton" style="font-size: 22px; height: 52px; width: 95px; border-radius: 8px;" onmouseup="toggleSettings();">
+                                <button type="normalButton" style="font-size: 22px; height: 52px; width: 95px; border-radius: 8px;" onmouseup="notify('Saved Slot TESTING ONLY HAHAHAHAHA GET PRANKD X3')">
                                     Slot 1
                                 </button>
-                                <button type="normalButton" style="font-size: 22px; height: 52px; width: 95px; border-radius: 8px;" onmouseup="toggleSettings();">
+                                <button type="normalButton" style="font-size: 22px; height: 52px; width: 95px; border-radius: 8px;" onmouseup="notify('Saved Slot TESTING ONLY HAHAHAHAHA GET PRANKD X3')">
                                     Slot 2
                                 </button>
-                                <button type="normalButton" style="font-size: 22px; height: 52px; width: 95px; border-radius: 8px;" onmouseup="toggleSettings();">
+                                <button type="normalButton" style="font-size: 22px; height: 52px; width: 95px; border-radius: 8px;" onmouseup="notify('Saved Slot TESTING ONLY HAHAHAHAHA GET PRANKD X3')">
                                     Slot 3
                                 </button>
-                                <button type="normalButton" style="font-size: 22px; height: 52px; width: 95px; border-radius: 8px;" onmouseup="toggleSettings();">
+                                <button type="normalButton" style="font-size: 22px; height: 52px; width: 95px; border-radius: 8px;" onmouseup="notify('Saved Slot TESTING ONLY HAHAHAHAHA GET PRANKD X3')">
                                     Slot 4
                                 </button>
                             </div>
@@ -434,7 +434,7 @@
 
                 <div class="savemanContainer" style="width: 100%; height: 100%; padding: 10px 0 30px 0;">
                     <div class="savesList" style="display: flex; flex-direction: column; gap: 8px; overflow-y: auto; border-radius: 15px; box-sizing: content-box;">
-                        <div style="color: #5a755a; font-size: 24px; display: flex; gap: 5px; background-color: #ffeed5; border-radius: 15px; box-shadow: 0 4px 0 #6a4420; padding: 5px; height: 40px; width: 100%;">
+                        <div id="save " style="color: #5a755a; font-size: 24px; display: flex; gap: 5px; background-color: #ffeed5; border-radius: 15px; box-shadow: 0 4px 0 #6a4420; padding: 5px; height: 40px; width: 100%;">
                             <text style="margin: auto auto auto 5px;">webfishing_save_slot_0.sav</text>
 
                             <div style="margin-left: auto;">
@@ -456,7 +456,7 @@
 
                     <div class="savesOptions" style="display: flex; background-color: #ffeed5; box-shadow: 0 4px 0 #6a4420; border-radius: 15px; height: 100%;">
                         <div style="margin-left: auto; padding: 10px;">
-                            <button type="normalButton" style="width: 200px;" onmouseup="">
+                            <button type="normalButton" style="width: 200px;" onmouseup="document.getElementById('saveWhatSlot').style.display ='block'; playAudio('/assets/web/fishing/sounds/menu_blip.ogg')">
                                 <text style="pointer-events: none;">Backup Save</text>
                             </button>
                         </div>
