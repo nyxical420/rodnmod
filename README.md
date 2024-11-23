@@ -39,7 +39,9 @@
     <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/requirements.png?raw=true" width="800"/><br>
 </p>
 
-- A webview runtime. I recommend having [Microsoft Edge WebView2 Runtime](https://developer.microsoft.com/en-gb/microsoft-edge/webview2#download) for Windows (OPTIONAL, ALTHOUGH RECOMMENDED STILL), and `libwebkit2gtk-4.1-dev` for Linux. (no official Linux support yet) (SOON!!!)
+- A webview runtime
+    - OPTIONAL: [Microsoft Edge WebView2 Runtime](https://developer.microsoft.com/en-gb/microsoft-edge/webview2#download) for Windows
+    - `libwebkit2gtk-4.1-dev` for Linux (linux support soon! build rnm for now.)
 
 # Building Rod n' Mod
 > [!IMPORTANT]
