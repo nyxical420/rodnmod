@@ -57,7 +57,7 @@ Once the command is done, you should see a (.venv) in your terminal. This means 
 python setup.py build
 ```
 
-This should automatically build Rod n' Mod for you and put the final build at the root folder.
+This should automatically build Rod n' Mod for you and put the final build at the build folder.
 
 
 # Troubleshooting / Known Bugs & Stuff
