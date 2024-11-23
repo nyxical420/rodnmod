@@ -8,11 +8,11 @@
 </p>
 
 <p align="center">
-  <a href="https://your-link-here.com" style="pointer-events: none;">
-    <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/redbutton.png?raw=true" width="auto" />
+  <a href="https://github.com/nyxical420/rodnmod/releases/latest" style="pointer-events: none;">
+    <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/download.png?raw=true" width="auto" />
   </a>
-  <a href="https://another-link-here.com" style="pointer-events: none;">
-    <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/greenbutton.png?raw=true" width="auto" />
+  <a href="https://ko-fi.com/nyxical" style="pointer-events: none;">
+    <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/support.png?raw=true" width="auto" />
   </a>
 </p>
 
