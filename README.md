@@ -1,6 +1,10 @@
 <p align="center">
-    <img src="assets/web/banner.png" width="800"/><br>
-    A webfishing-themed mod manager!
+    <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/banner.png?raw=true" width="800"/><br>
+    A webfishing-themed AND tailored mod manager!
+</p>
+
+<p align="center">
+    <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/divisor.png?raw=true" width="800"/><br>
 </p>
 
 > [!NOTE]
@@ -11,9 +15,6 @@
 
 > [!NOTE]
 > Rod n' Mod is incompatible to [Hook, Line, & Sinker](https://hooklinesinker.lol). (uncertain: r2mm, GMM) due to how HLS and Rod n' Mod handles installed mods.
-
-## why?
-i was bored... and it looks cool tbh
 
 # Download
 You can download Rod n' Mod here!<br>
@@ -56,3 +57,7 @@ This should automatically build Rod n' Mod for you and put the final build at th
 # Credits
 - @zoiudolo for Rod n' Mod Logo, Banner, and Images/Icons
 - west for Game Sounds and Cursor used in Rod n' Mod
+
+<p align="center">
+    <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/enddivisor.png?raw=true" width="800"/><br>
+</p>
