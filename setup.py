@@ -1,4 +1,3 @@
-import os
 from json import load
 from sys import platform
 from cx_Freeze import setup, Executable
@@ -6,7 +5,6 @@ import subprocess
 
 for script in ['main.py', 'updater.py', 'unpacker.py']:
     subprocess.run(["pyarmor", "gen", script])
-
 
 with open("version.json") as ver:
     version = load(ver)["version"]
@@ -28,7 +26,6 @@ include_files = [
     ('rodnmod', 'lib/rodnmod'),
 ]
 
-# Configure the `cx_Freeze` build
 setup(
     name="Rod n' Mod",
     version=version,
@@ -42,25 +39,25 @@ setup(
                 "webview",
                 "rapidfuzz",
                 "pyperclip",
-                "pythonnet",  # Needed in your environment
+                "pythonnet",
             ]
         }
     },
     executables=[
         Executable(
-            "dist/main.py",  # Pointing to the obfuscated script
+            "dist/main.py",
             icon="./assets/rodnmod.ico",
             base=("Win32GUI" if platform == "win32" else None),
             target_name="rodnmod"
         ),
         Executable(
-            "dist/updater.py",  # Pointing to the obfuscated script
+            "dist/updater.py",
             icon="./assets/updater.ico",
             base=("Win32GUI" if platform == "win32" else None),
             target_name="rnmupdater"
         ),
         Executable(
-            "dist/unpacker.py",  # Pointing to the obfuscated script
+            "dist/unpacker.py",
             icon="./assets/unpacker.ico",
             base=("Win32GUI" if platform == "win32" else None),
             target_name="rnmunpacker"
