@@ -7,11 +7,11 @@
     <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/divisor.png?raw=true" width="800"/><br>
 </p>
 
-<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-  <div>test</div>
-  <div>or</div>
-  <div>fake</div>
-</div>
+<p float="left">
+  <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/web/download.png?raw=true" width="100" />
+  <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/web/download.png?raw=true" width="100" /> 
+  <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/web/download.png?raw=true" width="100" />
+</p>
 
 > [!NOTE]
 > Assets located in `assets/web/fishing` are WEBFISHING game assets and is excepted from the project's license.
