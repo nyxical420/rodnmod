@@ -3,6 +3,7 @@ import semver
 import logging
 from httpx import get
 from json import load
+from platform import system
 from os import path, chdir, execv
 from webview import create_window, start
 
@@ -55,7 +56,11 @@ class RodNModUpdater:
 
                 window.evaluate_js(f'{status}.innerHTML = "Upacking Update...<br>Please wait for the updater to re-run!"')
 
-                execv("./rnmunpacker.exe", ["./rnmunpacker.exe"])
+
+                if system() == 'Windows':
+                    execv(r'.\winupdate.bat', ['winupdate.bat'])
+                else:
+                    ... #linux
             else:
                 window.evaluate_js(f'{status}.innerHTML = "Failed to download update.<br>HTTP Status Code: {response.status_code}"')
             

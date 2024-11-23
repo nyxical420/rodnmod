@@ -4,7 +4,7 @@ from sys import platform
 from cx_Freeze import setup, Executable
 
 # PyArmor layer to obfuscate scripts - hopefully lowers AV detection
-for script in ['main.py', 'updater.py', 'unpacker.py']:
+for script in ['main.py', 'updater.py']:
     subprocess.run(["pyarmor", "gen", script])
 
 with open("version.json") as ver:
@@ -26,6 +26,9 @@ include_files = [
 
     ('dist/pyarmor_runtime_000000', 'lib/pyarmor_runtime_000000'),
     ('rodnmod', 'lib/rodnmod'),
+
+    ('winupdate.bat', 'winupdate.bat'),
+    ('7zr.exe', '7zr.exe'),
 ]
 
 setup(
@@ -36,7 +39,6 @@ setup(
             "include_files": include_files,
             "packages": [
                 "httpx",
-                "py7zr",
                 "semver",
                 "psutil",
                 "webview",
@@ -76,12 +78,6 @@ setup(
             icon="./assets/updater.ico",
             base=("Win32GUI" if platform == "win32" else None),
             target_name="rnmupdater"
-        ),
-        Executable(
-            "dist/unpacker.py",
-            icon="./assets/unpacker.ico",
-            base=None,
-            target_name="rnmunpacker"
         )
     ],
 )
