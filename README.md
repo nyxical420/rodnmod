@@ -25,18 +25,20 @@
 > [!NOTE]
 > Rod n' Mod is incompatible to [Hook, Line, & Sinker](https://hooklinesinker.lol). (uncertain: r2mm, GMM) due to how HLS and Rod n' Mod handles installed mods.
 
-# Download
-You can download Rod n' Mod here!<br>
-### [Download Rod n' Mod](https://github.com/nyxical420/rodnmod/releases/latest)
-
-# Features
+<br><br>
+<p align="center">
+    <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/features.png?raw=true" width="800"/><br>
+</p>
 - **Launch Vanilla/Modded**: Launch WEBFISHING with or without mods!
 - **Mod Manager**: Install, update, and uninstall mods easily!
 - **Modpacks**: Easily create and share modpacks to others!
 - **Save Manager**: Easily backup and restore your WEBFISHING saves!
 - **Installation Detection**: Automatically finds your WEBFISHING installation! no need to configure the installation path!
 
-# Requirements
+<br><br>
+<p align="center">
+    <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/requirements.png?raw=true" width="800"/><br>
+</p>
 - A webview runtime. I recommend having [Microsoft Edge WebView2 Runtime](https://developer.microsoft.com/en-gb/microsoft-edge/webview2#download) for Windows (OPTIONAL, ALTHOUGH RECOMMENDED STILL), and `libwebkit2gtk-4.1-dev` for Linux. (no official Linux support yet) (SOON!!!)
 
 # Building Rod n' Mod
