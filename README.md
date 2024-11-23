@@ -25,6 +25,7 @@
 > [!NOTE]
 > Rod n' Mod is incompatible to [Hook, Line, & Sinker](https://hooklinesinker.lol). (uncertain: r2mm, GMM) due to how HLS and Rod n' Mod handles installed mods.
 
+<br>
 <p align="center">
     <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/features.png?raw=true" width="800"/><br>
 </p>
@@ -35,6 +36,7 @@
 - **Save Manager**: Easily backup and restore your WEBFISHING saves!
 - **Installation Detection**: Automatically finds your WEBFISHING installation! no need to configure the installation path!
 
+<br>
 <p align="center">
     <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/requirements.png?raw=true" width="800"/><br>
 </p>
