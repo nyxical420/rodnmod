@@ -7,10 +7,9 @@
     <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/divisor.png?raw=true" width="800"/><br>
 </p>
 
-<p float="left" style="text-align: center; justify-content: center;">
-  <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/web/download.png?raw=true" width="100" />
-  or
-  <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/web/download.png?raw=true" width="100" />
+<p align="center">
+  <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/redbutton.png?raw=true" width="100" />
+  <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/greenbutton.png?raw=true" width="100" />
 </p>
 
 > [!NOTE]
