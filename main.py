@@ -29,8 +29,6 @@ if installationPath:
 else:
     print("WEBFISHING Installation Path Not Found")
 
-chdir(path.dirname(path.abspath(__name__)))
-
 basicConfig(
     level=ERROR,
     filename="rodnmod.log",
@@ -472,6 +470,8 @@ class WindowFunctions:
 rnm = RodNMod()
 
 if __name__ == "__main__":
+    chdir(path.dirname(path.abspath(__name__)))
+    
     window = create_window(
         "Rod n' Mod",
         "main.html",

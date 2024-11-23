@@ -11,8 +11,6 @@ from rodnmod.internet import downloadRaw, getMods
 
 installationPath = findWebfishing()
 
-chdir(path.dirname(path.abspath(__name__)))
-
 logging.basicConfig(
     level=logging.ERROR,
     filename="rodnmod.log",
@@ -94,6 +92,8 @@ class RodNModUpdater:
 rnmu = RodNModUpdater()
 
 if __name__ == "__main__":
+    chdir(path.dirname(path.abspath(__name__)))
+    
     window = create_window(
         "Rod n' Mod Updater",
         "updater.html",

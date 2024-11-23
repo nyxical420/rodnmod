@@ -4,23 +4,13 @@ from sys import platform
 from cx_Freeze import setup, Executable
 import subprocess
 
-# Function to obfuscate code with PyArmor 8
-def obfuscate_code():
-    # List of scripts to obfuscate
-    scripts_to_obfuscate = ['main.py', 'updater.py', 'unpacker.py']
-    
-    for script in scripts_to_obfuscate:
-        # Generate an obfuscated version using pyarmor gen
-        subprocess.run(["pyarmor", "gen", script])
+for script in ['main.py', 'updater.py', 'unpacker.py']:
+    subprocess.run(["pyarmor", "gen", script])
 
-# Call the obfuscation function before building
-obfuscate_code()
 
-# Read the `version.json` file for version information
 with open("version.json") as ver:
     version = load(ver)["version"]
 
-# List of files to include in the build
 include_files = [
     ('LICENSE', 'LICENSE'),
     ('main.html', 'main.html'),
