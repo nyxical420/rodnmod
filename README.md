@@ -58,8 +58,6 @@ This should automatically build Rod n' Mod for you and put the final build at th
 - @zoiudolo for Rod n' Mod Logo, Banner, and Images/Icons
 - west for Game Sounds and Cursor used in Rod n' Mod
 
-[![Star History Chart](https://api.star-history.com/svg?repos=nyxical420/rodnmod&type=Date)](https://star-history.com/#nyxical420/rodnmod&Date)
-
 <p align="center">
     <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/enddivisor.png?raw=true" width="800"/><br>
 </p>
