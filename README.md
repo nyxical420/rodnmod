@@ -8,8 +8,12 @@
 </p>
 
 <p align="center">
-  <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/redbutton.png?raw=true" width="auto" />
-  <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/greenbutton.png?raw=true" width="auto" />
+  <a href="https://your-link-here.com" style="pointer-events: none;">
+    <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/redbutton.png?raw=true" width="auto" />
+  </a>
+  <a href="https://another-link-here.com" style="pointer-events: none;">
+    <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/greenbutton.png?raw=true" width="auto" />
+  </a>
 </p>
 
 > [!NOTE]
