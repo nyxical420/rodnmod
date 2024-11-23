@@ -39,7 +39,7 @@ class RodNModUpdater:
             version = load(ver)
 
         for x in rnm["assets"]:
-            if str(x["name"]).__contains__(".zip"):
+            if str(x["name"]).__contains__("rodnmod-standalone.7z"):
                 asset = x
         
         remoteVersion = sanitizeVer(rnm["tag_name"])
@@ -51,7 +51,7 @@ class RodNModUpdater:
             response = get(asset["browser_download_url"], follow_redirects=True)
 
             if response.status_code == 200:
-                with open("update.zip", 'wb') as f:
+                with open("update.7z", 'wb') as f:
                     f.write(response.content)
                 status.text = "Unpacking Update...\nPlease wait for the updater to re-run!"
 
@@ -93,7 +93,7 @@ rnmu = RodNModUpdater()
 
 if __name__ == "__main__":
     chdir(path.dirname(path.abspath(__name__)))
-    
+
     window = create_window(
         "Rod n' Mod Updater",
         "updater.html",

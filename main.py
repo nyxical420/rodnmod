@@ -471,7 +471,7 @@ rnm = RodNMod()
 
 if __name__ == "__main__":
     chdir(path.dirname(path.abspath(__name__)))
-    
+
     window = create_window(
         "Rod n' Mod",
         "main.html",

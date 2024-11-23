@@ -1,18 +1,8 @@
-import errno
-from zipfile import ZipFile
-from os import execv, path, chdir
+from os import execv, path
+from py7zr import SevenZipFile
 
-chdir(path.dirname(path.abspath(__file__)))
-
-if path.exists("update.zip"):
-    with ZipFile("update.zip", 'r') as zip_ref:
-        for file in zip_ref.namelist():
-            try:
-                zip_ref.extract(file)
-            except OSError as e:
-                if e.errno == errno.EACCES:
-                    print(f"Skipped '{file}' as it is currently in use.")
-                else:
-                    raise
+if path.exists("update.7z"):
+    with SevenZipFile("update.7z", mode='r') as archive:
+        archive.extractall(path=".")
 
 execv("./rnmupdater.exe", ["./rnmupdater.exe"])

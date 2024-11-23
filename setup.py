@@ -1,14 +1,16 @@
+import subprocess
 from json import load
 from sys import platform
 from cx_Freeze import setup, Executable
-import subprocess
 
+# PyArmor layer to obfuscate scripts - hopefully lowers AV detection
 for script in ['main.py', 'updater.py', 'unpacker.py']:
     subprocess.run(["pyarmor", "gen", script])
 
 with open("version.json") as ver:
     version = load(ver)["version"]
 
+# Build Rod n' Mod with required stuff
 include_files = [
     ('LICENSE', 'LICENSE'),
     ('main.html', 'main.html'),
@@ -40,6 +42,24 @@ setup(
                 "rapidfuzz",
                 "pyperclip",
                 "pythonnet",
+            ],
+            "excludes": [ # why
+                "_distutils_hack",
+                "tkinter",
+                "zipp",
+                "xml",
+                "xmlrpc",
+                "anyio",
+                "asyncio",
+                "autocommand",
+                "backports",
+                "curses",
+                "email",
+                "jaraco",
+                "lib2to3",
+                "pip",
+                "more_itertools",
+                "pyarmor",
             ]
         }
     },

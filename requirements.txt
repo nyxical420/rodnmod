@@ -1,9 +1,9 @@
 httpx
 psutil
-semver
 pywebview
 rapidfuzz
 pyperclip
-pythonnet
 pyarmor
+py7zr
+semver
 cx_Freeze
