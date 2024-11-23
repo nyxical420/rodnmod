@@ -28,6 +28,9 @@ def exceptHook(exc_type, exc_value, exc_traceback):
     logging.error("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))
 
 sys.excepthook = exceptHook
+
+def sanitizeVer(version):
+    return version.lstrip('v')
 class RodNModUpdater:
     def doUpdates():
         status = window.dom.get_element("#status")
@@ -38,13 +41,14 @@ class RodNModUpdater:
             version = load(ver)
 
         for x in rnm["assets"]:
-            if str(x["name"]).__contains__("rodnmod-standalone"):
+            if str(x["name"]).__contains__(".zip"):
                 asset = x
         
-        if semver.compare(version["version"], rnm["tag_name"]) < 0:
-            newver = rnm["tag_name"]
-            curver = version["version"]
-            status.text = f"Downloading Update...\n{curver} -> {newver}"
+        remoteVersion = sanitizeVer(rnm["tag_name"])
+        localVersion = sanitizeVer(version["version"])
+
+        if semver.compare(localVersion, remoteVersion) < 0:
+            status.text = f"Downloading Update...\n{localVersion} -> {remoteVersion}"
 
             response = get(asset["browser_download_url"], follow_redirects=True)
 
