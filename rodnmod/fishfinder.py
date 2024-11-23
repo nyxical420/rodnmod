@@ -32,3 +32,5 @@ def findWebfishing():
                         return installationPath
 
     return None
+
+print(findWebfishing())

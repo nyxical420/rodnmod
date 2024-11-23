@@ -6,6 +6,7 @@ from shutil import rmtree
 from pyperclip import copy
 from json import load, dump
 from threading import Thread
+from datetime import datetime
 from rapidfuzz import fuzz, process
 from webbrowser import open as openWeb
 from re import IGNORECASE, compile as comp
@@ -111,9 +112,6 @@ class RodNMod:
             with open("data/config.json", 'w') as file:
                 dump(config, file, indent=4)
             return "Configured!"
-
-    def webfishingInstallation(self):
-        return installationPath
     
     def minimizeApplication(self):
         window.minimize()
@@ -127,11 +125,8 @@ class RodNMod:
         else: # restart in development environment so you can immediately restart the entire code once its updated
             execv(sys.executable, ['python'] + sys.argv)
 
-    def webfishingRunning(self):
-        try: running = any(proc.name() == "webfishing.exe" for proc in process_iter())
-        except NoSuchProcess: running = False
-        return {"running": running}
-        
+    # Mods
+
     def getModList(self):
         return self.modsList
     
@@ -288,8 +283,8 @@ class RodNMod:
         modDependencies = modInfo["latestDependencies"]
 
         if mod not in self.modsBeingDownloaded:
-            if self.modsBeingDownloaded.count == 7:
-                window.evaluate_js(f"notify('The limit of 7 mods to be downloaded simultaneously has been reached. Please try again later!', 3000)")
+            if self.modsBeingDownloaded.count == 5:
+                window.evaluate_js(f"notify('The limit of 5 mods to be downloaded simultaneously has been reached. Please try again later!', 3000)")
                 return 
 
             self.modsBeingDownloaded.append(mod)
@@ -400,6 +395,32 @@ class RodNMod:
 
         window.evaluate_js(f"notify('Updated all mods!', 3000)")
 
+    # Modpacks
+    
+    # currently none
+
+
+    # Save Manager
+
+    def getSavesList(self):
+        folderPath = 'data/savefiles/backups/'
+
+        files = []
+        for filename in listdir(folderPath):
+            filePath = path.join(folderPath, filename)
+            if path.isfile(filePath) and filename.endswith('.sav'):
+                creationTime = path.getctime(filePath)
+                files.append({
+                    'filename': filename,
+                    'creationTime': datetime.fromtimestamp(creationTime).strftime('%Y-%m-%d %I:%M:%S %p')
+                })
+
+        files.sort(key=lambda x: x['creationTime'], reverse=True)
+        return files
+    
+    def backupSave(self, slot: int = 0):
+        ...
+
 class WindowFunctions:
     sceneChanging = False
     settingsDisplayed = False
@@ -462,6 +483,7 @@ class WindowFunctions:
 
         splashText.text = "Starting Rod n\\' Mod..."
         window.evaluate_js(f"handleChange();")
+        window.evaluate_js(f"generateSaveItems();")
         sleep(.5)
         window.evaluate_js(f"openWindow();") 
 

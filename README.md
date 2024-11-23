@@ -7,11 +7,17 @@
     <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/divisor.png?raw=true" width="800"/><br>
 </p>
 
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+  <div>test</div>
+  <div>or</div>
+  <div>fake</div>
+</div>
+
 > [!NOTE]
 > Assets located in `assets/web/fishing` are WEBFISHING game assets and is excepted from the project's license.
 
 > [!WARNING]  
-> Rod n' Mod is still on it's alpha stage, so there may be bugs and issues. If you encounter any, please report them to me in the [issues page](https://github.com/nyxical420/rodnmod/issues) or at my discord! (@nyxical ID:583200866631155714)
+> Rod n' Mod is still on it's beta stage, so there may be bugs and issues. If you encounter any, please report them to me in the [issues page](https://github.com/nyxical420/rodnmod/issues) or at my discord! (@nyxical ID:583200866631155714)
 
 > [!NOTE]
 > Rod n' Mod is incompatible to [Hook, Line, & Sinker](https://hooklinesinker.lol). (uncertain: r2mm, GMM) due to how HLS and Rod n' Mod handles installed mods.
