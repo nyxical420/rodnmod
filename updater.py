@@ -31,8 +31,8 @@ def sanitizeVer(version):
     return version.lstrip('v')
 class RodNModUpdater:
     def doUpdates():
-        status = window.dom.get_element("#status")
-        status.text = "Checking for Updates..."
+        status = "document.getElementById('status')"
+        window.evaluate_js(f'{status}.innerHTML = "Checking for Updates..."')
         rnm = get("https://api.github.com/repos/nyxical420/rodnmod/releases?per_page=1").json()[0]
         
         with open("version.json") as ver:
@@ -46,18 +46,18 @@ class RodNModUpdater:
         localVersion = sanitizeVer(version["version"])
 
         if semver.compare(localVersion, remoteVersion) < 0:
-            status.text = f"Downloading Update...\n{localVersion} -> {remoteVersion}"
-
+            window.evaluate_js(f'{status}.innerHTML = "Downloading Update...<br>{localVersion} -> {remoteVersion}"')
             response = get(asset["browser_download_url"], follow_redirects=True)
 
             if response.status_code == 200:
                 with open("update.7z", 'wb') as f:
                     f.write(response.content)
-                status.text = "Unpacking Update...\nPlease wait for the updater to re-run!"
+
+                window.evaluate_js(f'{status}.innerHTML = "Upacking Update...<br>Please wait for the updater to re-run!"')
 
                 execv("./rnmunpacker.exe", ["./rnmunpacker.exe"])
             else:
-                status.text = f"Failed to download update.\nHTTP Status Code: {response.status_code}"
+                window.evaluate_js(f'{status}.innerHTML = "Failed to download update.<br>HTTP Status Code: {response.status_code}"')
             
         elif semver.compare(version["version"], rnm["tag_name"]) > 0:
             print("Version is greater than remote version. This is a Development Build.")
@@ -67,26 +67,25 @@ class RodNModUpdater:
             name, version, downloadUrl = gdweaveLib["modName"], gdweaveLib["latestVersion"], gdweaveLib["latestDownload"]
 
             if path.exists(installationPath + "\\GDWeave") and path.isdir(installationPath + "\\GDWeave"):
-                status.text = "Checking for GDWeave Update..."
+                window.evaluate_js(f'{status}.innerHTML = "Checking for GDWeave Update"')
                 try:
                     with open(installationPath + "\\rnmInfo.json") as file:
                         rnmInfo = load(file)
 
                     if rnmInfo["version"] != version:
                         rnmv = rnmInfo["version"]
-                        status.text = "Updating GDWeave..."
-                        window.evaluate_js(f"{status}.innerHTML = \"Updating GDWeave<br>{rnmv} -> {version}\"")
+                        window.evaluate_js(f'{status}.innerHTML = "Updating GDWeave...<br>{rnmv} -> {version}"')
                         downloadRaw(downloadUrl, installationPath, {"name": name, "version": version})
                     else:
-                        status.text = "No GDWeave Updates Available..."
+                        window.evaluate_js(f'{status}.innerHTML = "No GDWeave Updates Available..."')
                 except FileNotFoundError:
-                    status.text = "Reinstalling GDWeave...\n(Rod n\\' Mod versioning compatibility)"
+                    window.evaluate_js(f'{status}.innerHTML = "Reinstalling GDWeave...<br>(Rod n\' Mod versioning compatibility)"')
                     downloadRaw(downloadUrl, installationPath, {"name": name, "version": version})
             else:
-                status.text = "Downloading GDWeave..."
+                window.evaluate_js(f'{status}.innerHTML = "Downloading GDWeave..."')
                 downloadRaw(downloadUrl, installationPath, {"name": name, "version": version})
         
-        status.text = "Launching Rod n\\' Mod"
+        window.evaluate_js(f'{status}.innerHTML = "Launching Rod n\' Mod"')
         execv("./rodnmod.exe", ["./rodnmod.exe"])
 
 rnmu = RodNModUpdater()

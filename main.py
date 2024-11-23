@@ -484,7 +484,7 @@ class WindowFunctions:
         splashText.text = "Starting Rod n\\' Mod..."
         window.evaluate_js(f"handleChange();")
         window.evaluate_js(f"generateSaveItems();")
-        sleep(.5)
+        sleep(1)
         window.evaluate_js(f"openWindow();") 
 
     def content(element: str = None, visibility: str = "hide"):

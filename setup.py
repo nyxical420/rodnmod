@@ -36,6 +36,7 @@ setup(
             "include_files": include_files,
             "packages": [
                 "httpx",
+                "py7zr",
                 "semver",
                 "psutil",
                 "webview",
@@ -79,7 +80,7 @@ setup(
         Executable(
             "dist/unpacker.py",
             icon="./assets/unpacker.ico",
-            base=("Win32GUI" if platform == "win32" else None),
+            base=None,
             target_name="rnmunpacker"
         )
     ],

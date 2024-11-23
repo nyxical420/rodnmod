@@ -4,6 +4,5 @@ pywebview
 rapidfuzz
 pyperclip
 pyarmor
-py7zr
 semver
 cx_Freeze
