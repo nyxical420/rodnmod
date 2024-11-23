@@ -1,10 +1,26 @@
+import os
 from json import load
 from sys import platform
 from cx_Freeze import setup, Executable
+import subprocess
 
+# Function to obfuscate code with PyArmor 8
+def obfuscate_code():
+    # List of scripts to obfuscate
+    scripts_to_obfuscate = ['main.py', 'updater.py', 'unpacker.py']
+    
+    for script in scripts_to_obfuscate:
+        # Generate an obfuscated version using pyarmor gen
+        subprocess.run(["pyarmor", "gen", script])
+
+# Call the obfuscation function before building
+obfuscate_code()
+
+# Read the `version.json` file for version information
 with open("version.json") as ver:
     version = load(ver)["version"]
 
+# List of files to include in the build
 include_files = [
     ('LICENSE', 'LICENSE'),
     ('main.html', 'main.html'),
@@ -17,8 +33,12 @@ include_files = [
     ('assets/web', 'assets/web'),
     ('assets/web/fishing', 'assets/web/fishing'),
     ('assets/web/fishing/sounds', 'assets/web/fishing/sounds'),
+
+    ('dist/pyarmor_runtime_000000', 'lib/pyarmor_runtime_000000'),
+    ('rodnmod', 'lib/rodnmod'),
 ]
 
+# Configure the `cx_Freeze` build
 setup(
     name="Rod n' Mod",
     version=version,
@@ -27,46 +47,30 @@ setup(
             "include_files": include_files,
             "packages": [
                 "httpx",
+                "semver",
                 "psutil",
                 "webview",
                 "rapidfuzz",
                 "pyperclip",
-                "pythonnet", # appears to be required
-            ],
-            "excludes": [ # why
-                "_distutils_hack",
-                "tkinter",
-                "zipp",
-                "xml",
-                "xmlrpc",
-                "anyio",
-                "asyncio",
-                "autocommand",
-                "backports",
-                "curses",
-                "email",
-                "jaraco",
-                "lib2to3",
-                "pip",
-                "more_itertools",
+                "pythonnet",  # Needed in your environment
             ]
         }
     },
     executables=[
         Executable(
-            "main.py",
+            "dist/main.py",  # Pointing to the obfuscated script
             icon="./assets/rodnmod.ico",
             base=("Win32GUI" if platform == "win32" else None),
             target_name="rodnmod"
         ),
         Executable(
-            "updater.py",
+            "dist/updater.py",  # Pointing to the obfuscated script
             icon="./assets/updater.ico",
             base=("Win32GUI" if platform == "win32" else None),
             target_name="rnmupdater"
         ),
         Executable(
-            "unpacker.py",
+            "dist/unpacker.py",  # Pointing to the obfuscated script
             icon="./assets/unpacker.ico",
             base=("Win32GUI" if platform == "win32" else None),
             target_name="rnmunpacker"

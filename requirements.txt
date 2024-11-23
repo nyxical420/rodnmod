@@ -5,4 +5,5 @@ pywebview
 rapidfuzz
 pyperclip
 pythonnet
+pyarmor
 cx_Freeze

@@ -1,5 +1,6 @@
 .venv/
 __pycache__/
 build
+dist
 installer
 rodnmod.log

@@ -33,6 +33,9 @@ You can download Rod n' Mod here!<br>
 > [!IMPORTANT]
 > Building Rod n' Mod requires Python 3.11.0.
 
+> [!IMPORTANT]
+> Make sure you build Rod n' Mod in a virtual environment!
+
 To build Rod n' Mod, you will need to initialize a Virtual Environment and installed the required libraries with:
 (Powershell)
 ```PS
