@@ -36,7 +36,7 @@
         <div id="toast-container"></div>
 
         <div class="pywebview-drag-region titleBar" style="background-color: #101c31; position: fixed; top: 0; left: 0; height: 34px; width: 100%; padding: 0 10px; z-index: 2;">
-            <img src="/assets/web/rodnmod.png" style="width: 30px; height: 30px; margin-top: 2px; pointer-events: none;">
+            <img src="/assets/web/rodnmod.png" style="image-rendering: auto; width: 30px; height: 30px; margin-top: 2px; pointer-events: none;">
             <text id="titleText" style="position: relative; font-size: 22px; color: #ffeed5; top: -7px; left: 5px;">Rod n' Mod</text>
         </div>
 
@@ -247,7 +247,7 @@
 
         <div class="tabs" style="transition: 750ms;" onscroll="updateModsCount()">
             <div class="tab active" id="Mods" style="max-height: calc(100vh + 57px);">
-                <div id="confirmationDialog" style="display: block; background-color: #11111180; position: fixed; left: 0; width: 100%; height: calc(100vh + 56px); z-index: 10;">
+                <div id="confirmationDialog" style="display: none; background-color: #11111180; position: fixed; left: 0; width: 100%; height: calc(100vh + 56px); z-index: 10;">
                     <div class="settingsMenu" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 450px; height: auto; z-index: 10;">
                         <div id="settingContainer" style="color: #5a755a; font-size: 24px;">
                             <button type="normalButton" style="font-size: 22px; position: absolute; right: -24px; top: -26px; height: 42px; width: 85px; border-radius: 8px;" onmouseup="document.getElementById('saveWhatSlot').style.display ='none'; playAudio('/assets/web/fishing/sounds/menu_blipb.ogg');">
