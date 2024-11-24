@@ -57,7 +57,7 @@ function generateModItems(modData) {
         const img = document.createElement('img');
         img.loading = "lazy";
         img.src = mod.versions[0].modIcon || 'assets/web/rodnmod.png';
-        img.style = "width: 150px; height: 150px; border-radius: 15px; box-shadow: 0 4px 0 #6a4420;";
+        img.style = "image-rendering: auto; width: 150px; height: 150px; border-radius: 15px; box-shadow: 0 4px 0 #6a4420;";
         imageContainer.appendChild(img);
 
         if (mod.isDeprecated) {
@@ -67,7 +67,7 @@ function generateModItems(modData) {
             
             const deprecatedIndicator = document.createElement('img');
             deprecatedIndicator.src = "assets/web/deprecated.png";
-            deprecatedIndicator.style = "pointer-events: none; position: absolute; top: -18px; left: 0; width: 48px; height: 48px; transform: rotate(-15deg);";
+            deprecatedIndicator.style = "image-rendering: auto;pointer-events: none; position: absolute; top: -18px; left: 0; width: 48px; height: 48px; transform: rotate(-15deg);";
             
             deprecatedContainer.appendChild(deprecatedIndicator);
             imageContainer.appendChild(deprecatedContainer);
@@ -125,7 +125,7 @@ function generateModItems(modData) {
         const tagsDiv = document.createElement('div');
         tagsDiv.style = "font-size: 18px;";
         tagsDiv.innerHTML = `
-            <img src="/assets/web/tag.png" style="vertical-align: middle; width: 22px; height: 22px;"/> ${mod.modTags.join(', ')}
+            <img src="/assets/web/tag.png" style="image-rendering: auto; vertical-align: middle; width: 22px; height: 22px;"/> ${mod.modTags.join(', ')}
         `;
         contentDiv.appendChild(tagsDiv);
 
@@ -133,8 +133,8 @@ function generateModItems(modData) {
         const downloadsDiv = document.createElement('div');
         downloadsDiv.style = "font-size: 18px;";
         downloadsDiv.innerHTML = `
-            <img src="/assets/web/download.png" style="vertical-align: middle; width: 22px; height: 22px;"/> ${mod.totalDownloads.toLocaleString()} 
-            <img src="/assets/web/like.png" style="vertical-align: middle; width: 22px; height: 22px;"/> ${mod.modScore.toLocaleString()}
+            <img src="/assets/web/download.png" style="image-rendering: auto; vertical-align: middle; width: 22px; height: 22px;"/> ${mod.totalDownloads.toLocaleString()} 
+            <img src="/assets/web/like.png" style="image-rendering: auto; vertical-align: middle; width: 22px; height: 22px;"/> ${mod.modScore.toLocaleString()}
         `;
         contentDiv.appendChild(downloadsDiv);
 

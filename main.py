@@ -81,7 +81,6 @@ class RodNMod:
             with open("data/config.json", "w") as file:
                 default_config = {
                 "debugging": "debdis",
-                "nonrnmmods": "findnonrnm",
                 "savebackups": "save",
                 "reelsound": "reel",
                 "transition": "transition",
@@ -497,7 +496,6 @@ class WindowFunctions:
         # Configurations
         configs = [
             "debugging",
-            "nonrnmmods",
             "savebackups",
             "reelsound",
             "transition",
