@@ -36,7 +36,7 @@ logging.info(f"Detected Webfishing installation path: {installationPath}")
 
 if installationPath == None:
     logging.info("Installation path is None. Using fallback installation path instead!")
-    with open("data/installationOverride.json", "r") as instOverride:
+    with open("data/installationOverride.json", "w+") as instOverride:
         installationPath = load(instOverride)["installationPath"]
 
 saveFiles = path.expandvars(r"%AppData%\Godot\app_userdata\webfishing_2_newver")
@@ -80,22 +80,6 @@ class RodNMod:
         window.evaluate_js(f"notify('Log File has been cleared!', 3000)")
 
     def configure(self, configItem: str, configValue=None):
-        makedirs("data", exist_ok=True)
-
-        if not path.exists("data/config.json"):
-            with open("data/config.json", "w") as file:
-                default_config = {
-                "debugging": "debdis",
-                "savebackups": "save",
-                "reelsound": "reel",
-                "transition": "transition",
-                "filter": "none",
-                "category": "all",
-                "nsfw": "hidensfw"
-            }
-            with open("data/config.json", 'w') as file:
-                dump(default_config, file, indent=4)
-
         with open("data/config.json", "r") as file:
             config = load(file)
 
@@ -523,14 +507,11 @@ class WindowFunctions:
             splashText.text = f"set config: {config} -> {value}"
             window.evaluate_js(f'setDropdownValue("{config}", "{value}")')
 
-        if installationPath != None: 
-            splashText.text = "Starting Rod n\\' Mod..."
-            window.evaluate_js(f"handleChange();")
-            window.evaluate_js(f"generateSaveItems();")
-            sleep(1)
-            window.evaluate_js(f"openWindow();") 
-        else:
-            splashText.text = "ERROR: Webfishing Installation not Found. USE MANUAL PATH OVERRIDE CONFIG!!"
+        splashText.text = "Starting Rod n\\' Mod..."
+        window.evaluate_js(f"handleChange();")
+        window.evaluate_js(f"generateSaveItems();")
+        sleep(1)
+        window.evaluate_js(f"openWindow();") 
 
     def content(element: str = None, visibility: str = "hide"):
         if visibility == "hide":
@@ -543,6 +524,35 @@ class WindowFunctions:
 rnm = RodNMod()
 
 if __name__ == "__main__":
+    # missing files
+    makedirs("data/modenv", exist_ok=True)
+    makedirs("data/modpacks", exist_ok=True)
+    makedirs("data/savefiles/backups", exist_ok=True)
+
+    # config
+    if not path.exists("data/config.json"):
+        with open("data/config.json", "w") as file:
+            default_config = {
+                "debugging": "debdis",
+                "savebackups": "save",
+                "reelsound": "reel",
+                "transition": "transition",
+                "filter": "none",
+                "category": "all",
+                "nsfw": "hidensfw"
+            }
+        with open("data/config.json", 'w') as file:
+            dump(default_config, file, indent=4)
+    
+    # path override
+    if not path.exists("data/installationOverride.json"):
+        with open("data/installationOverride.json", "w") as file:
+            default_config = {
+                "installationPath": ""
+            }
+        with open("data/installationOverride.json", 'w') as file:
+            dump(default_config, file, indent=4)
+
     window = create_window(
         "Rod n' Mod",
         "main.html",
