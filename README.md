@@ -23,7 +23,7 @@
 > Rod n' Mod is still on it's beta stage, so there may be bugs and issues. If you encounter any, please report them to me in the [issues page](https://github.com/nyxical420/rodnmod/issues) or at my discord! (@nyxical ID:583200866631155714)
 
 > [!NOTE]
-> Rod n' Mod is incompatible to [Hook, Line, & Sinker](https://hooklinesinker.lol). (uncertain: r2mm, GMM) due to how HLS and Rod n' Mod handles installed mods.
+> Rod n' Mod is incompatible to [Hook, Line, & Sinker](https://thunderstore.io/c/webfishing/p/Pyoid/Hook_Line_and_Sinker/). (uncertain: r2mm, GMM) due to how HLS and Rod n' Mod handles installed mods.
 
 <br>
 <p align="center">
