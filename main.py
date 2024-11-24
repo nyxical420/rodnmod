@@ -1,18 +1,20 @@
 # powered by hopes and dreams
 
 import sys
+import string
 from time import sleep
-from shutil import rmtree
+from random import choices
 from pyperclip import copy
 from json import load, dump
 from threading import Thread
 from datetime import datetime
 from rapidfuzz import fuzz, process
 from webbrowser import open as openWeb
+from shutil import rmtree, copy as copyFile
 from re import IGNORECASE, compile as comp
 from logging import basicConfig, ERROR, error
 from psutil import process_iter, NoSuchProcess
-from os import path, rename, walk, chdir, listdir, makedirs, execv
+from os import path, rename, walk, chdir, listdir, makedirs, execv, remove
 
 from webview import create_window, start
 from webview.errors import JavascriptException
@@ -20,19 +22,18 @@ from webview.errors import JavascriptException
 from rodnmod.fishfinder import findWebfishing
 from rodnmod.internet import getMods, download
 
-latestVersion = None
-webfishingInstalled = False
 installationPath = findWebfishing()
 
 if installationPath:
     print(f"Installation Path: {installationPath}")
-    webfishingInstalled = True
 
     if not path.exists(installationPath + f"\\GDWeave\\mods"):
         if not path.exists(installationPath + f"\\GDWeave\\disabled.mods"):
             makedirs(installationPath + "\\GDWeave\\mods")
 else:
     print("WEBFISHING Installation Path Not Found")
+
+saveFiles = path.expandvars(r"%AppData%\Godot\app_userdata\webfishing_2_newver")
 
 basicConfig(
     level=ERROR,
@@ -419,7 +420,46 @@ class RodNMod:
         return files
     
     def backupSave(self, slot: int = 0):
-        ...
+        makedirs("data/savefiles/backups", exist_ok=True)
+
+        if path.exists(saveFiles):
+            try:
+                if path.isfile(saveFiles + f"\\webfishing_save_slot_{slot}.sav"):
+                    code = ''.join(choices(string.ascii_uppercase, k=5))
+
+                    copyFile(saveFiles + f"\\webfishing_save_slot_{slot}.sav", f"data/savefiles/backups/BACKUP-{code}-SLOT-{slot + 1}.sav")
+                    window.evaluate_js(f'generateSaveItems();')
+                    window.evaluate_js(f'notify("Backed up Save Slot {slot + 1}!", 3000)')
+                else:
+                    window.evaluate_js(f'notify("No save found in slot {slot + 1}!")')
+            except Exception as e:
+                window.evaluate_js(f'notify("Failed to backup. Please check logs!", 3000)')
+        
+    
+    def loadSave(self, saveFile: str):
+        if path.exists(saveFiles):
+            try:
+                if path.isfile(f"data/savefiles/backups/{saveFile}"):
+                    slot = saveFile.split("-")[3].replace(".sav", "")
+                    copyFile(f"data/savefiles/backups/{saveFile}", saveFiles + f"\\webfishing_save_slot_{slot}.sav")
+                    window.evaluate_js(f'notify("Loaded backup for Slot {slot}!", 3000)')
+                else:
+                    window.evaluate_js(f'notify("Local Save File does not exist.")')
+            except Exception as e:
+                window.evaluate_js(f'notify("Failed to load Save File. Please check logs!", 3000)')
+
+    def deleteSave(self, saveFile: str):
+        if path.exists(saveFiles):
+            try:
+                if path.isfile(f"data/savefiles/backups/{saveFile}"):
+                    remove(f"data/savefiles/backups/{saveFile}")
+                    window.evaluate_js(f'generateSaveItems();')
+                    slot = saveFile.split("-")[3].replace(".sav", "")
+                    window.evaluate_js(f'notify("Deleted backup for Slot {slot}.")')
+                else:
+                    window.evaluate_js(f'notify("Local Save File does not exist.")')
+            except Exception as e:
+                window.evaluate_js(f'notify("Failed to delete Save File. Please check logs!", 3000)')
 
 class WindowFunctions:
     sceneChanging = False

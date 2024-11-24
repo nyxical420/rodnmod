@@ -1,15 +1,13 @@
 async function generateSaveItems() {
     const savesListContainer = document.querySelector('.savesList');
-    savesListContainer.innerHTML = ''; // Clear existing items
+    savesListContainer.innerHTML = '';
 
     try {
-        const saveData = await window.pywebview.api.getSavesList(); // Fetch the save data
+        const saveData = await window.pywebview.api.getSavesList();
 
-        // Create a document fragment to batch append save items
         const fragment = document.createDocumentFragment();
 
         saveData.forEach(save => {
-            // Create the save item container
             const saveItem = document.createElement('div');
             saveItem.classList.add('saveItem');
             saveItem.style.cssText = `
@@ -41,7 +39,7 @@ async function generateSaveItems() {
             deleteButton.style.cssText = 'width: 100px; height: 30px;';
             deleteButton.innerHTML = '<text style="pointer-events: none;">Delete</text>';
             deleteButton.onmouseup = () => {
-                console.log(`Deleting save: ${save.filename}`);
+                window.pywebview.api.deleteSave(save.filename);
             };
             buttonContainer.appendChild(deleteButton);
 
@@ -51,7 +49,7 @@ async function generateSaveItems() {
             loadButton.style.cssText = 'width: 150px; height: 30px;';
             loadButton.innerHTML = '<text style="pointer-events: none;">Load</text>';
             loadButton.onmouseup = () => {
-                console.log(`Loading save: ${save.filename}`);
+                window.pywebview.api.loadSave(save.filename);
             };
             buttonContainer.appendChild(loadButton);
 

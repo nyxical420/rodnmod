@@ -8,17 +8,17 @@
 </head>
 <body>
     <div class="splashIcon" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none;">
-        <img src="/assets/repository/banner.png" style="width: 624px; height: 256px;">
+        <img src="/assets/web/banner.png" style="width: 624px; height: 256px;">
     </div>
 
     <style>
         @keyframes loading {
-          0% {
-            transform: rotate(0deg);
-          }
-          100% {
-            transform: rotate(360deg);
-          }
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
         }
     </style>
 
@@ -253,7 +253,7 @@
                 
                     <div id="creditsMenu" class="settingTab" style="font-size: 20px; text-align: center;">
                         <p align="center" style="font-size: 16px; margin-bottom: 12px;">
-                            <img src="/assets/repository/banner.png" width="500"/><br>
+                            <img src="/assets/web/banner.png" width="500"/><br>
                             A webfishing-themed mod manager!
                         </p>
 
@@ -436,16 +436,16 @@
                             </div>
 
                             <div style="display: flex; flex-direction: row; position: absolute; left: 50%; transform: translate(-50%, 0); bottom: -26px; gap: 5px">
-                                <button type="normalButton" style="font-size: 22px; height: 52px; width: 95px; border-radius: 8px;" onmouseup="notify('Saved Slot TESTING ONLY HAHAHAHAHA GET PRANKD X3')">
+                                <button type="normalButton" style="font-size: 22px; height: 52px; width: 95px; border-radius: 8px;" onmouseup="window.pywebview.api.backupSave(0); document.getElementById('saveWhatSlot').style.display ='none';">
                                     Slot 1
                                 </button>
-                                <button type="normalButton" style="font-size: 22px; height: 52px; width: 95px; border-radius: 8px;" onmouseup="notify('Saved Slot TESTING ONLY HAHAHAHAHA GET PRANKD X3')">
+                                <button type="normalButton" style="font-size: 22px; height: 52px; width: 95px; border-radius: 8px;" onmouseup="window.pywebview.api.backupSave(1); document.getElementById('saveWhatSlot').style.display ='none';">
                                     Slot 2
                                 </button>
-                                <button type="normalButton" style="font-size: 22px; height: 52px; width: 95px; border-radius: 8px;" onmouseup="notify('Saved Slot TESTING ONLY HAHAHAHAHA GET PRANKD X3')">
+                                <button type="normalButton" style="font-size: 22px; height: 52px; width: 95px; border-radius: 8px;" onmouseup="window.pywebview.api.backupSave(2); document.getElementById('saveWhatSlot').style.display ='none';">
                                     Slot 3
                                 </button>
-                                <button type="normalButton" style="font-size: 22px; height: 52px; width: 95px; border-radius: 8px;" onmouseup="notify('Saved Slot TESTING ONLY HAHAHAHAHA GET PRANKD X3')">
+                                <button type="normalButton" style="font-size: 22px; height: 52px; width: 95px; border-radius: 8px;" onmouseup="window.pywebview.api.backupSave(3); document.getElementById('saveWhatSlot').style.display ='none';">
                                     Slot 4
                                 </button>
                             </div>
