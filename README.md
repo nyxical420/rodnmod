@@ -4,7 +4,7 @@
 </p>
 
 <p align="center">
-    <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/divisor.png?raw=true" width="800"/><br>
+    <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/divisor.png?raw=true" width="450"/><br>
 </p>
 
 <p align="center">
@@ -27,7 +27,7 @@
 
 <br>
 <p align="center">
-    <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/features.png?raw=true" width="800"/><br>
+    <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/features.png?raw=true" width="450"/><br>
 </p>
 
 - **Launch Vanilla/Modded**: Launch WEBFISHING with or without mods!
@@ -38,7 +38,7 @@
 
 <br>
 <p align="center">
-    <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/requirements.png?raw=true" width="800"/><br>
+    <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/requirements.png?raw=true" width="450"/><br>
 </p>
 
 - A webview runtime
@@ -47,7 +47,7 @@
 
 <br>
 <p align="center">
-    <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/building.png?raw=true" width="800"/><br>
+    <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/building.png?raw=true" width="450"/><br>
 </p>
 
 > [!IMPORTANT]
@@ -75,12 +75,12 @@ This should automatically build Rod n' Mod for you and put the final build at th
 
 <br>
 <p align="center">
-    <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/credits.png?raw=true" width="800"/><br>
+    <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/credits.png?raw=true" width="450"/><br>
 </p>
 
 - @zoiudolo for Rod n' Mod Logo, Banner, and Images/Icons
 - west for Game Sounds and Cursor used in Rod n' Mod
 
 <p align="center">
-    <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/enddivisor.png?raw=true" width="800"/><br>
+    <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/enddivisor.png?raw=true" width="450"/><br>
 </p>
