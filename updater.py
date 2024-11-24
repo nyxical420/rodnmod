@@ -71,27 +71,30 @@ class RodNModUpdater:
             gdweaveLib = getMods()["NotNet-GDWeave"]
             name, version, downloadUrl = gdweaveLib["modName"], gdweaveLib["latestVersion"], gdweaveLib["latestDownload"]
 
-            if path.exists(installationPath + "\\GDWeave") and path.isdir(installationPath + "\\GDWeave"):
+            if path.exists("data\modenv\GDWeave") and path.isdir("data\modenv\GDWeave"):
                 window.evaluate_js(f'{status}.innerHTML = "Checking for GDWeave Update"')
                 try:
-                    with open(installationPath + "\\rnmInfo.json") as file:
+                    with open("data\modenv\\rnmInfo.json") as file:
                         rnmInfo = load(file)
 
                     if rnmInfo["version"] != version:
                         rnmv = rnmInfo["version"]
                         window.evaluate_js(f'{status}.innerHTML = "Updating GDWeave...<br>{rnmv} -> {version}"')
-                        downloadRaw(downloadUrl, installationPath, {"name": name, "version": version})
+                        downloadRaw(downloadUrl, "data\modenv\\", {"name": name, "version": version})
                     else:
                         window.evaluate_js(f'{status}.innerHTML = "No GDWeave Updates Available..."')
                 except FileNotFoundError:
                     window.evaluate_js(f'{status}.innerHTML = "Reinstalling GDWeave...<br>(Rod n\' Mod versioning compatibility)"')
-                    downloadRaw(downloadUrl, installationPath, {"name": name, "version": version})
+                    downloadRaw(downloadUrl, "data\modenv\\", {"name": name, "version": version})
             else:
                 window.evaluate_js(f'{status}.innerHTML = "Downloading GDWeave..."')
-                downloadRaw(downloadUrl, installationPath, {"name": name, "version": version})
+                downloadRaw(downloadUrl, "data\modenv\\", {"name": name, "version": version})
         
         window.evaluate_js(f'{status}.innerHTML = "Launching Rod n\' Mod"')
-        execv("./rodnmod.exe", ["./rodnmod.exe"])
+        if getattr(sys, 'frozen', False):
+            execv("./rodnmod.exe", ["./rodnmod.exe"])
+        else:
+            execv(sys.executable, ['python', 'main.py'])
 
 rnmu = RodNModUpdater()
 

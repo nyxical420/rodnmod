@@ -18,6 +18,7 @@ include_files = [
     ('version.json', 'version.json'),
     ('data/', 'data/'),
     ('data/modpacks', 'data/modpacks'),
+    ('data/modenv', 'data/modenv'),
     ('data/savefiles', 'data/savefiles'),
     ('assets/scripts', 'assets/scripts'),
     ('assets/web', 'assets/web'),

@@ -180,6 +180,29 @@
                                     </div>
                                 </div>
 
+                                <div>
+                                    <div style="display: grid; grid-template-rows: 1fr auto auto;">
+                                        <script>
+                                            function setPathOverride() {
+                                                window.pywebview.api.setPathOverride(document.getElementById('pathOverride').value).then((val) => {
+                                                    if (val == false) {
+                                                        document.getElementById('pathOverride').value = ''
+                                                    }
+                                                })
+                                            }
+                                        </script>
+                                        <text style="font-size: 22px;">Installation Path Override</text>
+                                        <text style="font-size: 14px;">Uses this as a fallback if Rod n' Mod can't find the game installation directory automatically.</text>
+
+                                        <div style="display: grid; grid-template-columns: 1fr auto; gap: 5px;">
+                                            <input type="text" id="pathOverride" placeholder="C:/Path/To/WEBFISHING" spellcheck="false" style="width: 100%; height: 30px; border-radius: 8px;" oninput="">
+                                            <button type="normalButton" style="height: 30px; width: 80px; border-radius: 8px;" onmouseup="setPathOverride()">
+                                                <text style="pointer-events: none; font-size: 18px; position: relative; top: -5px;">Set Path</text>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div style="display: flex; gap: 5px;">
                                     <text style="font-size: 20px; margin: auto auto auto 0;">Rod n' Mod Logs</text>
             
@@ -224,6 +247,29 @@
 
         <div class="tabs" style="transition: 750ms;" onscroll="updateModsCount()">
             <div class="tab active" id="Mods" style="max-height: calc(100vh + 57px);">
+                <div id="confirmationDialog" style="display: block; background-color: #11111180; position: fixed; left: 0; width: 100%; height: calc(100vh + 56px); z-index: 10;">
+                    <div class="settingsMenu" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 450px; height: auto; z-index: 10;">
+                        <div id="settingContainer" style="color: #5a755a; font-size: 24px;">
+                            <button type="normalButton" style="font-size: 22px; position: absolute; right: -24px; top: -26px; height: 42px; width: 85px; border-radius: 8px;" onmouseup="document.getElementById('saveWhatSlot').style.display ='none'; playAudio('/assets/web/fishing/sounds/menu_blipb.ogg');">
+                                Close
+                            </button>
+            
+                            <div id="content" style="padding: 30px; text-align: center;">
+                                TKLASKLJASFKLASJF
+                            </div>
+
+                            <div style="display: flex; flex-direction: row; position: absolute; right: -24px; bottom: -26px; gap: 5px">
+                                <button id="confirmationB1"  type="normalButton" style="font-size: 22px; height: 52px; width: 95px; border-radius: 8px;" onmouseup="window.pywebview.api.backupSave(0); document.getElementById('saveWhatSlot').style.display ='none';">
+                                    Yes
+                                </button>
+                                <button id="confirmationB2" type="normalButton" style="font-size: 22px; height: 52px; width: 95px; border-radius: 8px;" onmouseup="window.pywebview.api.backupSave(1); document.getElementById('saveWhatSlot').style.display ='none';">
+                                    No
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="modList" style="display: flex; flex-direction: column;">
                     <div class="modCounts" style="z-index: 5;">
                         <div id="mctparent" style="opacity: 0; transition: position 1s cubic-bezier(0.075, 0.82, 0.165, 1), opacity 1s cubic-bezier(0.075, 0.82, 0.165, 1), background-color 200ms cubic-bezier(0.87, 0, 0.13, 1), top 1s cubic-bezier(0.075, 0.82, 0.165, 1); position: absolute; top: -64px; left: 50%; transform: translate(-50%, -50%); width: 300px; padding: 3px; justify-content: center; text-align: center; font-size: 24px; color: #ffeed5; background-color: #5a755a; border-radius: 15px;">

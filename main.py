@@ -15,7 +15,7 @@ from webbrowser import open as openWeb
 from shutil import rmtree, copy as copyFile
 from re import IGNORECASE, compile as comp
 from psutil import process_iter, NoSuchProcess
-from os import path, rename, walk, chdir, listdir, makedirs, execv, remove, environ, getcwd
+from os import path, walk, listdir, makedirs, execv, remove, environ, getcwd
 
 from webview import create_window, start
 from webview.errors import JavascriptException
@@ -30,9 +30,14 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S"
 )
 
-
+global installationPath
 installationPath = findWebfishing()
 logging.info(f"Detected Webfishing installation path: {installationPath}")
+
+if installationPath == None:
+    logging.info("Installation path is None. Using fallback installation path instead!")
+    with open("data/installationOverride.json", "r") as instOverride:
+        installationPath = load(instOverride)["installationPath"]
 
 saveFiles = path.expandvars(r"%AppData%\Godot\app_userdata\webfishing_2_newver")
 
@@ -215,7 +220,7 @@ class RodNMod:
 
     def searchModFolders(self, folderName: str):
         subs = []
-        for dirpath, dirnames, _ in walk(installationPath + "\\GDWeave\\mods"):
+        for dirpath, dirnames, _ in walk("data\modenv\GDWeave\mods"):
             for dirname in dirnames:
                 subs.append(path.join(dirpath, dirname))
         
@@ -228,31 +233,25 @@ class RodNMod:
             if path.basename(folder) == splitted:
                 return folder
 
-        # this is absolutely not the way you do it strupid idito!!!! check pyoid dms
-        # attempt finding mods downloaded from other mod managers.
-        # most likely unnamed mod files thats only been installed and extracted
-        try: mods = [entry for entry in listdir(installationPath + "\\GDWeave\\mods") if path.isdir(path.join(installationPath + "\\GDWeave\\mods", entry))]
-        except FileNotFoundError: mods = [entry for entry in listdir(installationPath + "\\GDWeave\\disabled.mods") if path.isdir(path.join(installationPath + "\\GDWeave\\disabled.mods", entry))]
-        
-        if self.configure("unprocessedmods") == "findnonrnm" and mods != []:
-            transformations = [
-                (lambda name: name.split(".")[1] if "." in name else name, 90),
-                (lambda name: name.replace("-", "."), 85),
-                (lambda name: name.replace("_", "."), 86)
-            ]
+        transformations = [
+            (lambda name: name.split(".")[1] if "." in name else name, 90),
+            (lambda name: name.replace("-", "."), 85),
+            (lambda name: name.replace("_", "."), 86)
+        ]
 
-            folder_base_names = [path.basename(folder) for folder in subs]
+        folder_base_names = [path.basename(folder) for folder in subs]
 
-            for transform, threshold in transformations:
-                transformed_name = transform(folderName)
-                closest_folder = process.extractOne(transformed_name, folder_base_names)
+        for transform, threshold in transformations:
+            transformed_name = transform(folderName)
+            closest_folder = process.extractOne(transformed_name, folder_base_names)
 
-                if closest_folder and closest_folder[1] >= threshold:
-                    matchingFolder = subs[folder_base_names.index(closest_folder[0])]
-                    return matchingFolder
+            if closest_folder and closest_folder[1] >= threshold:
+                matchingFolder = subs[folder_base_names.index(closest_folder[0])]
+                return matchingFolder
 
-            return None
+        return None
 
+    # TODO: COMPLETELY OVERHAUL DOWNLOADING AND JUST USE THE MOD'S ORIGINAL MOD FOLDER NAME AND STUFF
     def downloadMod(self, mod: str):
         logging.info(f"Downloading {mod}...")    
         ignoredDependencies = [
@@ -306,10 +305,10 @@ class RodNMod:
                                 rnmInfo = {"version": "1.0.0"}
 
                             if rnmInfo["version"] != dependencyVersion:
-                                download(dependencyDownload, installationPath + "\\GDWeave\\mods", {"name": dependencyName, "author": dependencyAuthor, "version": dependencyVersion})
+                                download(dependencyDownload, "data\modenv\GDWeave\mods", {"name": dependencyName, "author": dependencyAuthor, "version": dependencyVersion})
 
                         else:
-                            download(dependencyDownload, installationPath + "\\GDWeave\\mods", {"name": dependencyName, "author": dependencyAuthor, "version": dependencyVersion})
+                            download(dependencyDownload, "data\modenv\GDWeave\mods", {"name": dependencyName, "author": dependencyAuthor, "version": dependencyVersion})
                             
             # since mod names are completely different we should scan for it and compare
             modPath = self.searchModFolders(modAuthor + "." + modName)
@@ -321,17 +320,17 @@ class RodNMod:
                             rnmInfo = load(f)
 
                         if rnmInfo["version"] != modVersion:
-                            download(modDownload, installationPath + "\\GDWeave\\mods", {"name": modName, "author": modAuthor, "version": modVersion})
+                            download(modDownload, "data\modenv\GDWeave\mods", {"name": modName, "author": modAuthor, "version": modVersion})
                             window.evaluate_js(f"notify('{modName} has been updated successfully!', 3000)")
                         else:
                             window.evaluate_js(f"notify('{modName} is currently up to date!', 3000)")
 
                 except FileNotFoundError: # rnmInfo.json missing, skip version check and download mod immediately instead
                     window.evaluate_js(f"notify('rnmInfo.json for {modName} missing. Forcing download...', 3000)")
-                    download(modDownload, installationPath + "\\GDWeave\\mods", {"name": modName, "author": modAuthor, "version": modVersion})
+                    download(modDownload, "data\modenv\GDWeave\mods", {"name": modName, "author": modAuthor, "version": modVersion})
 
             else:
-                download(modDownload, installationPath + "\\GDWeave\\mods", {"name": modName, "author": modAuthor, "version": modVersion})
+                download(modDownload, "data\modenv\GDWeave\mods", {"name": modName, "author": modAuthor, "version": modVersion})
                 window.evaluate_js(f"notify('{modName} has been downloaded successfully!', 3000)")
 
             self.modsBeingDownloaded.remove(mod)
@@ -361,7 +360,7 @@ class RodNMod:
 
     def updateAllMods(self):
         window.evaluate_js(f"notify('Updating Mods...', 3000)")
-        fpath = installationPath + "\\GDWeave\\mods"
+        fpath = "data\modenv\GDWeave\mods"
 
         try: folders = [entry for entry in listdir(fpath) if path.isdir(path.join(fpath, entry))]
         except:
@@ -449,6 +448,21 @@ class RodNMod:
                     window.evaluate_js(f'notify("Local Save File does not exist.")')
             except Exception as e:
                 window.evaluate_js(f'notify("Failed to delete Save File. Please check logs!", 3000)')
+
+    # Others
+
+    def setPathOverride(self, folderPath):
+        global installationPath
+        if path.exists(folderPath):
+            with open("data/installationOverride.json", "w") as f:
+                installationPath = folderPath
+                dump({"installationPath": folderPath}, f)
+            window.evaluate_js(f'notify("Successfully set Override Path!", 3000)')
+            return True
+        else:
+            window.evaluate_js(f'notify("Override Path does not exist!", 3000)')
+            return False
+
 
 class WindowFunctions:
     sceneChanging = False
