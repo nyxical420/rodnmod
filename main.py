@@ -54,9 +54,6 @@ sys.excepthook = exceptHook
 class RodNMod:
     modsList = getMods()
     modsBeingDownloaded = []
-
-    def isInstalled(self):
-        return {"installationStatus": webfishingInstalled}
     
     def visitSite(self, site: str):
         try: openWeb(site)
