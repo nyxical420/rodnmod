@@ -15,7 +15,7 @@ from webbrowser import open as openWeb
 from shutil import rmtree, copy as copyFile
 from re import IGNORECASE, compile as comp
 from psutil import process_iter, NoSuchProcess
-from os import path, walk, listdir, makedirs, execv, remove, environ, getcwd
+from os import path, walk, listdir, makedirs, execv, remove, environ, getcwd, chdir
 
 from webview import create_window, start
 from webview.errors import JavascriptException
@@ -36,7 +36,7 @@ logging.info(f"Detected Webfishing installation path: {installationPath}")
 
 if installationPath == None:
     logging.info("Installation path is None. Using fallback installation path instead!")
-    with open("data/installationOverride.json", "w+") as instOverride:
+    with open("data/installationOverride.json", "r") as instOverride:
         installationPath = load(instOverride)["installationPath"]
 
 saveFiles = path.expandvars(r"%AppData%\Godot\app_userdata\webfishing_2_newver")
@@ -60,8 +60,9 @@ class RodNMod:
 
     def launchWebfishing(self, vanilla: bool = False):
         gameExec = path.join(installationPath, 'webfishing.exe')
+        
         tempEnv = environ.copy()
-        tempEnv["GDWEAVE_FOLDER_OVERRIDE"] = getcwd() + "\\data\\mods\\GDWeave"
+        tempEnv["GDWEAVE_FOLDER_OVERRIDE"] = getcwd() + "\\data\\modenv\\GDWeave"
         
         if vanilla:
             run([gameExec, '--gdweave-disable'])
@@ -446,6 +447,10 @@ class RodNMod:
         else:
             window.evaluate_js(f'notify("Override Path does not exist!", 3000)')
             return False
+    
+    def getPathOverride(self):
+        with open("data/installationOverride.json", "r") as instOverride:
+            return load(instOverride)["installationPath"]
 
 
 class WindowFunctions:
@@ -524,6 +529,8 @@ class WindowFunctions:
 rnm = RodNMod()
 
 if __name__ == "__main__":
+    chdir(path.dirname(path.abspath(__name__)))
+
     # missing files
     makedirs("data/modenv", exist_ok=True)
     makedirs("data/modpacks", exist_ok=True)

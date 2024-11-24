@@ -269,6 +269,10 @@ function scriptsReady() {
       });
     }
 
+    window.pywebview.api.getPathOverride().then((val) => {
+        document.getElementById('pathOverride').value = val
+    })
+
     let debounceTimer;
     document.getElementById('searchInput').addEventListener('input', () => {
         clearTimeout(debounceTimer);

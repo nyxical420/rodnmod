@@ -1,11 +1,11 @@
-import logging
-from os import path, walk, environ
-import platform
 import psutil
+import logging
+import platform
+from os import path, walk
 
 logging.basicConfig(
     filename='rodnmod.log',
-    level=logging.DEBUG,
+    level=logging.INFO,
     format="%(asctime)s - rodnmod:fishfinder %(levelname)s:  %(message)s"
 )
 
