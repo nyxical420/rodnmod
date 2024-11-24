@@ -36,24 +36,24 @@ def findWebfishing():
                 steamLibraries.extend(libraries)
                 logging.info(f"Found libraries: {libraries}")
 
-    if not steamLibraries:
-        logging.info("No predefined libraries found, starting a broader search...")
-        if platform.system() == 'Windows':
-            drives = []
-            for partition in psutil.disk_partitions():
-                if 'removable' not in partition.opts:
-                    drives.append(partition.mountpoint)
-            logging.debug(f"Non-removable drives found: {drives}")
-        else:
-            drives = ['/']
-            logging.debug("Searching in the root directory on Linux")
+    #if not steamLibraries:
+    #    logging.info("No predefined libraries found, starting a broader search...")
+    #    if platform.system() == 'Windows':
+    #        drives = []
+    #        for partition in psutil.disk_partitions():
+    #            if 'removable' not in partition.opts:
+    #                drives.append(partition.mountpoint)
+    #        logging.debug(f"Non-removable drives found: {drives}")
+    #    else:
+    #        drives = ['/']
+    #        logging.debug("Searching in the root directory on Linux")
 
-        for drive in drives:
-            logging.debug(f"Searching in drive: {drive}")
-            for root, dirs, _ in walk(drive):
-                if 'steamapps' in dirs:
-                    steamLibraries.append(root)
-                    logging.info(f"Found steamapps in: {root}")
+    #    for drive in drives:
+    #        logging.debug(f"Searching in drive: {drive}")
+    #        for root, dirs, _ in walk(drive):
+    #            if 'steamapps' in dirs:
+    #                steamLibraries.append(root)
+    #                logging.info(f"Found steamapps in: {root}")
 
     for library in steamLibraries:
         common_path = path.join(library, "steamapps", "common")
