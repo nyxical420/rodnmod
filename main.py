@@ -401,6 +401,7 @@ class RodNMod:
     # Save Manager
 
     def getSavesList(self):
+        makedirs("data/savefiles/backups", exist_ok=True)
         folderPath = 'data/savefiles/backups/'
 
         files = []
@@ -437,9 +438,9 @@ class RodNMod:
         if path.exists(saveFiles):
             try:
                 if path.isfile(f"data/savefiles/backups/{saveFile}"):
-                    slot = saveFile.split("-")[3].replace(".sav", "")
+                    slot = int(saveFile.split("-")[3].replace(".sav", "")) - 1
                     copyFile(f"data/savefiles/backups/{saveFile}", saveFiles + f"\\webfishing_save_slot_{slot}.sav")
-                    window.evaluate_js(f'notify("Loaded backup for Slot {slot}!", 3000)')
+                    window.evaluate_js(f'notify("Loaded backup for Slot {slot + 1}!", 3000)')
                 else:
                     window.evaluate_js(f'notify("Local Save File does not exist.")')
             except Exception as e:

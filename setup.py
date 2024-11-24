@@ -75,7 +75,7 @@ setup(
         ),
         Executable(
             "dist/updater.py",
-            icon="./assets/updater.ico",
+            icon="./assets/rodnmod.ico",
             base=("Win32GUI" if platform == "win32" else None),
             target_name="rnmupdater"
         )
