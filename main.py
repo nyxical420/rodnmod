@@ -60,7 +60,7 @@ class RodNMod:
 
     def launchWebfishing(self, vanilla: bool = False):
         gameExec = path.join(installationPath, 'webfishing.exe')
-        
+
         tempEnv = environ.copy()
         tempEnv["GDWEAVE_FOLDER_OVERRIDE"] = getcwd() + "\\data\\modenv\\GDWeave"
         
@@ -511,6 +511,9 @@ class WindowFunctions:
             value = rnm.configure(config)
             splashText.text = f"set config: {config} -> {value}"
             window.evaluate_js(f'setDropdownValue("{config}", "{value}")')
+
+        if installationPath == "" or installationPath == None:
+            window.evaluate_js('notify("Installation Path not found. Please set override on settings!", 30000)')
 
         splashText.text = "Starting Rod n\\' Mod..."
         window.evaluate_js(f"handleChange();")
