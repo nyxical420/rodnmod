@@ -45,7 +45,11 @@
     - OPTIONAL: [Microsoft Edge WebView2 Runtime](https://developer.microsoft.com/en-gb/microsoft-edge/webview2#download) for Windows
     - `libwebkit2gtk-4.1-dev` for Linux (linux support soon! build rnm for now.)
 
-# Building Rod n' Mod
+<br>
+<p align="center">
+    <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/building.png?raw=true" width="800"/><br>
+</p>
+
 > [!IMPORTANT]
 > Building Rod n' Mod requires Python 3.11.0.
 
@@ -69,7 +73,11 @@ This should automatically build Rod n' Mod for you and put the final build at th
 # Troubleshooting / Known Bugs & Stuff
 - There are currently no known existing bugs.
 
-# Credits
+<br>
+<p align="center">
+    <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/credits.png?raw=true" width="800"/><br>
+</p>
+
 - @zoiudolo for Rod n' Mod Logo, Banner, and Images/Icons
 - west for Game Sounds and Cursor used in Rod n' Mod
 
