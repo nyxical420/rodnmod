@@ -2,19 +2,20 @@
 
 import sys
 import string
+import logging
 from time import sleep
 from random import choices
 from pyperclip import copy
 from json import load, dump
+from subprocess import run
 from threading import Thread
 from datetime import datetime
 from rapidfuzz import fuzz, process
 from webbrowser import open as openWeb
 from shutil import rmtree, copy as copyFile
 from re import IGNORECASE, compile as comp
-from logging import basicConfig, ERROR, error
 from psutil import process_iter, NoSuchProcess
-from os import path, rename, walk, chdir, listdir, makedirs, execv, remove
+from os import path, rename, walk, chdir, listdir, makedirs, execv, remove, environ, getcwd
 
 from webview import create_window, start
 from webview.errors import JavascriptException
@@ -22,32 +23,25 @@ from webview.errors import JavascriptException
 from rodnmod.fishfinder import findWebfishing
 from rodnmod.internet import getMods, download
 
-installationPath = findWebfishing()
-
-if installationPath:
-    print(f"Installation Path: {installationPath}")
-
-    if not path.exists(installationPath + f"\\GDWeave\\mods"):
-        if not path.exists(installationPath + f"\\GDWeave\\disabled.mods"):
-            makedirs(installationPath + "\\GDWeave\\mods")
-else:
-    print("WEBFISHING Installation Path Not Found")
-
-saveFiles = path.expandvars(r"%AppData%\Godot\app_userdata\webfishing_2_newver")
-
-basicConfig(
-    level=ERROR,
+logging.basicConfig(
+    level=logging.ERROR,
     filename="rodnmod.log",
     format="%(asctime)s - Application %(levelname)s - %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S"
 )
+
+
+installationPath = findWebfishing()
+logging.info(f"Detected Webfishing installation path: {installationPath}")
+
+saveFiles = path.expandvars(r"%AppData%\Godot\app_userdata\webfishing_2_newver")
 
 def exceptHook(exc_type, exc_value, exc_traceback):
     if issubclass(exc_type, KeyboardInterrupt):
         sys.__excepthook__(exc_type, exc_value, exc_traceback)
         return
 
-    error("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))
+    logging.error("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))
 
 sys.excepthook = exceptHook
 
@@ -60,16 +54,14 @@ class RodNMod:
         except TypeError: pass
 
     def launchWebfishing(self, vanilla: bool = False):
-        mods_folder = installationPath + "\\GDWeave\\mods"
-        disabled_folder = installationPath + "\\GDWeave\\disabled.mods"
-        try:
-            if vanilla:
-                rename(mods_folder, disabled_folder)
-            else:
-                rename(disabled_folder, mods_folder)
-        except FileNotFoundError:
-            pass
-        self.visitSite("steam://rungameid/3146520")
+        gameExec = path.join(installationPath, 'webfishing.exe')
+        tempEnv = environ.copy()
+        tempEnv["GDWEAVE_FOLDER_OVERRIDE"] = getcwd() + "\\data\\mods\\GDWeave"
+        
+        if vanilla:
+            run([gameExec, '--gdweave-disable'])
+        else:
+            run([gameExec], env=tempEnv)
 
     def copyLogs(self):
         with open("rodnmod.log", 'r') as file:
@@ -263,7 +255,7 @@ class RodNMod:
             return None
 
     def downloadMod(self, mod: str):
-        print(f"Downloading {mod}...")    
+        logging.info(f"Downloading {mod}...")    
         ignoredDependencies = [
             "Pyoid-Hook_Line_and_Sinker",
             "PawsBeGamin-HLSReborn",
@@ -272,7 +264,7 @@ class RodNMod:
 
         modInfo = self.modsList[mod]
             
-        print(modInfo)
+        logging.info(modInfo)
 
         modName = modInfo["modName"]
         modAuthor = modInfo["modAuthor"]
@@ -294,7 +286,7 @@ class RodNMod:
                     newDependencyName = f"{dp[0]}-{dp[1]}"
 
                     dependencyInfo = self.modsList[newDependencyName]
-                    print(f"Checking if Required Dependency is installed...")
+                    logging.info(f"Checking if Required Dependency is installed...")
                     
                     dependencyName = dependencyInfo["modName"]
                     dependencyAuthor = dependencyInfo["modAuthor"]
@@ -357,7 +349,7 @@ class RodNMod:
             if modpath != None: return True
             else: return False
         else:
-            print(f"Uninstalling {mod}...")
+            logging.info(f"Uninstalling {mod}...")
             try:
                 rmtree(modpath)
                 try: modname = mod.split(".")[1].replace("_", " ")
@@ -519,11 +511,14 @@ class WindowFunctions:
             splashText.text = f"set config: {config} -> {value}"
             window.evaluate_js(f'setDropdownValue("{config}", "{value}")')
 
-        splashText.text = "Starting Rod n\\' Mod..."
-        window.evaluate_js(f"handleChange();")
-        window.evaluate_js(f"generateSaveItems();")
-        sleep(1)
-        window.evaluate_js(f"openWindow();") 
+        if installationPath != None: 
+            splashText.text = "Starting Rod n\\' Mod..."
+            window.evaluate_js(f"handleChange();")
+            window.evaluate_js(f"generateSaveItems();")
+            sleep(1)
+            window.evaluate_js(f"openWindow();") 
+        else:
+            splashText.text = "ERROR: Webfishing Installation not Found. USE MANUAL PATH OVERRIDE CONFIG!!"
 
     def content(element: str = None, visibility: str = "hide"):
         if visibility == "hide":
@@ -536,8 +531,6 @@ class WindowFunctions:
 rnm = RodNMod()
 
 if __name__ == "__main__":
-    chdir(path.dirname(path.abspath(__name__)))
-
     window = create_window(
         "Rod n' Mod",
         "main.html",

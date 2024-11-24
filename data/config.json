@@ -1,0 +1,10 @@
+{
+    "debugging": "debdis",
+    "nonrnmmods": "findnonrnm",
+    "savebackups": "save",
+    "reelsound": "reel",
+    "transition": "transition",
+    "filter": "none",
+    "category": "all",
+    "nsfw": "hidensfw"
+}
