@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/banner.png?raw=true" width="800" style="image-rendering: pixelated;"/><br>
+    <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/banner.png?raw=true" width="800"/><br>
     A webfishing-themed mod manager!
 </p>
 
