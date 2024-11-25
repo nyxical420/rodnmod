@@ -2,13 +2,21 @@ import os
 import shutil
 import subprocess
 
+subprocess.run(["pyarmor", "gen", "main.py"])
+
 buildCommand = [
     'pyinstaller',
     '--onefile',
     '--noconsole',
     '--icon=./assets/rodnmod.ico',
-    '--paths=./rodnmod',
     '--strip',
+
+    '--hidden-import=httpx',
+    '--hidden-import=semver',
+    '--hidden-import=psutil',
+    '--hidden-import=webview',
+    '--hidden-import=rapidfuzz',
+    '--hidden-import=pyperclip',
 
     '--exclude-module=_distutils_hack',
     '--exclude-module=tkinter',
@@ -21,18 +29,12 @@ buildCommand = [
     '--exclude-module=lib2to3',
     '--exclude-module=pip',
     '--exclude-module=pyinstaller',
-    #'--exclude-module=pyarmor',
+    '--exclude-module=pyarmor',
 
-    #'--add-data=main.html;.',
-    #'--add-data=updater.html;.',
-    #'--add-data=assets/scripts/*;assets/scripts',
-    #'--add-data=assets/web/*;assets/web',
-    #'--add-data=assets/web/fishing/*;assets/web/fishing',
-    #'--add-data=assets/web/fishing/sounds/*;assets/web/fishing/sounds',
+    '--add-data=rodnmod;rodnmod',
+    '--upx-dir=./upx',
 
-    #'--upx-dir=./upx',
-
-    'main.py'
+    'dist/main.py'
 ]
 
 subprocess.run(buildCommand)

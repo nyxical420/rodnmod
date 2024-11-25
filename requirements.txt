@@ -4,4 +4,5 @@ pywebview
 rapidfuzz
 pyperclip
 semver
-cx_Freeze
+pyarmor
+pyinstaller
