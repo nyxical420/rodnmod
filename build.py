@@ -13,6 +13,7 @@ buildCommand = [
     '--exclude-module=pyinstaller',
 
     '--add-data=main.html;.',
+    '--add-data=updater.html;.',
     '--add-data=assets/scripts/*;assets/scripts',
     '--add-data=assets/web/*;assets/web',
     '--add-data=assets/web/fishing/*;assets/web/fishing',

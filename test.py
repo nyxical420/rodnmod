@@ -1,3 +1,0 @@
-import updater
-
-updater.initiate()

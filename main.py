@@ -17,20 +17,11 @@ from re import IGNORECASE, compile as comp
 from psutil import process_iter, NoSuchProcess
 from os import path, walk, listdir, makedirs, execv, remove, environ, getcwd, chdir
 
-# https://github.com/r0x0r/pywebview/issues/1215#issuecomment-1713156754
-from pathlib import Path
-from pythonnet import set_runtime
-set_runtime("netfx")
-
-runtime = Path.cwd() / "python311.dll"
-
-if runtime.exists():
-    environ["PYTHONNET_PYDLL"] = str(runtime.resolve())
-    environ["BASE_DIR"] = str(Path.cwd().resolve())
 
 from webview import create_window, start
 from webview.errors import JavascriptException
 
+from rodnmod.updater import initiate
 from rodnmod.fishfinder import findWebfishing
 from rodnmod.internet import getMods, download
 
@@ -536,6 +527,8 @@ class WindowFunctions:
 rnm = RodNMod()
 
 if __name__ == "__main__":
+    initiate() #updater
+    
     if getattr(sys, 'frozen', False): appPath = path.dirname(sys.executable)
     else: appPath = path.dirname(__file__)
     chdir(appPath)
