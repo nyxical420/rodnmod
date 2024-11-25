@@ -7,7 +7,7 @@ from time import sleep
 from random import choices
 from pyperclip import copy
 from json import load, dump
-from subprocess import run, Popen
+from subprocess import run
 from threading import Thread
 from datetime import datetime
 from rapidfuzz import fuzz, process
@@ -95,7 +95,7 @@ class RodNMod:
 
     def restartApplication(self):
         if getattr(sys, 'frozen', False):
-            execv("./rodnmod.exe", ["./rodnmod.exe"])
+            pass
         else: #
             execv(sys.executable, ['python'] + sys.argv)
 
