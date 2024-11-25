@@ -92,6 +92,9 @@ class RodNMod:
                 dump(config, file, indent=4)
             return "Configured!"
     
+    def resizeWindow(self, res):
+        window.resize()
+
     def minimizeApplication(self):
         window.minimize()
 
@@ -563,6 +566,11 @@ if __name__ == "__main__":
         with open("data/installationOverride.json", 'w') as file:
             dump(default_config, file, indent=4)
 
+    # resolutions  scale
+    # 900x600      0.7
+    # 1200x800     0.85
+    # 1500x1000    1.15
+    # 1800x1200    1.25
     window = create_window(
         "Rod n' Mod",
         "main.html",

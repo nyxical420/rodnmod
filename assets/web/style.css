@@ -7,10 +7,6 @@ body {
     background-color: #101c31;
 }
 
-img {
-    image-rendering: pixelated;
-}
-
 html, body {
     width: 100vw;
     height: 100vh;

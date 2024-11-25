@@ -1,11 +1,6 @@
-import subprocess
 from json import load
 from sys import platform
 from cx_Freeze import setup, Executable
-
-# PyArmor layer to obfuscate scripts - hopefully lowers AV detection
-for script in ['main.py', 'updater.py']:
-    subprocess.run(["pyarmor", "gen", script])
 
 with open("version.json") as ver:
     version = load(ver)["version"]
@@ -20,9 +15,6 @@ include_files = [
     ('assets/web', 'assets/web'),
     ('assets/web/fishing', 'assets/web/fishing'),
     ('assets/web/fishing/sounds', 'assets/web/fishing/sounds'),
-
-    ('dist/pyarmor_runtime_000000', 'lib/pyarmor_runtime_000000'),
-    ('rodnmod', 'lib/rodnmod'),
 
     ('winupdate.bat', 'winupdate.bat'),
     ('7zr.exe', '7zr.exe'),
@@ -65,13 +57,13 @@ setup(
     },
     executables=[
         Executable(
-            "dist/main.py",
+            "main.py",
             icon="./assets/rodnmod.ico",
             base=("Win32GUI" if platform == "win32" else None),
             target_name="rodnmod"
         ),
         Executable(
-            "dist/updater.py",
+            "updater.py",
             icon="./assets/rodnmod.ico",
             base=("Win32GUI" if platform == "win32" else None),
             target_name="rnmupdater"
