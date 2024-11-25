@@ -71,6 +71,29 @@
                         <div style="display: flex; flex-direction: column; gap: 5px; height: 100%;">
                             <div style="display: flex;">
                                 <div style="display: grid; grid-template-rows: 1fr auto; margin: auto auto auto 0;">
+                                    <text style="font-size: 22px;">Window Resolution</text>
+                                    <text style="font-size: 14px;">Adjusts Rod n' Mod's window resolution.</text>
+                                </div>
+        
+                                <div id="settingOption" class="custom-dropdown" data-name="resolution" style=" width: 165px; margin-left: auto;">
+                                    <div class="dropdown-header">
+                                        <span class="selected-option" style="pointer-events: none;">1200x800</span>
+                                        <div style="display: grid; grid-template-rows: 1fr 1fr; pointer-events: none;">
+                                            <span class="dropdown-arrow" style="font-size: 7px;">▲</span>
+                                            <span class="dropdown-arrow" style="font-size: 7px;">▼</span>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-options">
+                                        <div class="option" data-value="small">900x600</div>
+                                        <div class="option selected" data-value="normal">1200x800</div>
+                                        <div class="option" data-value="big">1500x1000</div>
+                                        <div class="option" data-value="bigger">1800x1200</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="display: flex;">
+                                <div style="display: grid; grid-template-rows: 1fr auto; margin: auto auto auto 0;">
                                     <text style="font-size: 22px;">Reel Sound when Scrolling</text>
                                     <text style="font-size: 14px;">Plays a reeling sound when you scroll on scrollable content</text>
                                 </div>

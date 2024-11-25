@@ -485,6 +485,7 @@ class WindowFunctions:
     # reloading the page wouldn't trigger this at all, so your best bet is to
     # just restart the application by pressing escape 3 times
     def onLoad():
+        window.evaluate_js(f'document.body.style.zoom = "{res[resConfig][2]}";')
         splashText = window.dom.get_element("#splashText")
         
         # Window Buttons
@@ -504,6 +505,7 @@ class WindowFunctions:
         # Configurations
         configs = [
             "debugging",
+            "resolution",
             "savebackups",
             "reelsound",
             "transition",
@@ -537,7 +539,9 @@ class WindowFunctions:
 rnm = RodNMod()
 
 if __name__ == "__main__":
-    chdir(path.dirname(path.abspath(__name__)))
+    if getattr(sys, 'frozen', False): appPath = path.dirname(sys.executable)
+    else: appPath = path.dirname(__file__)
+    chdir(appPath)
 
     # missing files
     makedirs("data/modenv", exist_ok=True)
@@ -549,6 +553,7 @@ if __name__ == "__main__":
         with open("data/config.json", "w") as file:
             default_config = {
                 "debugging": "debdis",
+                "resolution": "normal",
                 "savebackups": "save",
                 "reelsound": "reel",
                 "transition": "transition",
@@ -577,15 +582,19 @@ if __name__ == "__main__":
         with open("data/installationOverride.json", "r") as instOverride:
             installationPath = load(instOverride)["installationPath"]
 
-    # resolutions  scale
-    # 900x600      0.7
-    # 1200x800     0.85
-    # 1500x1000    1.15
-    # 1800x1200    1.25
+    res = {
+        "small": [900, 600, 0.7],
+        "normal": [1200, 800, 0.85],
+        "big": [1500, 1000, 1],
+        "bigger": [1800, 1200, 1.15],
+    }
+
+    resConfig = RodNMod.configure(RodNMod, "resolution")
+
     window = create_window(
         "Rod n' Mod",
         "main.html",
-        width=1200, height=800,
+        width=res[resConfig][0], height=res[resConfig][1],
         frameless=True,
         easy_drag=True,
         js_api=RodNMod,

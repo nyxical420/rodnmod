@@ -1,4 +1,4 @@
-document.body.style.zoom = '0.85';
+document.body.style.zoom = '1';
 
 let sceneChanging = false;
 let previousIsRunning = null;

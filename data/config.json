@@ -1,6 +1,6 @@
 {
-    "debugging": "debena",
-    "nonrnmmods": "findnonrnm",
+    "debugging": "debdis",
+    "resolution": "normal",
     "savebackups": "save",
     "reelsound": "reel",
     "transition": "transition",
