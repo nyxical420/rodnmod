@@ -1,0 +1,3 @@
+import updater
+
+updater.initiate()

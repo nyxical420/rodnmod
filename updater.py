@@ -98,9 +98,10 @@ class RodNModUpdater:
 
 rnmu = RodNModUpdater()
 
-if __name__ == "__main__":
+def initiate():
     chdir(path.dirname(path.abspath(__name__)))
 
+    global window
     window = create_window(
         "Rod n' Mod Updater",
         "updater.html",
