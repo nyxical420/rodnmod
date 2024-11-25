@@ -10,7 +10,18 @@ buildCommand = [
     '--paths=./rodnmod',
     '--strip',
 
+    '--exclude-module=_distutils_hack',
+    '--exclude-module=tkinter',
+    '--exclude-module=xmlrpc',
+    '--exclude-module=anyio',
+    '--exclude-module=asyncio',
+    '--exclude-module=autocommand',
+    '--exclude-module=curses',
+    '--exclude-module=jaraco',
+    '--exclude-module=lib2to3',
+    '--exclude-module=pip',
     '--exclude-module=pyinstaller',
+    #'--exclude-module=pyarmor',
 
     '--add-data=main.html;.',
     '--add-data=updater.html;.',
