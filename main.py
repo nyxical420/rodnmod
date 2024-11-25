@@ -7,7 +7,7 @@ from time import sleep
 from random import choices
 from pyperclip import copy
 from json import load, dump
-from subprocess import run
+from subprocess import run, Popen
 from threading import Thread
 from datetime import datetime
 from rapidfuzz import fuzz, process
@@ -15,8 +15,7 @@ from webbrowser import open as openWeb
 from shutil import rmtree, copy as copyFile
 from re import IGNORECASE, compile as comp
 from psutil import process_iter, NoSuchProcess
-from os import path, walk, listdir, makedirs, execv, remove, environ, getcwd, chdir
-
+from os import path, walk, listdir, makedirs, execv, remove, environ, getcwd, chdir, execl
 
 from webview import create_window, start
 from webview.errors import JavascriptException
@@ -43,6 +42,9 @@ def exceptHook(exc_type, exc_value, exc_traceback):
 
 sys.excepthook = exceptHook
 
+def resource(filename: str):
+    return path.abspath(path.join(getcwd(), filename))
+
 class RodNMod:
     modsList = getMods()
     modsBeingDownloaded = []
@@ -55,7 +57,7 @@ class RodNMod:
         gameExec = path.join(installationPath, 'webfishing.exe')
 
         tempEnv = environ.copy()
-        tempEnv["GDWEAVE_FOLDER_OVERRIDE"] = getcwd() + "\\data\\modenv\\GDWeave"
+        tempEnv["GDWEAVE_FOLDER_OVERRIDE"] = resource("\\data\\modenv\\GDWeave")
         
         if vanilla:
             run([gameExec, '--gdweave-disable'])
@@ -74,14 +76,14 @@ class RodNMod:
         window.evaluate_js(f"notify('Log File has been cleared!', 3000)")
 
     def configure(self, configItem: str, configValue=None):
-        with open("data/config.json", "r") as file:
+        with open(resource("data/config.json"), "r") as file:
             config = load(file)
 
         if configValue is None:
             return config.get(configItem, "Not a configuration item")
         else:
             config[configItem] = configValue
-            with open("data/config.json", 'w') as file:
+            with open(resource("data/config.json"), 'w') as file:
                 dump(config, file, indent=4)
             return "Configured!"
     
@@ -93,8 +95,8 @@ class RodNMod:
 
     def restartApplication(self):
         if getattr(sys, 'frozen', False):
-            execv("./restart", ["./restart"])
-        else:
+            execv("./rodnmod.exe", ["./rodnmod.exe"])
+        else: #
             execv(sys.executable, ['python'] + sys.argv)
 
     # Mods
@@ -198,7 +200,7 @@ class RodNMod:
 
     def searchModFolders(self, folderName: str):
         subs = []
-        for dirpath, dirnames, _ in walk("data\modenv\GDWeave\mods"):
+        for dirpath, dirnames, _ in walk(resource("data\modenv\GDWeave\mods")):
             for dirname in dirnames:
                 subs.append(path.join(dirpath, dirname))
         
@@ -283,10 +285,10 @@ class RodNMod:
                                 rnmInfo = {"version": "1.0.0"}
 
                             if rnmInfo["version"] != dependencyVersion:
-                                download(dependencyDownload, "data\modenv\GDWeave\mods", {"name": dependencyName, "author": dependencyAuthor, "version": dependencyVersion})
+                                download(dependencyDownload, resource("data\modenv\GDWeave\mods"), {"name": dependencyName, "author": dependencyAuthor, "version": dependencyVersion})
 
                         else:
-                            download(dependencyDownload, "data\modenv\GDWeave\mods", {"name": dependencyName, "author": dependencyAuthor, "version": dependencyVersion})
+                            download(dependencyDownload, resource("data\modenv\GDWeave\mods"), {"name": dependencyName, "author": dependencyAuthor, "version": dependencyVersion})
                             
             # since mod names are completely different we should scan for it and compare
             modPath = self.searchModFolders(modAuthor + "." + modName)
@@ -298,17 +300,17 @@ class RodNMod:
                             rnmInfo = load(f)
 
                         if rnmInfo["version"] != modVersion:
-                            download(modDownload, "data\modenv\GDWeave\mods", {"name": modName, "author": modAuthor, "version": modVersion})
+                            download(modDownload, resource("data\modenv\GDWeave\mods"), {"name": modName, "author": modAuthor, "version": modVersion})
                             window.evaluate_js(f"notify('{modName} has been updated successfully!', 3000)")
                         else:
                             window.evaluate_js(f"notify('{modName} is currently up to date!', 3000)")
 
                 except FileNotFoundError: # rnmInfo.json missing, skip version check and download mod immediately instead
                     window.evaluate_js(f"notify('rnmInfo.json for {modName} missing. Forcing download...', 3000)")
-                    download(modDownload, "data\modenv\GDWeave\mods", {"name": modName, "author": modAuthor, "version": modVersion})
+                    download(modDownload, resource("data\modenv\GDWeave\mods"), {"name": modName, "author": modAuthor, "version": modVersion})
 
             else:
-                download(modDownload, "data\modenv\GDWeave\mods", {"name": modName, "author": modAuthor, "version": modVersion})
+                download(modDownload, resource("data\modenv\GDWeave\mods"), {"name": modName, "author": modAuthor, "version": modVersion})
                 window.evaluate_js(f"notify('{modName} has been downloaded successfully!', 3000)")
 
             self.modsBeingDownloaded.remove(mod)
@@ -338,7 +340,7 @@ class RodNMod:
 
     def updateAllMods(self):
         window.evaluate_js(f"notify('Updating Mods...', 3000)")
-        fpath = "data\modenv\GDWeave\mods"
+        fpath = resource("data\modenv\GDWeave\mods")
 
         try: folders = [entry for entry in listdir(fpath) if path.isdir(path.join(fpath, entry))]
         except:
@@ -369,7 +371,6 @@ class RodNMod:
     # Save Manager
 
     def getSavesList(self):
-        makedirs("data/savefiles/backups", exist_ok=True)
         folderPath = 'data/savefiles/backups/'
 
         files = []
@@ -386,14 +387,12 @@ class RodNMod:
         return files
     
     def backupSave(self, slot: int = 0):
-        makedirs("data/savefiles/backups", exist_ok=True)
-
         if path.exists(saveFiles):
             try:
                 if path.isfile(saveFiles + f"\\webfishing_save_slot_{slot}.sav"):
                     code = ''.join(choices(string.ascii_uppercase, k=5))
 
-                    copyFile(saveFiles + f"\\webfishing_save_slot_{slot}.sav", f"data/savefiles/backups/BACKUP-{code}-SLOT-{slot + 1}.sav")
+                    copyFile(saveFiles + f"\\webfishing_save_slot_{slot}.sav", resource(f"data/savefiles/backups/BACKUP-{code}-SLOT-{slot + 1}.sav"))
                     window.evaluate_js(f'generateSaveItems();')
                     window.evaluate_js(f'notify("Backed up Save Slot {slot + 1}!", 3000)')
                 else:
@@ -405,9 +404,9 @@ class RodNMod:
     def loadSave(self, saveFile: str):
         if path.exists(saveFiles):
             try:
-                if path.isfile(f"data/savefiles/backups/{saveFile}"):
+                if path.isfile(resource(f"data/savefiles/backups/{saveFile}")):
                     slot = int(saveFile.split("-")[3].replace(".sav", "")) - 1
-                    copyFile(f"data/savefiles/backups/{saveFile}", saveFiles + f"\\webfishing_save_slot_{slot}.sav")
+                    copyFile(resource(f"data/savefiles/backups/{saveFile}"), saveFiles + f"\\webfishing_save_slot_{slot}.sav")
                     window.evaluate_js(f'notify("Loaded backup for Slot {slot + 1}!", 3000)')
                 else:
                     window.evaluate_js(f'notify("Local Save File does not exist.")')
@@ -417,8 +416,8 @@ class RodNMod:
     def deleteSave(self, saveFile: str):
         if path.exists(saveFiles):
             try:
-                if path.isfile(f"data/savefiles/backups/{saveFile}"):
-                    remove(f"data/savefiles/backups/{saveFile}")
+                if path.isfile(resource(f"data/savefiles/backups/{saveFile}")):
+                    remove(resource(f"data/savefiles/backups/{saveFile}"))
                     window.evaluate_js(f'generateSaveItems();')
                     slot = saveFile.split("-")[3].replace(".sav", "")
                     window.evaluate_js(f'notify("Deleted backup for Slot {slot}.")')
@@ -583,7 +582,7 @@ if __name__ == "__main__":
 
     window = create_window(
         "Rod n' Mod",
-        "main.html",
+        resource("main.html"),
         width=res[resConfig][0], height=res[resConfig][1],
         frameless=True,
         easy_drag=True,

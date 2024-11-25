@@ -4,7 +4,7 @@ import logging
 from httpx import get
 from json import load
 from platform import system
-from os import path, chdir, execv
+from os import path, chdir, execv,getcwd
 from webview import create_window, start
 
 from rodnmod.fishfinder import findWebfishing
@@ -105,7 +105,7 @@ def initiate():
     global window
     window = create_window(
         "Rod n' Mod Updater",
-        "updater.html",
+        path.abspath(path.join(getcwd(), "updater.html")),
         width=380, height=450,
         frameless=True,
         js_api=RodNModUpdater,

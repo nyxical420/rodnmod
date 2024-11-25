@@ -23,14 +23,14 @@ buildCommand = [
     '--exclude-module=pyinstaller',
     #'--exclude-module=pyarmor',
 
-    '--add-data=main.html;.',
-    '--add-data=updater.html;.',
-    '--add-data=assets/scripts/*;assets/scripts',
-    '--add-data=assets/web/*;assets/web',
-    '--add-data=assets/web/fishing/*;assets/web/fishing',
-    '--add-data=assets/web/fishing/sounds/*;assets/web/fishing/sounds',
+    #'--add-data=main.html;.',
+    #'--add-data=updater.html;.',
+    #'--add-data=assets/scripts/*;assets/scripts',
+    #'--add-data=assets/web/*;assets/web',
+    #'--add-data=assets/web/fishing/*;assets/web/fishing',
+    #'--add-data=assets/web/fishing/sounds/*;assets/web/fishing/sounds',
 
-    '--upx-dir=./upx',
+    #'--upx-dir=./upx',
 
     'main.py'
 ]
