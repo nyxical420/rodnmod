@@ -94,9 +94,6 @@ class RodNMod:
                 dump(config, file, indent=4)
             return "Configured!"
     
-    def resizeWindow(self, res):
-        window.resize()
-
     def minimizeApplication(self):
         window.minimize()
 
