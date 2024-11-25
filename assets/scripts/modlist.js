@@ -83,7 +83,7 @@ function generateModItems(modData) {
             nsfwIndicator.style = "pointer-events: none; position: absolute; top: -15px; left: 0; width: 48px; height: 48px; transform: rotate(-15deg);";
             
             nsfwContainer.appendChild(nsfwIndicator);
-            imageContainer.appendChild(nsfwContainer);
+            imageContainer.appendChild(nsfwContainer );
         }
 
         itemDiv.appendChild(imageContainer);
@@ -96,7 +96,7 @@ function generateModItems(modData) {
         const updatedDiv = document.createElement('div');
         updatedDiv.style = "position: absolute; top: 6px; right: 10px; font-size: 16px; color: #6a4420;";
         updatedDiv.innerHTML = `
-            <text style="position: relative; top: -3px">${mod.updatedAgo}</text> <img src="/assets/web/clock.png" style="width: 16px; height: 16px;">
+            <text style="position: relative; top: -3px">${mod.updatedAgo}</text> <img src="/assets/web/clock.png" style="image-rendering: auto; width: 16px; height: 16px;">
         `;
         contentDiv.appendChild(updatedDiv);
 
@@ -104,7 +104,7 @@ function generateModItems(modData) {
         website.style = "position: absolute; top: 22px; right: 10px; font-size: 18px; color: #6a4420;";
         //website.textContent = mod.latestWebsite;
         website.innerHTML = `
-           <text style="position: relative; top: -3px">${mod.latestWebsite || "No Website"}</text> <img src="/assets/web/internet.png" style="width: 16px; height: 16px;">
+           <text style="position: relative; top: -3px">${mod.latestWebsite || "No Website"}</text> <img src="/assets/web/internet.png" style="image-rendering: auto; width: 16px; height: 16px;">
         `;
         website.onmouseup = function () {
             window.pywebview.api.visitSite(mod.latestWebsite || null);

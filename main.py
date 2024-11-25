@@ -17,6 +17,17 @@ from re import IGNORECASE, compile as comp
 from psutil import process_iter, NoSuchProcess
 from os import path, walk, listdir, makedirs, execv, remove, environ, getcwd, chdir
 
+# https://github.com/r0x0r/pywebview/issues/1215#issuecomment-1713156754
+from pathlib import Path
+from pythonnet import set_runtime
+set_runtime("netfx")
+
+runtime = Path.cwd() / "python311.dll"
+
+if runtime.exists():
+    environ["PYTHONNET_PYDLL"] = str(runtime.resolve())
+    environ["BASE_DIR"] = str(Path.cwd().resolve())
+
 from webview import create_window, start
 from webview.errors import JavascriptException
 
@@ -29,15 +40,6 @@ logging.basicConfig(
     format="%(asctime)s - Application %(levelname)s - %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S"
 )
-
-global installationPath
-installationPath = findWebfishing()
-logging.info(f"Detected Webfishing installation path: {installationPath}")
-
-if installationPath == None:
-    logging.info("Installation path is None. Using fallback installation path instead!")
-    with open("data/installationOverride.json", "r") as instOverride:
-        installationPath = load(instOverride)["installationPath"]
 
 saveFiles = path.expandvars(r"%AppData%\Godot\app_userdata\webfishing_2_newver")
 
@@ -565,6 +567,15 @@ if __name__ == "__main__":
             }
         with open("data/installationOverride.json", 'w') as file:
             dump(default_config, file, indent=4)
+
+    global installationPath
+    installationPath = findWebfishing()
+    logging.info(f"Detected Webfishing installation path: {installationPath}")
+    
+    if installationPath == None:
+        logging.info("Installation path is None. Using fallback installation path instead!")
+        with open("data/installationOverride.json", "r") as instOverride:
+            installationPath = load(instOverride)["installationPath"]
 
     # resolutions  scale
     # 900x600      0.7

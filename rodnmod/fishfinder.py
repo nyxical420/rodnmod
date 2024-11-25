@@ -1,6 +1,6 @@
-import psutil
+#import psutil
 import logging
-import platform
+#import platform
 from os import path, walk
 
 logging.basicConfig(
@@ -36,6 +36,7 @@ def findWebfishing():
                 steamLibraries.extend(libraries)
                 logging.info(f"Found libraries: {libraries}")
 
+    # broad search commented out for now in favour of installationOverride
     #if not steamLibraries:
     #    logging.info("No predefined libraries found, starting a broader search...")
     #    if platform.system() == 'Windows':

@@ -3,6 +3,10 @@
     src: url("/assets/web/font.ttf");
 }
 
+img {
+    image-rendering: pixelated;
+}
+
 body {
     background-color: #101c31;
 }
