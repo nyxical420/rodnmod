@@ -1,6 +1,5 @@
 import os
 import shutil
-import zipfile
 import platform
 import subprocess
 
@@ -43,6 +42,10 @@ if userOS == "win":
         '--exclude-module=pyarmor',
 
         '--add-data=rodnmod;rodnmod',
+        '--add-data=assets/web/*;assets/web',
+        '--add-data=assets/web/fishing/*;assets/web/fishing',
+        '--add-data=assets/web/fishing/sounds/*;assets/web/fishing/sounds',
+        '--add-data=assets/scripts/*;assets/scripts',
         '--upx-dir=./upx',
 
         'dist/main.py'
@@ -83,6 +86,10 @@ if userOS == "linux":
         '--exclude-module=pyarmor',
 
         '--add-data=rodnmod:rodnmod',
+        '--add-data=assets/web/*:assets/web',
+        '--add-data=assets/web/fishing/*:assets/web/fishing',
+        '--add-data=assets/web/fishing/sounds/*:assets/web/fishing/sounds',
+        '--add-data=assets/scripts/*:assets/scripts',
         '--upx-dir=./upx',
 
         'dist/main.py'
@@ -99,7 +106,7 @@ remove = [
     "./main.spec",
 ]
 
-for item in ["./build", "./dist", "./main.spec"]:
+for item in remove:
     if os.path.exists(item):
         if os.path.isdir(item):
             shutil.rmtree(item)
@@ -107,6 +114,7 @@ for item in ["./build", "./dist", "./main.spec"]:
             os.remove(item)
 
 items = [
+    "assets",
     "version.json",
     "main.html",
     "updater.html",
@@ -120,19 +128,20 @@ elif userOS == "linux":
     items.append("linuxupdate.sh")
     items.append("rodnmod")
 
-print("Zipping files...")
-with zipfile.ZipFile("rodnmod-standalone-" + systems[platform.system()] + ".zip", 'w') as zipf:
-    for item in items:
-        if os.path.isfile(item):
-            zipf.write(item, os.path.basename(item))
-            print(f"Added file: {item}")
-        elif os.path.isdir(item):
-            for root, dirs, files in os.walk(item):
-                for file in files:
-                    file_path = os.path.join(root, file)
-                    zipf.write(file_path, os.path.relpath(file_path, os.path.dirname(item)))
-                    print(f"Added file from directory: {file_path}")
-        else:
-            print(f"Item {item} does not exist and will be skipped.")
+print("Zipping files with 7z...")
 
-print(f"Build complete.")
+zip_command = [
+    "./7zr", "a", 
+    "rodnmod-standalone-" + systems[platform.system()] + ".7z",
+    "-xr!assets/repository"
+]
+
+for item in items:
+    if os.path.exists(item):
+        zip_command.append(item)
+        print(f"Added: {item}")
+
+# Run the 7z command
+subprocess.run(zip_command)
+
+print("Build complete.")

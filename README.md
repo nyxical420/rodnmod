@@ -1,3 +1,7 @@
+> [!WARNING]
+> Rod n' Mod will be having a FULL REWRITE to Electron! Please do not send any more issues to this repository!
+> This repo will be archived soon as I start development on the new rewrite, and will be linked below!
+
 <p align="center">
     <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/banner.png?raw=true" width="800"/><br>
     A webfishing-themed mod manager!
@@ -58,6 +62,9 @@
 
 > [!IMPORTANT]
 > Building Rod n' Mod requires Python 3.11.0.
+
+> [!IMPORTANT]
+> Building now zips the required items to a 7z file. Make sure that when building in Linux, you have `p7zip-full` installed!
 
 > [!IMPORTANT]
 > Make sure you build Rod n' Mod in a virtual environment!
