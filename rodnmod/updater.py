@@ -39,33 +39,44 @@ class RodNModUpdater:
         with open("version.json") as ver:
             version = load(ver)
 
+        systems = {
+            "Windows": "win",
+            "Linux": "linux"
+        }
+        
+        userOS = systems[system()]
+
+        asset = None
         for x in rnm["assets"]:
-            if str(x["name"]).__contains__("rodnmod-standalone.7z"):
+            if str(x["name"]).__contains__(f"rodnmod-standalone-{userOS}.7z"):
                 asset = x
         
         remoteVersion = sanitizeVer(rnm["tag_name"])
         localVersion = sanitizeVer(version["version"])
 
-        if semver.compare(localVersion, remoteVersion) < 0:
-            window.evaluate_js(f'{status}.innerHTML = "Downloading Update...<br>{localVersion} -> {remoteVersion}"')
-            response = get(asset["browser_download_url"], follow_redirects=True)
+        if asset == None:
+            window.evaluate_js(f'{status}.innerHTML = "No update found for your system."')
+        else:
+            if semver.compare(localVersion, remoteVersion) < 0:
+                window.evaluate_js(f'{status}.innerHTML = "Downloading Update...<br>{localVersion} -> {remoteVersion}"')
+                response = get(asset["browser_download_url"], follow_redirects=True)
 
-            if response.status_code == 200:
-                with open("update.7z", 'wb') as f:
-                    f.write(response.content)
+                if response.status_code == 200:
+                    with open("update.7z", 'wb') as f:
+                        f.write(response.content)
 
-                window.evaluate_js(f'{status}.innerHTML = "Upacking Update...<br>Please wait for the updater to re-run!"')
+                    window.evaluate_js(f'{status}.innerHTML = "Upacking Update...<br>Please wait for the updater to re-run!"')
 
 
-                if system() == 'Windows':
-                    execv(r'.\winupdate.bat', ['winupdate.bat'])
+                    if system() == 'Windows':
+                        execv(r'.\winupdate.bat', ['winupdate.bat'])
+                    else:
+                        execv(r'.\linuxupdate.sh', ['linuxupdate.sh'])
                 else:
-                    ... #linux
-            else:
-                window.evaluate_js(f'{status}.innerHTML = "Failed to download update.<br>HTTP Status Code: {response.status_code}"')
-            
-        elif semver.compare(version["version"], rnm["tag_name"]) > 0:
-            print("Version is greater than remote version. This is a Development Build.")
+                    window.evaluate_js(f'{status}.innerHTML = "Failed to download update.<br>HTTP Status Code: {response.status_code}"')
+
+            elif semver.compare(version["version"], rnm["tag_name"]) > 0:
+                print("Version is greater than remote version. This is a Development Build.")
 
         if installationPath != None:
             gdweaveLib = getMods()["NotNet-GDWeave"]

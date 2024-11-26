@@ -1,5 +1,7 @@
 import os
 import shutil
+import zipfile
+import platform
 import subprocess
 
 subprocess.run(["pyarmor", "gen", "main.py"])
@@ -54,5 +56,42 @@ for item in remove:
             shutil.rmtree(item)
         else:
             os.remove(item)
+
+systems = {
+    "Windows": "win",
+    "Linux": "linux"
+}
+
+userOS = systems[platform.system()]
+
+items = [
+    "version.json",
+    "main.html",
+    "updater.html",
+]
+
+if userOS == "win":
+    items.append("winupdate.bat")
+    items.append("7zr.exe")
+    items.append("rodnmod.exe")
+elif userOS == "linux":
+    items.append("linuxupdate.sh")
+    # 7zip console version for linux
+    # rodnmod for linux (i forgot if it even has a binary)
+
+print("Zipping files...")
+with zipfile.ZipFile("rodnmod-standalone-" + systems[platform.system()] + ".zip", 'w') as zipf:
+    for item in items:
+        if os.path.isfile(item):
+            zipf.write(item, os.path.basename(item))
+            print(f"Added file: {item}")
+        elif os.path.isdir(item):
+            for root, dirs, files in os.walk(item):
+                for file in files:
+                    file_path = os.path.join(root, file)
+                    zipf.write(file_path, os.path.relpath(file_path, os.path.dirname(item)))
+                    print(f"Added file from directory: {file_path}")
+        else:
+            print(f"Item {item} does not exist and will be skipped.")
 
 print(f"Build complete.")
