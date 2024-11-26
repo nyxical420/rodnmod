@@ -25,6 +25,10 @@
 > [!NOTE]
 > Rod n' Mod is incompatible to [Hook, Line, & Sinker](https://thunderstore.io/c/webfishing/p/Pyoid/Hook_Line_and_Sinker/). (uncertain: r2mm, GMM) due to how HLS and Rod n' Mod handles installed mods.
 
+> [!NOTE]
+> Rod n' Mod Linux Support will be available soon! I am making builds of it, although not being uploaded.
+> Currrently only tested on Debian-based systems. so not all Linux distributions are supported.
+
 <br>
 <p align="center">
     <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/features.png?raw=true" width="550"/><br>
@@ -44,6 +48,8 @@
 - A webview runtime
     - OPTIONAL: [Microsoft Edge WebView2 Runtime](https://developer.microsoft.com/en-gb/microsoft-edge/webview2#download) for Windows
     - `libwebkit2gtk-4.1-dev` for Linux (linux support soon! build rnm for now.)
+- **LINUX ONLY**: p7zip-full for linux (To extract 7z files and make the updater work n stuff.) 
+    - `sudo apt install p7zip-full`
 
 <br>
 <p align="center">

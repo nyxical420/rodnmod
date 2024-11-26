@@ -6,43 +6,92 @@ import subprocess
 
 subprocess.run(["pyarmor", "gen", "main.py"])
 
-buildCommand = [
-    'pyinstaller',
-    '--onefile',
-    '--noconsole',
-    '--icon=./assets/rodnmod.ico',
-    '--strip',
+systems = {
+    "Windows": "win",
+    "Linux": "linux"
+}
 
-    '--hidden-import=httpx',
-    '--hidden-import=semver',
-    '--hidden-import=psutil',
-    '--hidden-import=webview',
-    '--hidden-import=rapidfuzz',
-    '--hidden-import=pyperclip',
+userOS = systems[platform.system()]
 
-    '--exclude-module=_distutils_hack',
-    '--exclude-module=tkinter',
-    '--exclude-module=xmlrpc',
-    '--exclude-module=anyio',
-    '--exclude-module=asyncio',
-    '--exclude-module=autocommand',
-    '--exclude-module=curses',
-    '--exclude-module=jaraco',
-    '--exclude-module=lib2to3',
-    '--exclude-module=pip',
-    '--exclude-module=pyinstaller',
-    '--exclude-module=pyarmor',
+# windows
+if userOS == "win":
+    buildCommand = [
+        'pyinstaller',
+        '--onefile',
+        '--noconsole',
+        '--icon=./assets/rodnmod.ico',
+        '--strip',
 
-    '--add-data=rodnmod;rodnmod',
-    '--upx-dir=./upx',
+        '--hidden-import=httpx',
+        '--hidden-import=semver',
+        '--hidden-import=psutil',
+        '--hidden-import=webview',
+        '--hidden-import=rapidfuzz',
+        '--hidden-import=pyperclip',
 
-    'dist/main.py'
-]
+        '--exclude-module=_distutils_hack',
+        '--exclude-module=tkinter',
+        '--exclude-module=xmlrpc',
+        '--exclude-module=anyio',
+        '--exclude-module=asyncio',
+        '--exclude-module=autocommand',
+        '--exclude-module=curses',
+        '--exclude-module=jaraco',
+        '--exclude-module=lib2to3',
+        '--exclude-module=pip',
+        '--exclude-module=pyinstaller',
+        '--exclude-module=pyarmor',
 
-subprocess.run(buildCommand)
+        '--add-data=rodnmod;rodnmod',
+        '--upx-dir=./upx',
 
-if os.path.exists('./dist/main.exe'):
-    shutil.move('./dist/main.exe', './rodnmod.exe')
+        'dist/main.py'
+    ]
+
+    subprocess.run(buildCommand)
+
+    if os.path.exists('./dist/main.exe'):
+        shutil.move('./dist/main.exe', './rodnmod.exe')
+
+# linux
+if userOS == "linux":
+    buildCommand = [
+        'pyinstaller',
+        '--onefile',
+        '--noconsole',
+        '--icon=./assets/rodnmod.ico',
+        '--strip',
+
+        '--hidden-import=httpx',
+        '--hidden-import=semver',
+        '--hidden-import=psutil',
+        '--hidden-import=webview',
+        '--hidden-import=rapidfuzz',
+        '--hidden-import=pyperclip',
+
+        '--exclude-module=_distutils_hack',
+        '--exclude-module=tkinter',
+        '--exclude-module=xmlrpc',
+        '--exclude-module=anyio',
+        '--exclude-module=asyncio',
+        '--exclude-module=autocommand',
+        '--exclude-module=curses',
+        '--exclude-module=jaraco',
+        '--exclude-module=lib2to3',
+        '--exclude-module=pip',
+        '--exclude-module=pyinstaller',
+        '--exclude-module=pyarmor',
+
+        '--add-data=rodnmod:rodnmod',
+        '--upx-dir=./upx',
+
+        'dist/main.py'
+    ]
+
+    subprocess.run(buildCommand)
+
+    if os.path.exists('./dist/main'):
+        shutil.move('./dist/main', './rodnmod')
 
 remove = [
     "./build",
@@ -50,19 +99,12 @@ remove = [
     "./main.spec",
 ]
 
-for item in remove:
+for item in ["./build", "./dist", "./main.spec"]:
     if os.path.exists(item):
         if os.path.isdir(item):
             shutil.rmtree(item)
         else:
             os.remove(item)
-
-systems = {
-    "Windows": "win",
-    "Linux": "linux"
-}
-
-userOS = systems[platform.system()]
 
 items = [
     "version.json",
@@ -76,8 +118,7 @@ if userOS == "win":
     items.append("rodnmod.exe")
 elif userOS == "linux":
     items.append("linuxupdate.sh")
-    # 7zip console version for linux
-    # rodnmod for linux (i forgot if it even has a binary)
+    items.append("rodnmod")
 
 print("Zipping files...")
 with zipfile.ZipFile("rodnmod-standalone-" + systems[platform.system()] + ".zip", 'w') as zipf:
