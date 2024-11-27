@@ -2,6 +2,9 @@
 > Rod n' Mod will be having a FULL REWRITE to Electron! Please do not send any more issues to this repository!
 > This repo will be archived soon as I start development on the new rewrite, and will be linked below!
 
+> [!WARNING]
+> While you are free to fork this version of Rod n' Mod because of the GPL v3 license, I discourage forking Rod n' Mod as the entire source code does work, but it has some issues when it comes to distributing the compiled version of the project.
+
 <p align="center">
     <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/banner.png?raw=true" width="800"/><br>
     A webfishing-themed mod manager!
