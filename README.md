@@ -1,5 +1,5 @@
 > [!WARNING]
-> Rod n' Mod will be having a FULL REWRITE to Electron! Please do not send any more issues to this repository!
+> Rod n' Mod will be having a FULL REWRITE to Tauri! Please do not send any more issues to this repository!
 > This repo will be archived soon as I start development on the new rewrite, and will be linked below!
 
 new repository: https://github.com/nyxical420/rodnmod-rewrite
