@@ -1,3 +1,6 @@
+> [!WARNING]  
+> This version of Rod n' Mod is no longer being maintained. Please visit https://github.com/nyxical420/rodnmod-rewrite instead!
+
 <p align="center">
     <img src="https://github.com/nyxical420/rodnmod/blob/main/assets/repository/banner.png?raw=true" width="800"/><br>
     A webfishing-themed mod manager!
